@@ -1,0 +1,2 @@
+INSERT INTO SAMPLE(ID, DESCRIPTION)
+VALUES (1, 'My first sample');
