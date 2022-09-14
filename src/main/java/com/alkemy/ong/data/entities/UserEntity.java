@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.user;
+package com.alkemy.ong.data.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
