@@ -6,3 +6,16 @@ CREATE TABLE IF NOT EXISTS SAMPLE(
   deleted      BIT         DEFAULT 0,
   PRIMARY KEY (id)
 );
+
+CREATE TABLE IF NOT EXISTS USERS(
+  id           BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  firstName  VARCHAR(50) DEFAULT NULL,
+  lastName  VARCHAR(50) DEFAULT NULL,
+  email  VARCHAR(50) DEFAULT NULL,
+  password  VARCHAR(50) DEFAULT NULL,
+  photo  VARCHAR(50) DEFAULT NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted      BIT         DEFAULT 0,
+  PRIMARY KEY (id)
+);
