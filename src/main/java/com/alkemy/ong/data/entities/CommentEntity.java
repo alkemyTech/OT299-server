@@ -24,13 +24,13 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_user")
-    private Integer userId;
+    @Column(name = "user_id")
+    private Long userId;
 
     private String body;
 
-    @Column(name = "id_news")
-    private Integer newsId;
+    @Column(name = "news_id")
+    private Long newsId;
 
     @Column(name = "update_at")
     @Temporal(TemporalType.TIMESTAMP)
