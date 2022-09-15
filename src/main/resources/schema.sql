@@ -6,6 +6,34 @@ CREATE TABLE IF NOT EXISTS SAMPLE(
   deleted      BIT         DEFAULT 0,
   PRIMARY KEY (id)
 );
+CREATE TABLE IF NOT EXISTS ORGANIZATIONS(
+  id BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name  VARCHAR(50) NOT NULL,
+  image VARCHAR(100) NOT NULL,
+  address VARCHAR(50) NULL,
+  phone INTEGER NULL,
+  email VARCHAR(50) NOT NULL,
+  welcome_text TEXT NOT NULL,
+  about_us_text TEXT,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted      BIT       DEFAULT 0,
+  PRIMARY KEY (id)
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS ACTIVITY(
+    id           BIGINT(50)  NOT NULL AUTO_INCREMENT,
+    name  VARCHAR(50) NOT NULL,
+    content  VARCHAR(50) NOT NULL,
+    image  VARCHAR(50) NOT NULL,
+    created_at    TIMESTAMP   DEFAULT NOW(),
+    updated_at    TIMESTAMP   DEFAULT NOW(),
+    deleted      BIT         DEFAULT 0,
+    PRIMARY KEY (id)
+    );
 
 CREATE TABLE IF NOT EXISTS NEWS(
   id   BIGINT(50)  NOT NULL AUTO_INCREMENT,
@@ -25,6 +53,39 @@ CREATE TABLE IF NOT EXISTS USERS(
   email     VARCHAR(50)  NULL,
   password  VARCHAR(50)  NULL,
   photo     VARCHAR(50)  NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted       BIT         DEFAULT 0,
+  PRIMARY KEY (id)
+);
+CREATE TABLE IF NOT EXISTS TESTIMONIALS(
+  id BIGINT(50) NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  image VARCHAR(100),
+  content VARCHAR(200),
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  deleted BIT DEFAULT 0,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS CATEGORIES(
+  id        BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  description  VARCHAR(50) DEFAULT NULL,
+  image     VARCHAR(50) DEFAULT NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+    PRIMARY KEY (id)
+);
+CREATE TABLE IF NOT EXISTS MEMBERS(
+  id   BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name VARCHAR(150) NOT NULL,
+  facebookUrl VARCHAR(255) NOT NULL,
+  instagramUrl VARCHAR(255) NOT NULL,
+  linkedinUrl VARCHAR(255) NOT NULL,
+  image VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
   created_at    TIMESTAMP   DEFAULT NOW(),
   updated_at    TIMESTAMP   DEFAULT NOW(),
   deleted       BIT         DEFAULT 0,
