@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.Activity;
+package com.alkemy.ong.data.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "activities")
-@SQLDelete(sql = "UPDATE activities SET delete =true WHERE id = ?")
+@SQLDelete(sql = "UPDATE activities SET deleted =true WHERE id = ?")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -37,6 +37,6 @@ public class ActivityEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
 
-    private boolean delete = false;
+    private boolean deleted = false;
 
 }
