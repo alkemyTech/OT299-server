@@ -45,6 +45,6 @@ public class NewEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private Boolean deleted = false;
+    private boolean deleted = false;
 
 }
