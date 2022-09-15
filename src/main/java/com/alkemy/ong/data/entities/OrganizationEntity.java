@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -32,7 +35,7 @@ public class OrganizationEntity {
 
     private String address;
 
-    private Integer phone;
+    private int phone;
 
     @Column(nullable = false)
     private String email;
@@ -44,13 +47,13 @@ public class OrganizationEntity {
     private String aboutUsText;
 
     @Column(name = "update_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    @UpdateTimestamp()
+    private LocalDateTime updatedAt;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @CreationTimestamp()
+    private LocalDateTime createdAt;
 
-    private Boolean deleted = false;
+    private boolean deleted = false;
 
 }
