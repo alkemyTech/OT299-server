@@ -30,3 +30,16 @@ CREATE TABLE IF NOT EXISTS USERS(
   deleted       BIT         DEFAULT 0,
   PRIMARY KEY (id)
 );
+CREATE TABLE IF NOT EXISTS MEMBERS(
+  id   BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name VARCHAR(150) NOT NULL,
+  facebookUrl VARCHAR(255) NOT NULL,
+  instagramUrl VARCHAR(255) NOT NULL,
+  linkedinUrl VARCHAR(255) NOT NULL,
+  image VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted      BIT         DEFAULT 0,
+  PRIMARY KEY (id)
+);
