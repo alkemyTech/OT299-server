@@ -1,5 +1,6 @@
-package com.alkemy.ong.data;
+package com.alkemy.ong.data.repositories;
 
+import com.alkemy.ong.data.entities.TestimonialEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
