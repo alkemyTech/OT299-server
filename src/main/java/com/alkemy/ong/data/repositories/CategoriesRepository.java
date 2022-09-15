@@ -1,6 +1,6 @@
-package com.alkemy.ong.data.Repositories;
+package com.alkemy.ong.data.repositories;
 
-import com.alkemy.ong.data.Entities.CategoriesEntity;
+import com.alkemy.ong.data.entities.CategoriesEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

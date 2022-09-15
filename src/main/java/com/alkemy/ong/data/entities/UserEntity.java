@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.Entities;
+package com.alkemy.ong.data.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,27 +13,32 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "categories")
-@SQLDelete(sql = "UPDATE categories SET delete=true WHERE id=?")
-@Where(clause = "false")
+@Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted=true WHERE id=?")
+@Where(clause = "deleted = false")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoriesEntity {
-
-    @Id
+public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Id
+    private Long id;
     @Column(nullable = false)
-    private String name;
-    private String description;
-    private String image;
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
+    @Column(unique = true)
+    private String email;
+    @Column(nullable = false)
+    private String password;
+    private String photo;
+    //private Long roleId;
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
-    private boolean delete = false;
+    private boolean deleted = false;
 }
