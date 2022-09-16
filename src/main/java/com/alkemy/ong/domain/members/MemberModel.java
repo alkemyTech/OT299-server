@@ -2,7 +2,7 @@ package com.alkemy.ong.domain.members;
 
 import java.time.LocalDateTime;
 
-public class Member {
+public class MemberModel {
     private Long id;
     private String name;
     private String facebookUrl;
@@ -14,11 +14,11 @@ public class Member {
     private LocalDateTime updateAt;
     private boolean deleted;
 
-    public Member(){
+    public MemberModel(){
 
     }
 
-    public Member(Long id, String name, String facebookUrl, String instagramUrl, String linkedinUrl, String image, String description, LocalDateTime createdAt, LocalDateTime updateAt, boolean deleted) {
+    public MemberModel(Long id, String name, String facebookUrl, String instagramUrl, String linkedinUrl, String image, String description, LocalDateTime createdAt, LocalDateTime updateAt, boolean deleted) {
         this.id = id;
         this.name = name;
         this.facebookUrl = facebookUrl;

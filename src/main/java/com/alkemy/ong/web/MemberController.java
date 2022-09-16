@@ -2,7 +2,6 @@ package com.alkemy.ong.web;
 
 
 import com.alkemy.ong.domain.members.DefaultMemberService;
-import com.alkemy.ong.domain.members.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

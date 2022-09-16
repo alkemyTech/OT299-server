@@ -11,7 +11,8 @@ public class DefaultMemberService implements MemberGateway {
     DefaultMemberGateway defaultMemberGateway;
 
     @Override
-    public List<Member> findMember() {
+    public List<MemberModel> findMember() {
+
         return defaultMemberGateway.findMember();
     }
 }

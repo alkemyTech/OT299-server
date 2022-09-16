@@ -1,7 +1,7 @@
 package com.alkemy.ong.data;
 
 import com.alkemy.ong.data.repositories.MemberRepository;
-import com.alkemy.ong.domain.members.Member;
+import com.alkemy.ong.domain.members.MemberModel;
 import com.alkemy.ong.domain.members.MemberGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +16,11 @@ public class DefaultMemberGateway implements MemberGateway {
     MemberRepository memberRepository;
 
     @Override
-    public List<Member> findMember() {
+    public List<MemberModel> findMember() {
 
         return  StreamSupport.stream(
                         memberRepository.findAll().spliterator(), false)
-                .map(x -> new Member(x.getId(),
+                .map(x -> new MemberModel(x.getId(),
                         x.getName(),
                         x.getFacebookUrl(),
                         x.getInstagramUrl(),
