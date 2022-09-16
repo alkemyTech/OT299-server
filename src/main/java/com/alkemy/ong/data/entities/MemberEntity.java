@@ -29,10 +29,13 @@ public class MemberEntity {
     @Column (nullable = false)
     private String name;
 
-    private String facebookUrl;
+    @Column(name = "facebook_url")
+   private String facebookUrl;
 
+    @Column(name = "instagram_url")
     private String instagramUrl;
 
+    @Column(name = "linkedin_url")
     private String linkedinUrl;
 
     @Column (nullable = false)
