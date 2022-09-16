@@ -3,13 +3,17 @@ package com.alkemy.ong.data.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "slides")
+@SQLDelete(sql= "UPDATE slides SET deleted=true WHERE id=?")
+@Where(clause = "deleted = false")
 @Data
 @NoArgsConstructor
 public class SlideEntity {
