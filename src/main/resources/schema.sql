@@ -6,6 +6,34 @@ CREATE TABLE IF NOT EXISTS SAMPLE(
   deleted      BIT         DEFAULT 0,
   PRIMARY KEY (id)
 );
+CREATE TABLE IF NOT EXISTS ORGANIZATIONS(
+  id BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name  VARCHAR(50) NOT NULL,
+  image VARCHAR(100) NOT NULL,
+  address VARCHAR(50) NULL,
+  phone INTEGER NULL,
+  email VARCHAR(50) NOT NULL,
+  welcome_text TEXT NOT NULL,
+  about_us_text TEXT,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted      BIT       DEFAULT 0,
+  PRIMARY KEY (id)
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS ACTIVITIES(
+    id           BIGINT(50)  NOT NULL AUTO_INCREMENT,
+    name  VARCHAR(100) NOT NULL,
+    content  VARCHAR(255) NOT NULL,
+    image  VARCHAR(255) NOT NULL,
+    created_at    TIMESTAMP   DEFAULT NOW(),
+    updated_at    TIMESTAMP   DEFAULT NOW(),
+    deleted      BIT         DEFAULT 0,
+    PRIMARY KEY (id)
+    );
 
 CREATE TABLE IF NOT EXISTS NEWS(
   id   BIGINT(50)  NOT NULL AUTO_INCREMENT,
@@ -48,6 +76,18 @@ CREATE TABLE IF NOT EXISTS CATEGORIES(
   image     VARCHAR(50) DEFAULT NULL,
   created_at    TIMESTAMP   DEFAULT NOW(),
   updated_at    TIMESTAMP   DEFAULT NOW(),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS CONTACTS(
+  id        BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  phone BIGINT(50),
+  email VARCHAR(50),
+  message VARCHAR(50),
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted_at TIMESTAMP   DEFAULT NOW(),
     PRIMARY KEY (id)
 );
 CREATE TABLE IF NOT EXISTS MEMBERS(
