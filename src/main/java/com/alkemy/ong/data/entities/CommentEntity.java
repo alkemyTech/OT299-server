@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,21 +28,21 @@ public class CommentEntity {
     private Long id;
 
     @Column(name = "user_id")
-    private Long userId;
+    private long userId;
 
     private String body;
 
     @Column(name = "news_id")
-    private Long newsId;
+    private long newsId;
 
     @Column(name = "update_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    @UpdateTimestamp()
+    private LocalDateTime updatedAt;
 
     @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @CreationTimestamp()
+    private LocalDateTime createdAt;
 
-    private Boolean deleted = false;
+    private boolean deleted = false;
 
 }
