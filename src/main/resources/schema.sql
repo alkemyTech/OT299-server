@@ -108,6 +108,8 @@ CREATE TABLE IF NOT EXISTS CONTACTS(
   phone BIGINT(50),
   email VARCHAR(50),
   message VARCHAR(50),
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
   deleted_at TIMESTAMP   DEFAULT NOW(),
     PRIMARY KEY (id)
 );
