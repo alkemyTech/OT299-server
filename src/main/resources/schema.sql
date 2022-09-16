@@ -88,6 +88,28 @@ CREATE TABLE IF NOT EXISTS MEMBERS(
   description VARCHAR(255) NOT NULL,
   created_at    TIMESTAMP   DEFAULT NOW(),
   updated_at    TIMESTAMP   DEFAULT NOW(),
-  deleted      BIT         DEFAULT 0,
+  deleted       BIT         DEFAULT 0,
   PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS CATEGORIES(
+  id        BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  description  VARCHAR(50) DEFAULT NULL,
+  image     VARCHAR(50) DEFAULT NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS CONTACTS(
+  id        BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  phone BIGINT(50),
+  email VARCHAR(50),
+  message VARCHAR(50),
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted_at TIMESTAMP   DEFAULT NOW(),
+    PRIMARY KEY (id)
 );
