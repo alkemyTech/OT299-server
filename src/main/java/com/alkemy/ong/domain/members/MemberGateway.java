@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface MemberGateway {
 
-    List<MemberModel>findMember();
+    List<Member>findAll();
 }
