@@ -33,7 +33,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
     private String photo;
-    //private Long roleId;
+    private Long roleId;
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
