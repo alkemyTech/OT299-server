@@ -52,13 +52,13 @@ CREATE TABLE IF NOT EXISTS USERS(
   lastName  VARCHAR(50)  NOT NULL,
   email     VARCHAR(50)  NULL,
   password  VARCHAR(50)  NULL,
-  photo     VARCHAR(50)  NULL,
+  photo     VARCHAR(256) NULL,
   role_id   BIGINT(50)   NOT NULL,
   created_at TIMESTAMP   DEFAULT NOW(),
   updated_at TIMESTAMP   DEFAULT NOW(),
   deleted    BIT         DEFAULT 0,
   PRIMARY KEY (id),
-  CONSTRAINT fkrole FOREIGN KEY (role_id) REFERENCES ROLE(id)
+  CONSTRAINT fkrole FOREIGN KEY (role_id) REFERENCES ROLES(id)
 );
 
 CREATE TABLE IF NOT EXISTS TESTIMONIALS(
