@@ -33,6 +33,8 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
     private String photo;
+    @OneToOne
+    @JoinColumn(name = "role_id")
     private Long roleId;
     @Column(name = "updated_at")
     @UpdateTimestamp
