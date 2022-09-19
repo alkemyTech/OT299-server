@@ -28,4 +28,5 @@ public class RoleEntity {
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
+    private boolean deleted = false;
 }

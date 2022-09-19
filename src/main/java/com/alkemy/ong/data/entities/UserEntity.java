@@ -35,7 +35,7 @@ public class UserEntity {
     private String photo;
     @OneToOne
     @JoinColumn(name = "role_id")
-    private Long roleId;
+    private RoleEntity roleId;
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
