@@ -21,15 +21,15 @@ public class DefaultContactsGateway implements ContactsGateway {
     }
 
     private Contacts toModel (ContactsEntity contactsEntity) {
-        return new Contacts(
-                contactsEntity.getId(),
-                contactsEntity.getName(),
-                contactsEntity.getPhone(),
-                contactsEntity.getMessage(),
-                contactsEntity.getEmail(),
-                contactsEntity.getCreatedAt(),
-                contactsEntity.getUpdatedAt(),
-                contactsEntity.isDeleted()
-        );
+        return Contacts.builder()
+                .id(contactsEntity.getId())
+                .name(contactsEntity.getName())
+                .phone(contactsEntity.getPhone())
+                .message(contactsEntity.getMessage())
+                .email(contactsEntity.getEmail())
+                .createdAt(contactsEntity.getCreatedAt())
+                .updatedAt(contactsEntity.getUpdatedAt())
+                .deleted(contactsEntity.isDeleted())
+                .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.data.entities.ContactsEntity;
 import com.alkemy.ong.domain.contacts.Contacts;
 import com.alkemy.ong.domain.contacts.ContactsService;
 import lombok.*;
@@ -21,22 +22,21 @@ public class ContactsController {
     }
 
     private ContactsDto toDto (Contacts contacts){
-        return new ContactsDto(
-                contacts.getId(),
-                contacts.getName(),
-                contacts.getPhone(),
-                contacts.getEmail(),
-                contacts.getMessage(),
-                contacts.getCreatedAt(),
-                contacts.getUpdatedAt(),
-                contacts.isDeleted()
-        );
-    }
+        return ContactsDto.builder()
+                .id(contacts.getId())
+                .name(contacts.getName())
+                .phone(contacts.getPhone())
+                .email(contacts.getEmail())
+                .message(contacts.getMessage())
+                .createdAt(contacts.getCreatedAt())
+                .updatedAt(contacts.getUpdatedAt())
+                .deleted(contacts.isDeleted())
+                .build();
+        }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Setter
+    @Builder
     public static class ContactsDto{
         private long id;
         private String name;
@@ -47,5 +47,9 @@ public class ContactsController {
         private LocalDateTime updatedAt;
         private boolean deleted = false;
     }
+
 }
+
+
+
 
