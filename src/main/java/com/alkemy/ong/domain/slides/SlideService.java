@@ -8,8 +8,7 @@ import java.util.List;
 @Service
 public class SlideService {
 
-    final
-    SlideGateway slideGateway;
+    private final SlideGateway slideGateway;
 
     public SlideService(SlideGateway slideGateway) {
         this.slideGateway = slideGateway;
