@@ -10,3 +10,4 @@ VALUES (1, 'Apoyo Escolar para el nivel Primario', 'El espacio de apoyo escolar 
         'https://www.unir.net/wp-content/uploads/2019/11/Foto-profesora-tutotia-alumnos-unir.jpg'),
        (4, 'Programas Educativos', 'Mediante nuestros programas educativos, buscamos incrementar la capacidad intelectual, moral y afectiva de las personas de acuerdo con la cultura y las normas de convivencia de la sociedad a la que pertenecen.',
         'https://img.interempresas.net/fotos/2675911.jpeg');
+

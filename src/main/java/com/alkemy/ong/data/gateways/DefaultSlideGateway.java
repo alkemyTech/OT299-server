@@ -22,13 +22,25 @@ public class DefaultSlideGateway implements SlideGateway {
         return slideRepository.findAll().stream().map(this::toModel).collect(toList());
     }
 
+
+
     private Slide toModel(SlideEntity slideEntity) {
+        return Slide.builder().id(slideEntity.getId())
+                .imageUrl(slideEntity.getImageUrl())
+                .slideOrder(slideEntity.getSlideOrder())
+                .slideText(slideEntity.getSlideText())
+                .createdAt(slideEntity.getCreatedAt())
+                .updatedAt(slideEntity.getUpdatedAt())
+                .deleted(slideEntity.isDeleted())
+                .build();
+
+    /*private Slide toModel(SlideEntity slideEntity) {
         return new Slide(slideEntity.getId(),
                 slideEntity.getImageUrl(),
                 slideEntity.getSlideText(),
                 slideEntity.getSlideOrder(),
                 slideEntity.getCreatedAt(),
                 slideEntity.getUpdatedAt(),
-                slideEntity.isDeleted());
+                slideEntity.isDeleted());*/
     }
 }

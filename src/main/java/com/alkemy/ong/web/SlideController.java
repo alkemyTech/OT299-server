@@ -2,10 +2,7 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.slides.Slide;
 import com.alkemy.ong.domain.slides.SlideService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,16 +24,18 @@ public class SlideController {
     }
 
     private SlideDto toDto (Slide slide) {
-        return new SlideDto(slide.getId(),
-                slide.getImageUrl(),
-                slide.getSlideText(),
-                slide.getSlideOrder());
+        return SlideDto.builder().id(slide.getId())
+                .imageUrl(slide.getImageUrl())
+                .slideText(slide.getSlideText())
+                .slideOrder(slide.getSlideText())
+                .build();
     }
 
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class SlideDto {
         private Long id;
         private String imageUrl;

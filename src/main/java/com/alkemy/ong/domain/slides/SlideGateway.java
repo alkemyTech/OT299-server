@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface SlideGateway {
 
-    List<Slide>findAll();
+    List<Slide> findAll();
 }

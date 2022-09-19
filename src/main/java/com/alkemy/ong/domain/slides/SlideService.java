@@ -8,11 +8,13 @@ import java.util.List;
 @Service
 public class SlideService {
 
-    @Autowired
+    final
     SlideGateway slideGateway;
 
-    public List<Slide> findAll() {
-        return slideGateway.findAll();
+    public SlideService(SlideGateway slideGateway) {
+        this.slideGateway = slideGateway;
     }
 
+    public List<Slide> findAll() {return slideGateway.findAll();
     }
+}
