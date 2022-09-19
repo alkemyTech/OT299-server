@@ -4,10 +4,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
+@Builder
 public class Contacts {
     private long id;
     private String name;
