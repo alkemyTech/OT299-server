@@ -1,9 +1,6 @@
 package com.alkemy.ong.data.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,8 +16,8 @@ import java.util.Date;
 @Where(clause = "deleted = false")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class OrganizationEntity {
 
     @Id
@@ -46,7 +43,7 @@ public class OrganizationEntity {
     @Column(name = "about_us_text")
     private String aboutUsText;
 
-    @Column(name = "update_at")
+    @Column(name = "updated_at")
     @UpdateTimestamp()
     private LocalDateTime updatedAt;
 
