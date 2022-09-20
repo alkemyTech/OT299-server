@@ -6,4 +6,6 @@ import java.util.List;
 @Component
 public interface CategoriesGateway {
     List<Categories> findAll();
+
+    void deleteById(Long id);
 }

@@ -10,4 +10,6 @@ import java.util.List;
 public interface CategoriesRepository extends CrudRepository<CategoriesEntity, Long> {
         List<CategoriesEntity> findAll();
 
+        void deleteById(Long id);
+
 }
