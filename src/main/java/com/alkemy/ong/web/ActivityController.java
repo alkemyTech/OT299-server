@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.activities.Activity;
 import com.alkemy.ong.domain.activities.ActivityService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,27 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @PostMapping()
-    public ResponseEntity<Void> create(@RequestBody ActivityDto activityDto) {
-        activityService.createActivity(activityDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ActivityDto> create(@RequestBody ActivityDto activityDto) {
+        Activity activity = activityService.createActivity(toModel(activityDto));
+        return new ResponseEntity<>(toDto(activity), HttpStatus.CREATED);
+    }
+
+
+    // Dto -> Model
+    public Activity toModel(ActivityDto activityDto){
+        return Activity.builder().id(activityDto.id).name(activityDto.name)
+                .content(activityDto.content).image(activityDto.image)
+                .updatedAt(activityDto.updatedAt).createdAt(activityDto.createdAt)
+                .deleted(activityDto.deleted).build();
+
+    }
+
+    // Model -> Dto
+    public ActivityDto toDto(Activity activity){
+        return ActivityDto.builder().id(activity.getId()).name(activity.getName())
+                .content(activity.getContent()).image(activity.getImage())
+                .updatedAt(activity.getUpdatedAt()).createdAt(activity.getCreatedAt())
+                .deleted(activity.isDeleted()).build();
     }
 
     @Getter

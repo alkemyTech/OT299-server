@@ -1,6 +1,5 @@
 package com.alkemy.ong.domain.activities;
 
-import com.alkemy.ong.web.ActivityController;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,8 +11,8 @@ public class ActivityService {
         this.activityGateway = activityGateway;
     }
 
-    public void createActivity(ActivityController.ActivityDto activityDto){
-        activityGateway.createActivity(activityDto);
+    public Activity createActivity(Activity activity){
+        return activityGateway.createActivity(activity);
     }
 
 }

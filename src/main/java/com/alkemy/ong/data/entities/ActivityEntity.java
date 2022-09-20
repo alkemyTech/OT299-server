@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE activities SET deleted =true WHERE id = ?")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Getter
 @Setter
+@Builder
 @Where(clause = "deleted = false")
 public class ActivityEntity {
 
