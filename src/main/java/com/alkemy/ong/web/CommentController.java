@@ -6,20 +6,25 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/comments")
 public class CommentController {
     private final CommentService commentService;
 
-    @GetMapping("/comments")
+    @GetMapping()
     public List<CommentDto> findAll(){
         return commentService.findAll().stream().map(this::commentToDto).collect(Collectors.toList());
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteComment(@PathVariable Long id) {
+        commentService.deleteById(id);
     }
 
     private CommentDto commentToDto(Comment comment){
