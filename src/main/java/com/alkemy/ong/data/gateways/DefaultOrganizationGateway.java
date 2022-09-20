@@ -1,4 +1,4 @@
-package com.alkemy.ong.data.getways;
+package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.OrganizationEntity;
 import com.alkemy.ong.data.repositories.OrganizationRepository;

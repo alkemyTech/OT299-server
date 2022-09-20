@@ -1,11 +1,8 @@
-package com.alkemy.ong.web.organizations;
+package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.organizations.Organization;
 import com.alkemy.ong.domain.organizations.OrganizationService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/organization/public")
-@AllArgsConstructor
+@Builder
 public class OrganizationsController {
 
-    OrganizationService organizationService;
+    private final OrganizationService organizationService;
 
     @GetMapping("/{id}")
     public ResponseEntity<OrganizationDto> findOrganizationById(@PathVariable(name = "id") Long id){
