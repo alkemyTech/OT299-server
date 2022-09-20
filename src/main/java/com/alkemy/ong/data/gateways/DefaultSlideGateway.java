@@ -2,6 +2,7 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.SlideEntity;
 import com.alkemy.ong.data.repositories.SlideRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.slides.Slide;
 import com.alkemy.ong.domain.slides.SlideGateway;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,12 @@ public class DefaultSlideGateway implements SlideGateway {
     public List<Slide> findAll() {
         return slideRepository.findAll().stream().map(this::toModel).collect(toList());
     }
-
-
-
+    @Override
+     public void deleteById(Long id) {
+        Slide slide = toModel(slideRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Slide", "id", id)));
+                slideRepository.deleteById(slide.getId());
+    }
 
     private Slide toModel(SlideEntity slideEntity) {
         return Slide.builder().id(slideEntity.getId())
@@ -36,4 +40,5 @@ public class DefaultSlideGateway implements SlideGateway {
                 .deleted(slideEntity.isDeleted())
                 .build();
     }
+
 }

@@ -1,11 +1,10 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.data.gateways.DefaultSlideGateway;
 import com.alkemy.ong.domain.slides.Slide;
 import com.alkemy.ong.domain.slides.SlideService;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +16,8 @@ import static java.util.stream.Collectors.toList;
 public class SlideController {
 
     SlideService slideService;
+
+    DefaultSlideGateway defaultSlideGateway;
 
     @GetMapping()
     public List<SlideDto> findAll() {
@@ -31,10 +32,14 @@ public class SlideController {
                 .build();
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteSlide(@PathVariable Long id) {
+        defaultSlideGateway.deleteById(id);
+    }
+
+
     @Getter
     @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Builder
     public static class SlideDto {
         private Long id;
