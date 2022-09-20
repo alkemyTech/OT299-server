@@ -1,12 +1,12 @@
 package com.alkemy.ong.domain.users;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
+@AllArgsConstructor
 public class UserService {
-    @Autowired
     UserGateway gateway;
 
     public List<User> findAll() {

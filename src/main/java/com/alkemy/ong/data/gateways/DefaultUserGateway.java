@@ -16,21 +16,22 @@ public class DefaultUserGateway {
 
     public List<User> findAll() {
         return repository.findAll().stream()
-                .map(this::tomodel)
+                .map(this::toModel)
                 .collect(Collectors.toList());
     }
 
-    private User tomodel(UserEntity entity) {
-        return new User(
-                entity.getId(),
-                entity.getFirstName(),
-                entity.getLastName(),
-                entity.getEmail(),
-                entity.getPassword(),
-                entity.getPhoto(),
-                entity.getRoleId(),
-                entity.getUpdatedAt(),
-                entity.getCreatedAt(),
-                entity.isDeleted());
+    private User toModel(UserEntity entity) {
+        return User.builder()
+                .id(entity.getId())
+                .firstName(entity.getFirstName())
+                .lastName(entity.getLastName())
+                .email(entity.getEmail())
+                .password(entity.getPassword())
+                .photo(entity.getPhoto())
+                .roleId(entity.getRoleId().getId())
+                .updatedAt(entity.getUpdatedAt())
+                .createdAt(entity.getCreatedAt())
+                .deleted(entity.isDeleted())
+                .build();
     }
 }
