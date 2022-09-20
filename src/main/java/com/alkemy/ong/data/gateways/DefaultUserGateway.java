@@ -3,6 +3,7 @@ package com.alkemy.ong.data.gateways;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.users.User;
+import com.alkemy.ong.domain.users.UserGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class DefaultUserGateway {
+public class DefaultUserGateway implements UserGateway {
     private final UserRepository repository;
 
     public List<User> findAll() {
