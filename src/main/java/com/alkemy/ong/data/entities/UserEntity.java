@@ -1,5 +1,6 @@
 package com.alkemy.ong.data.entities;
 
+import javax.management.relation.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,9 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
     private String photo;
-    private Long roleId;
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity roleId;
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;

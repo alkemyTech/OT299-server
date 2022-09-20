@@ -11,23 +11,20 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "testimonials")
-@SQLDelete(sql= "UPDATE testimonials SET deleted=true WHERE id=?")
+@Table(name = "slides")
+@SQLDelete(sql= "UPDATE slides SET deleted=true WHERE id=?")
 @Where(clause = "deleted = false")
 @Data
 @NoArgsConstructor
-public class TestimonialEntity {
+public class SlideEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
-    private String image;
-
-    private String content;
+    private String imageUrl;
+    private String slideText;
+    private String slideOrder;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -38,4 +35,5 @@ public class TestimonialEntity {
     private LocalDateTime updatedAt;
 
     private boolean deleted = false;
+
 }
