@@ -6,10 +6,11 @@ import com.alkemy.ong.domain.organizations.OrganizationGateway;
 import com.alkemy.ong.domain.organizations.Organization;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@Builder
 public class DefaultOrganizationGateway implements OrganizationGateway {
 
     private final OrganizationRepository organizationRepository;
@@ -23,17 +24,16 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
 
     private Organization toModel(OrganizationEntity organizationEntity){
 
-        return new Organization(organizationEntity.getId(),
-                organizationEntity.getName(),
-                organizationEntity.getImage(),
-                organizationEntity.getAddress(),
-                organizationEntity.getPhone(),
-                organizationEntity.getEmail(),
-                organizationEntity.getWelcomeText(),
-                organizationEntity.getAboutUsText(),
-                organizationEntity.getUpdatedAt(),
-                organizationEntity.getCreatedAt(),
-                organizationEntity.isDeleted()
-        );
+        return Organization.builder().id(organizationEntity.getId())
+                .name(organizationEntity.getName())
+                .image(organizationEntity.getImage())
+                .address(organizationEntity.getAddress())
+                .phone(organizationEntity.getPhone())
+                .email(organizationEntity.getEmail())
+                .welcomeText(organizationEntity.getWelcomeText())
+                .aboutUsText(organizationEntity.getAboutUsText())
+                .updatedAt(organizationEntity.getUpdatedAt())
+                .updatedAt(organizationEntity.getCreatedAt())
+                .deleted(organizationEntity.isDeleted()).build();
     }
 }

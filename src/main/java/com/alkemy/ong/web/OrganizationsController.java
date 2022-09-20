@@ -24,17 +24,17 @@ public class OrganizationsController {
 
     private OrganizationDto toDto(Organization organization){
 
-        return new OrganizationDto(organization.getName(),
-                organization.getImage(),
-                organization.getAddress(),
-                organization.getPhone()
-        );
+        return OrganizationDto.builder()
+                .name(organization.getName())
+                .image(organization.getImage())
+                .address(organization.getAddress())
+                .phone(organization.getPhone())
+                .build();
     }
 
     @Setter
     @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Builder
     public static class OrganizationDto {
 
         private String name;
