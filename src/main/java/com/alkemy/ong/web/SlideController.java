@@ -1,6 +1,5 @@
 package com.alkemy.ong.web;
 
-import com.alkemy.ong.data.gateways.DefaultSlideGateway;
 import com.alkemy.ong.domain.slides.Slide;
 import com.alkemy.ong.domain.slides.SlideService;
 import lombok.*;
@@ -17,7 +16,6 @@ public class SlideController {
 
     SlideService slideService;
 
-    DefaultSlideGateway defaultSlideGateway;
 
     @GetMapping()
     public List<SlideDto> findAll() {
@@ -34,7 +32,7 @@ public class SlideController {
 
     @DeleteMapping("/{id}")
     public void deleteSlide(@PathVariable Long id) {
-        defaultSlideGateway.deleteById(id);
+        slideService.deleteById(id);
     }
 
 
