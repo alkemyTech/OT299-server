@@ -2,6 +2,7 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.TestimonialEntity;
 import com.alkemy.ong.data.repositories.TestimonialRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonials.Testimonial;
 import com.alkemy.ong.domain.testimonials.TestimonialGateway;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
     public void deleteById(Long id) {
         Testimonial testimonial = toModel(testimonialRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Testimonial", "id", id)));
-        testimonialRepository.delete(testimonial);
+        testimonialRepository.deleteById(testimonial.getId());
     }
 
     private Testimonial toModel(TestimonialEntity entity){
