@@ -48,28 +48,29 @@ CREATE TABLE IF NOT EXISTS NEWS
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS ROLE
-(
-    id          BIGINT(50)  NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(50) NOT NULL,
-    description VARCHAR(50) NULL,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    updated_at  TIMESTAMP DEFAULT NOW(),
-    PRIMARY KEY (id)
-);
+CREATE TABLE IF NOT EXISTS ROLES(
+  id BIGINT(50) NOT NULL AUTO_INCREMENT,
+  name          VARCHAR(50) NOT NULL,
+  description   VARCHAR(50) NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted       BIT         DEFAULT 0,
+  PRIMARY KEY (id)
+  );
 
-CREATE TABLE IF NOT EXISTS USERS
-(
-    id         BIGINT(50)  NOT NULL AUTO_INCREMENT,
-    firstName  VARCHAR(50) NOT NULL,
-    lastName   VARCHAR(50) NOT NULL,
-    email      VARCHAR(50) NULL,
-    password   VARCHAR(50) NULL,
-    photo      VARCHAR(50) NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
-    deleted    BIT       DEFAULT 0,
-    PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS USERS(
+  id        BIGINT(50)   NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(50)  NOT NULL,
+  last_name  VARCHAR(50)  NOT NULL,
+  email     VARCHAR(50)  NULL,
+  password  VARCHAR(50)  NULL,
+  photo     VARCHAR(255)  NULL,
+  role_id   BIGINT(50)   NOT NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted       BIT         DEFAULT 0,
+  PRIMARY KEY (id),
+  CONSTRAINT fkroles FOREIGN KEY (role_id) REFERENCES ROLES(id)
 );
 CREATE TABLE IF NOT EXISTS TESTIMONIALS
 (
