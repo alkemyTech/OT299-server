@@ -1,13 +1,14 @@
 package com.alkemy.ong.domain.members;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
+@AllArgsConstructor
 public class MemberService {
-    @Autowired
-    MemberGateway memberGateway;
+
+    private final MemberGateway memberGateway;
 
       public List<Member> findAll() {
 

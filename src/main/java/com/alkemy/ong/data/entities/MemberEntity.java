@@ -30,7 +30,7 @@ public class MemberEntity {
     private String name;
 
     @Column(name = "facebook_url")
-   private String facebookUrl;
+    private String facebookUrl;
 
     @Column(name = "instagram_url")
     private String instagramUrl;
