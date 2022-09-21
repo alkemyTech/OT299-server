@@ -4,6 +4,7 @@ import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.repositories.CommentRepository;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentGateway;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.Builder;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,14 @@ public class DefaultCommentsGateway implements CommentGateway {
     public List<Comment> findAll() {
         return commentRepository.findByOrderByCreatedAt().stream().map(this::toModel).collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteById(Long id) {
+        Comment comment = toModel(commentRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Comment", "id", id)));
+        commentRepository.deleteById(comment.getId());
+    }
+
     private Comment toModel (CommentEntity commentEntity) {
         return Comment.builder()
                 .id(commentEntity.getId())
