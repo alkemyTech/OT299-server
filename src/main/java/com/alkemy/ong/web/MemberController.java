@@ -3,9 +3,9 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +24,12 @@ public class MemberController {
         return  memberService.findAll().stream()
                 .map(this::toDto)
                 .collect(toList());
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity delete(@PathVariable(value = "id") Long id){
+        memberService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
     private MemberDto toDto (Member member){
         return  MemberDto.builder()
