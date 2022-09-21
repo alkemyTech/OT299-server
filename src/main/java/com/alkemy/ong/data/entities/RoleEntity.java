@@ -1,46 +1,32 @@
 package com.alkemy.ong.data.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "comments")
-@SQLDelete(sql = "UPDATE comments SET deleted=true WHERE id=?")
-@Where(clause = "deleted = false")
+@Table(name = "roles")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class CommentEntity {
-
+@NoArgsConstructor
+public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "user_id")
-    private long userId;
-
-    private String body;
-
-    @Column(name = "news_id")
-    private long newsId;
-
+    private String name;
+    private String description;
     @Column(name = "updated_at")
-    @UpdateTimestamp()
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
-
     @Column(name = "created_at")
-    @CreationTimestamp()
+    @CreationTimestamp
     private LocalDateTime createdAt;
-
     private boolean deleted = false;
-
 }

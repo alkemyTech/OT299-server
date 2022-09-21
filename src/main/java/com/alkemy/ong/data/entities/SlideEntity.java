@@ -8,38 +8,34 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "comments")
-@SQLDelete(sql = "UPDATE comments SET deleted=true WHERE id=?")
+@Table(name = "slides")
+@SQLDelete(sql= "UPDATE slides SET deleted=true WHERE id=?")
 @Where(clause = "deleted = false")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class CommentEntity {
+@Data
+public class SlideEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private long userId;
-
-    private String body;
-
-    @Column(name = "news_id")
-    private long newsId;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp()
-    private LocalDateTime updatedAt;
+    private String imageUrl;
+    private String slideText;
+    private String slideOrder;
 
     @Column(name = "created_at")
-    @CreationTimestamp()
+    @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     private boolean deleted = false;
 
