@@ -22,16 +22,18 @@ public class DefaultMemberGateway implements MemberGateway {
                 .collect(toList());
 
     }
-    private Member toModel(MemberEntity entity){
-        return new Member(entity.getId(),
-                entity.getName(),
-                entity.getFacebookUrl(),
-                entity.getInstagramUrl(),
-                entity.getLinkedinUrl(),
-                entity.getImage(),
-                entity.getDescription(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt(),
-                entity.isDeleted());
+    private Member toModel(MemberEntity memberEntity){
+        return  Member.builder()
+                .id(memberEntity.getId())
+                .name(memberEntity.getName())
+                .facebookUrl(memberEntity.getFacebookUrl())
+                .instagramUrl(memberEntity.getInstagramUrl())
+                .linkedinUrl(memberEntity.getLinkedinUrl())
+                .image(memberEntity.getImage())
+                .description(memberEntity.getDescription())
+                .createdAt(memberEntity.getCreatedAt())
+                .updatedAt(memberEntity.getUpdatedAt())
+                .deleted(memberEntity.isDeleted())
+                .build();
     }
 }

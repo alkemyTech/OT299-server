@@ -16,30 +16,33 @@ import static java.util.stream.Collectors.*;
 @RequestMapping("/members")
 @AllArgsConstructor
 public class MemberController {
-    MemberService defaultMemberService;
+
+    MemberService memberService;
     @GetMapping()
     public List<MemberDto> findAll() {
 
-        return  defaultMemberService.findAll().stream()
+        return  memberService.findAll().stream()
                 .map(this::toDto)
                 .collect(toList());
     }
-    private MemberDto toDto (Member entity){
-        return new MemberDto(entity.getId(),
-                entity.getName(),
-                entity.getFacebookUrl(),
-                entity.getInstagramUrl(),
-                entity.getLinkedinUrl(),
-                entity.getImage(),
-                entity.getDescription(),
-                entity.getCreatedAt(),
-                entity.getUpdatedAt(),
-                entity.isDeleted());
+    private MemberDto toDto (Member member){
+        return  MemberDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .facebookUrl(member.getFacebookUrl())
+                .instagramUrl(member.getInstagramUrl())
+                .linkedinUrl(member.getLinkedinUrl())
+                .image(member.getImage())
+                .createdAt(member.getCreatedAt())
+                .updateAt(member.getUpdatedAt())
+                .deleted(member.isDeleted())
+                .build();
     }
     @Setter
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class MemberDto {
         private Long id;
         private String name;
