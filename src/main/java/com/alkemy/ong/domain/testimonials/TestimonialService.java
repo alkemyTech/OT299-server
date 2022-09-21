@@ -11,7 +11,7 @@ public class TestimonialService {
         this.testimonialGateway = testimonialGateway;
     }
 
-    public void deleteTestimonial(Long id){
+    public void deleteById(Long id){
         testimonialGateway.deleteById(id);
-    };
+    }
 }
