@@ -7,10 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import static java.util.stream.Collectors.*;
-
 @AllArgsConstructor
 @RequestMapping("/categories")
 @RestController
@@ -19,13 +15,13 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @GetMapping("")
-    public List<CategoriesDtoByName> findAll() {
-        return categoriesService.findAll().stream().map(this::toDtoByName).collect(toList());
+    public ResponseEntity<CategoriesDtoByName> findAll() {
+        return new  ResponseEntity(categoriesService.findAll(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable Long id) {
-        categoriesService.deleteById(id);
+    public ResponseEntity deleteCategory(@PathVariable Long id) {
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     private CategoriesDtoByName toDtoByName(Categories categories) {

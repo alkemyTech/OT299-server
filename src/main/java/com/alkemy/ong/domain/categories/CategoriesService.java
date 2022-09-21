@@ -19,34 +19,3 @@ public class CategoriesService {
         categoriesGateway.deleteById(id);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-@Override
-    public void deleteMovieCharacter(long id) {
-        MovieCharacter movieCharacter = movieCharacterRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("MovieCharacter", "id", id));
-        movieCharacterRepository.delete(movieCharacter);
-    }
-
-
- */
