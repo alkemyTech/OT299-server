@@ -3,6 +3,7 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.slides.Slide;
 import com.alkemy.ong.domain.slides.SlideService;
 import lombok.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,9 @@ public class SlideController {
 
 
     @GetMapping()
-    public List<SlideDto> findAll() {
-        return slideService.findAll().stream().map(this::toDto).collect(toList());
+    public ResponseEntity<List<SlideDto>> findAll() {
+        return ResponseEntity.ok()
+                .body(slideService.findAll().stream().map(this::toDto).collect(toList()));
     }
 
     private SlideDto toDto (Slide slide) {
@@ -31,8 +33,9 @@ public class SlideController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteSlide(@PathVariable Long id) {
+        public ResponseEntity deleteSlide(@PathVariable Long id) {
         slideService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 

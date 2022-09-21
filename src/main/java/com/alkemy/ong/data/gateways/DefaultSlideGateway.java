@@ -25,9 +25,8 @@ public class DefaultSlideGateway implements SlideGateway {
     }
     @Override
      public void deleteById(Long id) {
-        Slide slide = toModel(slideRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Slide", "id", id)));
-                slideRepository.deleteById(slide.getId());
+        Slide slide = toModel(slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id)));
+        slideRepository.deleteById(slide.getId());
     }
 
     private Slide toModel(SlideEntity slideEntity) {
