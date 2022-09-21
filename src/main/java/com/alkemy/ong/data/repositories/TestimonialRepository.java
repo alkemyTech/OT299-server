@@ -10,4 +10,5 @@ import java.util.List;
 public interface TestimonialRepository extends CrudRepository<TestimonialEntity, Long> {
 
     List<TestimonialEntity> findAll();
+    void deleteById(Long id);
 }
