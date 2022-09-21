@@ -1,11 +1,13 @@
-package com.alkemy.ong.domain.categories;
+package com.alkemy.ong.domain.comments;
 
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 @Component
-public interface CategoriesGateway {
-    List<Categories> findAll();
+public interface CommentGateway {
+
+    List<Comment> findAll();
 
     void deleteById(Long id);
 }
