@@ -54,13 +54,14 @@ CREATE TABLE IF NOT EXISTS ROLES(
   description   VARCHAR(50) NULL,
   created_at    TIMESTAMP   DEFAULT NOW(),
   updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted       BIT         DEFAULT 0,
   PRIMARY KEY (id)
   );
 
 CREATE TABLE IF NOT EXISTS USERS(
   id        BIGINT(50)   NOT NULL AUTO_INCREMENT,
-  firstName VARCHAR(50)  NOT NULL,
-  lastName  VARCHAR(50)  NOT NULL,
+  first_name VARCHAR(50)  NOT NULL,
+  last_name  VARCHAR(50)  NOT NULL,
   email     VARCHAR(50)  NULL,
   password  VARCHAR(50)  NULL,
   photo     VARCHAR(255)  NULL,
