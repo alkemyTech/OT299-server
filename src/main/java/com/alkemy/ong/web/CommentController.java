@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +19,17 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping()
-    public List<CommentDto> findAll(){
-        return commentService.findAll().stream().map(this::commentToDto).collect(Collectors.toList());
+    public ResponseEntity<List<CommentDto>> findAll(){
+        return ResponseEntity.ok()
+                .body(commentService.findAll().stream()
+                        .map(this::commentToDto)
+                        .collect(Collectors.toList()));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id) {
+    public ResponseEntity deleteComment(@PathVariable Long id) {
         commentService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
     private CommentDto commentToDto(Comment comment){

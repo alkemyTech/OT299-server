@@ -26,7 +26,7 @@ public class DefaultCommentsGateway implements CommentGateway {
     @Override
     public void deleteById(Long id) {
         Comment comment = toModel(commentRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Slide", "id", id)));
+                new ResourceNotFoundException("Comment", "id", id)));
         commentRepository.deleteById(comment.getId());
     }
 
