@@ -14,4 +14,8 @@ public class MemberService {
 
         return memberGateway.findAll();
     }
+
+    public void deleteById(Long id) {
+        memberGateway.deleteById(id);
+    }
 }

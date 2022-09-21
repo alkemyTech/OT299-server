@@ -2,6 +2,7 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,14 @@ public class DefaultMemberGateway implements MemberGateway {
         return memberRepository.findAll().stream()
                 .map(this::toModel)
                 .collect(toList());
+
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Member member = toModel(memberRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Member", "id", id)));
+            memberRepository.deleteById(member.getId());
 
     }
     private Member toModel(MemberEntity memberEntity){
