@@ -8,6 +8,7 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
+
 import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
@@ -19,6 +20,12 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
     @Override
     public List<Categories> findAll(){
         return categoriesRepository.findAll().stream().map(this::toModel).collect(toList());
+    }
+
+    @Override
+    public Categories findById(long id){
+        CategoriesEntity categoriesEntity = categoriesRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Category", "id", id));
+        return toModel(categoriesEntity);
     }
 
     @Override
@@ -39,4 +46,5 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
                 .deleted(categoriesEntity.isDeleted())
                 .build();
     }
+
 }
