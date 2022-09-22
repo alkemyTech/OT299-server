@@ -13,8 +13,6 @@ public interface CategoriesRepository extends CrudRepository<CategoriesEntity, L
 
         Optional<CategoriesEntity> findById(long id);
 
-        CategoriesEntity save(String name);
-
         void deleteById(Long id);
 
 }

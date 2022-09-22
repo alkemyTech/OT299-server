@@ -29,8 +29,8 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
     }
 
     @Override
-    public Categories createByName(String name) {
-        return toModel(categoriesRepository.save());
+    public Categories createCategory(Categories categories) {
+        return toModel(categoriesRepository.save(toEntity(categories)));
     }
 
     @Override
@@ -49,6 +49,18 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
                 .createdAt(categoriesEntity.getCreatedAt())
                 .updatedAt(categoriesEntity.getUpdatedAt())
                 .deleted(categoriesEntity.isDeleted())
+                .build();
+    }
+
+    private CategoriesEntity toEntity(Categories categories) {
+        return CategoriesEntity.builder()
+                .id(categories.getId())
+                .name(categories.getName())
+                .description(categories.getDescription())
+                .image(categories.getImage())
+                .createdAt(categories.getCreatedAt())
+                .updatedAt(categories.getUpdatedAt())
+                .deleted(categories.isDeleted())
                 .build();
     }
 

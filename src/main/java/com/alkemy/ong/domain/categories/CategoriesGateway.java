@@ -10,7 +10,7 @@ public interface CategoriesGateway {
 
     Categories findById(long id);
 
-    Categories createByName(String name);
+    Categories createCategory(Categories categories);
 
     void deleteById(Long id);
 
