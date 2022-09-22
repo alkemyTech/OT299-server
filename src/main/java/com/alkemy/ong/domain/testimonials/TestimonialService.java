@@ -14,4 +14,8 @@ public class TestimonialService {
     public void deleteById(Long id){
         testimonialGateway.deleteById(id);
     }
+
+    public Testimonial create(Testimonial testimonial) {
+        return testimonialGateway.create(testimonial);
+    }
 }
