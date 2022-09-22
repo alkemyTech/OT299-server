@@ -3,6 +3,7 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
 import lombok.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,14 @@ public class MemberController {
         memberService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping()
+    public ResponseEntity<MemberDto> create(@RequestBody MemberDto memberDto){
+        Member member = memberService.create(toModel(memberDto));
+        return new ResponseEntity<>(toDto(member),HttpStatus.CREATED);
+
+    }
+
     private MemberDto toDto (Member member){
         return  MemberDto.builder()
                 .id(member.getId())
@@ -41,6 +50,20 @@ public class MemberController {
                 .createdAt(member.getCreatedAt())
                 .updateAt(member.getUpdatedAt())
                 .deleted(member.isDeleted())
+                .build();
+    }
+
+    public Member toModel(MemberDto memberDto){
+        return Member.builder()
+                .id(memberDto.getId())
+                .name(memberDto.getName())
+                .facebookUrl(memberDto.getFacebookUrl())
+                .instagramUrl(memberDto.getInstagramUrl())
+                .linkedinUrl(memberDto.getLinkedinUrl())
+                .image(memberDto.getImage())
+                .createdAt(memberDto.getCreatedAt())
+                .updatedAt(memberDto.getUpdateAt())
+                .deleted(memberDto.isDeleted())
                 .build();
     }
     @Setter
