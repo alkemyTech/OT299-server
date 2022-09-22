@@ -19,6 +19,11 @@ public class CategoriesController {
         return new  ResponseEntity(categoriesService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoriesDtoByName> findCategoryById(@PathVariable(name = "id") long id) {
+        return new ResponseEntity(categoriesService.findById(id), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCategory(@PathVariable Long id) {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -34,6 +39,5 @@ public class CategoriesController {
     public static class CategoriesDtoByName {
         private String name;
     }
-
 
 }
