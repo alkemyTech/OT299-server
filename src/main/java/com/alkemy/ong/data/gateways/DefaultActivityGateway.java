@@ -4,8 +4,6 @@ import com.alkemy.ong.data.entities.ActivityEntity;
 import com.alkemy.ong.data.repositories.ActivityRepository;
 import com.alkemy.ong.domain.activities.Activity;
 import com.alkemy.ong.domain.activities.ActivityGateway;
-import com.alkemy.ong.web.ActivityController;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
