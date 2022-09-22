@@ -35,7 +35,9 @@ public class NewEntity {
     @Column(nullable = false)
     private String image;
 
-    private Long categoryid;
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private CategoriesEntity categoryId;
 
     @Column(name = "created_at")
     @CreationTimestamp

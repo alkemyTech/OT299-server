@@ -8,4 +8,6 @@ import java.util.List;
 public interface CommentGateway {
 
     List<Comment> findAll();
+
+    void deleteById(Long id);
 }

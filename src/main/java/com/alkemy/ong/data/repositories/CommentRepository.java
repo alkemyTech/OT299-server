@@ -9,4 +9,6 @@ import java.util.List;
 public interface CommentRepository extends CrudRepository<CommentEntity, Long> {
 
     List<CommentEntity> findByOrderByCreatedAt();
+
+    void deleteById(Long id);
 }

@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Where(clause = "deleted = false")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestimonialEntity {

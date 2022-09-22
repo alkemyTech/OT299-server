@@ -14,6 +14,11 @@ public class SlideService {
         this.slideGateway = slideGateway;
     }
 
-    public List<Slide> findAll() {return slideGateway.findAll();
+    public List<Slide> findAll() {
+        return slideGateway.findAll();
+    }
+
+    public void deleteById(Long id) {
+       slideGateway.deleteById(id);
     }
 }
