@@ -15,12 +15,17 @@ public class CategoriesService {
         return categoriesGateway.findAll();
     }
 
-    public Optional<Categories> findById(long id){
-       return Optional.ofNullable(categoriesGateway.findById(id));
+    public Categories findById(long id){
+       return categoriesGateway.findById(id);
     }
+
+    //public Categories createByName(String name) {
+       //return categoriesGateway.createByName(name);
+   // }
 
     public void deleteById(Long id) {
         categoriesGateway.deleteById(id);
     }
+
 
 }
