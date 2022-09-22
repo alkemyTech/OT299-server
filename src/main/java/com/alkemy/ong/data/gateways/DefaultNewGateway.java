@@ -15,8 +15,8 @@ public class DefaultNewGateway implements NewGateway {
     private final NewRepository newRepository;
     @Override
     public void deleteById(Long id) {
-        New news = toModel(newRepository.findById(id).orElseThrow(() ->
-            new ResourceNotFoundException("New", "id", id)));
+        NewEntity news = newRepository.findById(id).orElseThrow(() ->
+            new ResourceNotFoundException("New", "id", id));
         newRepository.deleteById(news.getId());
     }
     private New toModel(NewEntity newEntity){
@@ -25,7 +25,7 @@ public class DefaultNewGateway implements NewGateway {
                 .name(newEntity.getName())
                 .content(newEntity.getContent())
                 .image(newEntity.getImage())
-                .categoryId(newEntity.getCategoryId())
+                .categoryId(newEntity.getCategoryId().getId())
                 .createdAt(newEntity.getCreatedAt())
                 .updatedAt(newEntity.getUpdatedAt())
                 .deleted(newEntity.isDeleted())
