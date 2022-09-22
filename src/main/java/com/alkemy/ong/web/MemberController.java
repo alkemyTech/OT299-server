@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,13 +29,13 @@ public class MemberController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity delete(@PathVariable(value = "id") Long id){
+    public ResponseEntity delete(@PathVariable Long id){
         memberService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping()
-    public ResponseEntity<MemberDto> create(@RequestBody MemberDto memberDto){
+    public ResponseEntity<MemberDto> create(@Valid @RequestBody MemberDto memberDto){
         Member member = memberService.create(toModel(memberDto));
         return new ResponseEntity<>(toDto(member),HttpStatus.CREATED);
 
@@ -73,6 +75,7 @@ public class MemberController {
     @Builder
     public static class MemberDto {
         private Long id;
+        @Pattern(regexp="^[A-Za-z]*$",message = "Invalid Input")
         private String name;
         private String facebookUrl;
         private String instagramUrl;
