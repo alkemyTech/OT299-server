@@ -4,5 +4,6 @@ import java.util.List;
 
 public interface NewGateway {
 
-    List<New> findAll();
+    public void deleteById (Long id);
+
 }
