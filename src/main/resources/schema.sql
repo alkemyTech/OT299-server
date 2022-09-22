@@ -45,7 +45,9 @@ CREATE TABLE IF NOT EXISTS NEWS
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted    BIT       DEFAULT 0,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (category_id) REFERENCES CATEGORIES (id);
+
 );
 
 CREATE TABLE IF NOT EXISTS ROLES(
