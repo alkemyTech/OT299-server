@@ -16,6 +16,10 @@ public class MemberService {
     }
 
     public void deleteById(Long id) {
-        memberGateway.deleteById(id);
+          memberGateway.deleteById(id);
+    }
+
+    public Member create (Member members){
+          return memberGateway.save(members);
     }
 }

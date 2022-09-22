@@ -31,6 +31,12 @@ public class DefaultMemberGateway implements MemberGateway {
             memberRepository.deleteById(member.getId());
 
     }
+
+    @Override
+    public Member save(Member members) {
+        return toModel((memberRepository.save(toEntity(members))));
+    }
+
     private Member toModel(MemberEntity memberEntity){
         return  Member.builder()
                 .id(memberEntity.getId())
@@ -43,6 +49,20 @@ public class DefaultMemberGateway implements MemberGateway {
                 .createdAt(memberEntity.getCreatedAt())
                 .updatedAt(memberEntity.getUpdatedAt())
                 .deleted(memberEntity.isDeleted())
+                .build();
+    }
+
+    private MemberEntity toEntity (Member member){
+        return MemberEntity.builder().id(member.getId())
+                .name(member.getName())
+                .facebookUrl(member.getFacebookUrl())
+                .instagramUrl(member.getInstagramUrl())
+                .linkedinUrl(member.getLinkedinUrl())
+                .image(member.getImage())
+                .description(member.getDescription())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
+                .deleted(member.isDeleted())
                 .build();
     }
 }
