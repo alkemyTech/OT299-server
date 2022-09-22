@@ -19,7 +19,7 @@ public class CategoriesController {
 
     CategoriesService categoriesService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<CategoriesDtoByName> findAll() {
         return new ResponseEntity(categoriesService.findAll(), HttpStatus.OK);
     }
@@ -29,7 +29,7 @@ public class CategoriesController {
         return ResponseEntity.ok(categoriesService.findById(id));
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<CategoriesDto> createCategory(@Valid @RequestBody CategoriesDto categoriesDto){
         Categories categories = categoriesService.createCategory(toModel(categoriesDto));
         return new ResponseEntity(toDto(categories), HttpStatus.CREATED);
@@ -42,7 +42,6 @@ public class CategoriesController {
 
     private Categories toModel(CategoriesDto categoriesDto){
         return Categories.builder()
-                .id(categoriesDto.id)
                 .name(categoriesDto.name)
                 .description(categoriesDto.description)
                 .image(categoriesDto.image)

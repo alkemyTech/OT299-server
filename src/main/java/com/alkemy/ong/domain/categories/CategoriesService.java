@@ -26,5 +26,4 @@ public class CategoriesService {
         categoriesGateway.deleteById(id);
     }
 
-
 }
