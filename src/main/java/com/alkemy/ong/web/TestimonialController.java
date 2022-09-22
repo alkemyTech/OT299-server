@@ -30,13 +30,13 @@ public class TestimonialController {
         return new ResponseEntity<>(toDto(testimonial), HttpStatus.CREATED);
     }
 
-    public Testimonial toModel(TestimonialDto testimonialDto){
+    private Testimonial toModel(TestimonialDto testimonialDto){
         return Testimonial.builder().id(testimonialDto.id).name(testimonialDto.name).content(testimonialDto.content)
                 .image(testimonialDto.image).updatedAt(testimonialDto.updatedAt).createdAt(testimonialDto.createdAt)
                 .deleted(testimonialDto.deleted).build();
     }
 
-    public TestimonialDto toDto(Testimonial testimonial) {
+    private TestimonialDto toDto(Testimonial testimonial) {
         return TestimonialDto.builder().id(testimonial.getId()).name(testimonial.getName()).content(testimonial.getContent())
                 .image(testimonial.getImage()).updatedAt(testimonial.getUpdatedAt()).createdAt(testimonial.getCreatedAt())
                 .deleted(testimonial.isDeleted()).build();
