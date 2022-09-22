@@ -29,6 +29,11 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
     }
 
     @Override
+    public Categories createByName(String name) {
+        return toModel(categoriesRepository.save());
+    }
+
+    @Override
     public void deleteById(Long id) {
         Categories categories = toModel(categoriesRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Category", "id", id)));

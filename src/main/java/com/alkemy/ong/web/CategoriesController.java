@@ -16,13 +16,18 @@ public class CategoriesController {
 
     @GetMapping("")
     public ResponseEntity<CategoriesDtoByName> findAll() {
-        return new  ResponseEntity(categoriesService.findAll(), HttpStatus.OK);
+        return new ResponseEntity(categoriesService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriesDtoByName> findCategoryById(@PathVariable(name = "id") long id) {
-        return new ResponseEntity(categoriesService.findById(id), HttpStatus.OK);
+    public ResponseEntity<Categories> findCategoryById(@PathVariable(name = "id") long id) {
+        return ResponseEntity.ok(categoriesService.findById(id));
     }
+
+   // @PostMapping("")
+    //public ResponseEntity<CategoriesDtoByName> createCategoryByName(@PathVariable(name = "name") String name){
+      //  return new ResponseEntity(categoriesService.createByName(name), HttpStatus.OK);
+    //}
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCategory(@PathVariable Long id) {
@@ -39,5 +44,6 @@ public class CategoriesController {
     public static class CategoriesDtoByName {
         private String name;
     }
+
 
 }
