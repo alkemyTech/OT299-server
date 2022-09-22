@@ -14,4 +14,7 @@ public class UserService {
     public List<User> findAll() {
         return gateway.findAll();
     }
+
+    public void updateById(Long id) { gateway.updateById(id);
+    }
 }

@@ -2,6 +2,7 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,10 @@ public class DefaultUserGateway implements UserGateway {
         return repository.findAll().stream()
                 .map(this::toModel)
                 .collect(toList());
+    }
+
+    @Override
+    public void updateById(Long id) {
     }
 
     private User toModel(UserEntity entity) {

@@ -4,9 +4,7 @@ import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +20,12 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok()
                 .body(service.findAll().stream().map(this::toDTO).collect(toList()));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateById(@PathVariable("id") Long id, @RequestBody User user) {
+        service.updateById(id);
+        return ResponseEntity.noContent().build();
     }
 
     private UserDTO toDTO(User user) {
@@ -46,6 +50,4 @@ public class UserController {
         private String photo;
         private Long roleId;
     }
-
-
 }

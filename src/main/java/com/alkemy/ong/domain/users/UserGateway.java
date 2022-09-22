@@ -6,4 +6,6 @@ import java.util.List;
 @Component
 public interface UserGateway {
     List<User> findAll();
+
+    void updateById(Long Id);
 }
