@@ -24,6 +24,7 @@ public class MemberService {
     }
 
     public Member update (Member members, Long id){
+
           return memberGateway.update(members, id);
     }
 }

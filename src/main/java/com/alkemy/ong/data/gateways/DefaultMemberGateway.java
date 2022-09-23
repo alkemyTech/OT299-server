@@ -21,7 +21,6 @@ public class DefaultMemberGateway implements MemberGateway {
         return memberRepository.findAll().stream()
                 .map(this::toModel)
                 .collect(toList());
-
     }
 
     @Override
@@ -39,7 +38,8 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public Member update(Member members, Long id) {
-        return null;
+        memberRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Member", "id", id));
+        return toModel(memberRepository.save(toEntity(members)));
     }
 
 
