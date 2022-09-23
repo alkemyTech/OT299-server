@@ -38,7 +38,12 @@ public class MemberController {
     public ResponseEntity<MemberDto> create(@Valid @RequestBody MemberDto memberDto){
         Member member = memberService.create(toModel(memberDto));
         return new ResponseEntity<>(toDto(member),HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<MemberDto>update (@Valid @RequestBody MemberDto memberDto,@PathVariable Long id){
+        Member member = memberService.update(toModel(memberDto), id);
+        return new ResponseEntity<>(toDto(member),HttpStatus.ACCEPTED);
     }
 
     private MemberDto toDto (Member member){

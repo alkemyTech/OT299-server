@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
        List<MemberEntity> findAll();
+
+
 }

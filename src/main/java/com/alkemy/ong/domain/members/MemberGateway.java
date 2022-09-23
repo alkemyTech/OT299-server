@@ -9,4 +9,6 @@ public interface MemberGateway {
     public void deleteById (Long id);
 
     public Member save(Member members);
+
+    public Member update (Member members,Long id);
 }

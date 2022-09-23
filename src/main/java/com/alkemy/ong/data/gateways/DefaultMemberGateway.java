@@ -37,6 +37,12 @@ public class DefaultMemberGateway implements MemberGateway {
         return toModel((memberRepository.save(toEntity(members))));
     }
 
+    @Override
+    public Member update(Member members, Long id) {
+        return null;
+    }
+
+
     private Member toModel(MemberEntity memberEntity){
         return  Member.builder()
                 .id(memberEntity.getId())
