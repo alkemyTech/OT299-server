@@ -1,6 +1,5 @@
 package com.alkemy.ong.domain.categories;
 
-import com.alkemy.ong.web.CategoriesController;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,7 +10,7 @@ public class CategoriesService {
 
     CategoriesGateway categoriesGateway;
 
-    public List<Categories> findAll(CategoriesController.CategoriesDtoByName categoriesDtoByName){
+    public List<Categories> findAll(){
         return categoriesGateway.findAll();
     }
 

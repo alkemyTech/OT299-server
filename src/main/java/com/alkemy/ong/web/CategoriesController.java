@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RequestMapping("/categories")
@@ -19,8 +21,9 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @GetMapping
-    public ResponseEntity<CategoriesDtoByName> findAll(CategoriesDtoByName categoriesDtoByName) {
-        return new ResponseEntity(categoriesService.findAll(categoriesDtoByName), HttpStatus.OK);
+    public ResponseEntity<List<CategoriesDtoByName>> findAll() {
+        return ResponseEntity.ok().body(categoriesService.findAll()
+                .stream().map(this::toDtoByName).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")

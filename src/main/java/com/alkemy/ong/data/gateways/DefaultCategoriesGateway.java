@@ -24,7 +24,8 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
 
     @Override
     public Categories findById(long id){
-        CategoriesEntity categoriesEntity = categoriesRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Category", "id", id));
+        CategoriesEntity categoriesEntity = categoriesRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Category", "id", id));
         return toModel(categoriesEntity);
     }
 
