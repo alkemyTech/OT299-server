@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.categories;
 
+import com.alkemy.ong.web.CategoriesController;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -10,7 +11,7 @@ public class CategoriesService {
 
     CategoriesGateway categoriesGateway;
 
-    public List<Categories> findAll(){
+    public List<Categories> findAll(CategoriesController.CategoriesDtoByName categoriesDtoByName){
         return categoriesGateway.findAll();
     }
 
@@ -20,6 +21,10 @@ public class CategoriesService {
 
     public Categories createCategory(Categories categories) {
         return categoriesGateway.createCategory(categories);
+    }
+
+    public Categories updateCategory(Long id, Categories categories) {
+        return categoriesGateway.updateCategory(id, categories);
     }
 
     public void deleteById(Long id) {
