@@ -42,7 +42,6 @@ public class CategoriesController {
 
     private Categories toModel(CategoriesDto categoriesDto){
         return Categories.builder()
-                .id(categoriesDto.id)
                 .name(categoriesDto.name)
                 .description(categoriesDto.description)
                 .image(categoriesDto.image)
