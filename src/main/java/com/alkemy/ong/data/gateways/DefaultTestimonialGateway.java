@@ -27,6 +27,14 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         return toModel(repository.save(toEntity(testimonial)));
     }
 
+    @Override
+    public Testimonial update(Long id, Testimonial testimonial) {
+        Testimonial testimonialFound = toModel(repository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Testimonial", "id", id)));
+        testimonial.setCreatedAt(testimonialFound.getCreatedAt()); // To avoid createdAt = Null in responseDto
+        return toModel(repository.save(toEntity(testimonial)));
+    }
+
     private Testimonial toModel(TestimonialEntity entity){
         return Testimonial.builder().id(entity.getId()).content(entity.getContent())
                 .name(entity.getName()).image(entity.getImage()).updatedAt(entity.getUpdatedAt())
