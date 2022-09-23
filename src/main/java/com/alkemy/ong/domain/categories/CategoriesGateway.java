@@ -10,6 +10,8 @@ public interface CategoriesGateway {
 
     Categories findById(long id);
 
+    Categories createCategory(Categories categories);
+
     void deleteById(Long id);
 
 }
