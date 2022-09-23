@@ -13,4 +13,17 @@ public class CategoriesService {
     public List<Categories> findAll(){
         return categoriesGateway.findAll();
     }
+
+    public Categories findById(long id){
+       return categoriesGateway.findById(id);
+    }
+
+    public Categories createCategory(Categories categories) {
+        return categoriesGateway.createCategory(categories);
+    }
+
+    public void deleteById(Long id) {
+        categoriesGateway.deleteById(id);
+    }
+
 }

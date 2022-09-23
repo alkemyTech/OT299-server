@@ -3,7 +3,9 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import lombok.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -11,13 +13,15 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @RestController
+@RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
     UserService service;
 
-    @GetMapping("/users")
-    public List<UserDTO> findAll() {
-        return service.findAll().stream().map(this::toDTO).collect(toList());
+    @GetMapping()
+    public ResponseEntity<List<UserDTO>> findAll() {
+        return ResponseEntity.ok()
+                .body(service.findAll().stream().map(this::toDTO).collect(toList()));
     }
 
     private UserDTO toDTO(User user) {

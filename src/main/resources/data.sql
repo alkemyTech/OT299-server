@@ -15,7 +15,7 @@ INSERT INTO ROLES(ID, NAME, DESCRIPTION)
 VALUES  (1,'Administrator','All privileges'),
         (2,'Contributor','Limited access');
 
-INSERT INTO USERS(ID, FIRSTNAME, LASTNAME, EMAIL, PASSWORD, PHOTO, ROLE_ID)
+INSERT INTO USERS(ID, FIRST_NAME, LAST_NAME, EMAIL, PASSWORD, PHOTO, ROLE_ID)
 VALUES  (1, 'Maria','Iraola','mariairaola@somosmas.com','SomosUnaOng_1001','https://drive.google.com/file/d/1CIsJVHyui6__A0MNAxL6hyg3Trz3ZbyW/view?usp=sharing', 1),
         (2, 'Marita','Gomez','maritagomez@somosmas.com','GenerandoConciencia_1010','https://drive.google.com/file/d/1splwoyAysQ_uPBnkwCy8uJwrAwGIuDYo/view?usp=sharing',1),
         (3, 'Miriam', 'Rodriguez', 'miriamrodriguez@somosmas.com', 'MuchosMasMiembros_1011', 'https://drive.google.com/file/d/1PNHzyL26jzsHltv281_rc3vEKdtTg2dF/view?usp=sharing', 1),

@@ -45,31 +45,34 @@ CREATE TABLE IF NOT EXISTS NEWS
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted    BIT       DEFAULT 0,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (category_id) REFERENCES CATEGORIES (id);
+
 );
 
-CREATE TABLE IF NOT EXISTS ROLE
-(
-    id          BIGINT(50)  NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(50) NOT NULL,
-    description VARCHAR(50) NULL,
-    created_at  TIMESTAMP DEFAULT NOW(),
-    updated_at  TIMESTAMP DEFAULT NOW(),
-    PRIMARY KEY (id)
-);
+CREATE TABLE IF NOT EXISTS ROLES(
+  id BIGINT(50) NOT NULL AUTO_INCREMENT,
+  name          VARCHAR(50) NOT NULL,
+  description   VARCHAR(50) NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted       BIT         DEFAULT 0,
+  PRIMARY KEY (id)
+  );
 
-CREATE TABLE IF NOT EXISTS USERS
-(
-    id         BIGINT(50)  NOT NULL AUTO_INCREMENT,
-    firstName  VARCHAR(50) NOT NULL,
-    lastName   VARCHAR(50) NOT NULL,
-    email      VARCHAR(50) NULL,
-    password   VARCHAR(50) NULL,
-    photo      VARCHAR(50) NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW(),
-    deleted    BIT       DEFAULT 0,
-    PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS USERS(
+  id        BIGINT(50)   NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(50)  NOT NULL,
+  last_name  VARCHAR(50)  NOT NULL,
+  email     VARCHAR(50)  NULL,
+  password  VARCHAR(50)  NULL,
+  photo     VARCHAR(255)  NULL,
+  role_id   BIGINT(50)   NOT NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted       BIT         DEFAULT 0,
+  PRIMARY KEY (id),
+  CONSTRAINT fkroles FOREIGN KEY (role_id) REFERENCES ROLES(id)
 );
 CREATE TABLE IF NOT EXISTS TESTIMONIALS
 (
@@ -97,19 +100,18 @@ CREATE TABLE IF NOT EXISTS COMMENTS
     CONSTRAINT fknews FOREIGN KEY (news_id) REFERENCES NEWS (id)
 
 );
-CREATE TABLE IF NOT EXISTS MEMBERS
-(
-    id           BIGINT(50)   NOT NULL AUTO_INCREMENT,
-    name         VARCHAR(150) NOT NULL,
-    facebookUrl  VARCHAR(255) NOT NULL,
-    instagramUrl VARCHAR(255) NOT NULL,
-    linkedinUrl  VARCHAR(255) NOT NULL,
-    image        VARCHAR(255) NOT NULL,
-    description  VARCHAR(255) NOT NULL,
-    created_at   TIMESTAMP DEFAULT NOW(),
-    updated_at   TIMESTAMP DEFAULT NOW(),
-    deleted      BIT       DEFAULT 0,
-    PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS MEMBERS(
+  id   BIGINT(50)  NOT NULL AUTO_INCREMENT,
+  name VARCHAR(150) NOT NULL,
+  facebook_url VARCHAR(255) NOT NULL,
+  instagram_url VARCHAR(255) NOT NULL,
+  linkedin_url VARCHAR(255) NOT NULL,
+  image VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  created_at    TIMESTAMP   DEFAULT NOW(),
+  updated_at    TIMESTAMP   DEFAULT NOW(),
+  deleted       BIT         DEFAULT 0,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS CATEGORIES

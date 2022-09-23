@@ -5,5 +5,13 @@ import java.util.List;
 
 @Component
 public interface CategoriesGateway {
+
     List<Categories> findAll();
+
+    Categories findById(long id);
+
+    Categories createCategory(Categories categories);
+
+    void deleteById(Long id);
+
 }

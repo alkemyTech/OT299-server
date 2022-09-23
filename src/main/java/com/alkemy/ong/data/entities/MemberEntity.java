@@ -1,9 +1,6 @@
 package com.alkemy.ong.data.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -20,6 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MemberEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +27,13 @@ public class MemberEntity {
     @Column (nullable = false)
     private String name;
 
+    @Column(name = "facebook_url")
     private String facebookUrl;
 
+    @Column(name = "instagram_url")
     private String instagramUrl;
 
+    @Column(name = "linkedin_url")
     private String linkedinUrl;
 
     @Column (nullable = false)
