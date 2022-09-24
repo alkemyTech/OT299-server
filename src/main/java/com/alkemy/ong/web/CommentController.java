@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class CommentController {
     private final CommentService commentService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<CommentDto>> findAll(){
         return ResponseEntity.ok()
                 .body(commentService.findAll().stream()
@@ -30,7 +30,7 @@ public class CommentController {
                         .collect(Collectors.toList()));
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentDto commentDto){
         Comment comment = commentService.createComment(toModelForCreate(commentDto));
         return new ResponseEntity<>(toDtoForCreate(comment), HttpStatus.CREATED);

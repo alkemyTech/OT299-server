@@ -48,7 +48,6 @@ public class DefaultCommentsGateway implements CommentGateway {
     }
     private CommentEntity toEntity (Comment comment) {
         return CommentEntity.builder()
-                .id(comment.getId())
                 .userId(comment.getUserId())
                 .body(comment.getBody())
                 .newsId(comment.getNewsId())
