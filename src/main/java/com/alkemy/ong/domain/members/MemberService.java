@@ -23,8 +23,8 @@ public class MemberService {
           return memberGateway.save(members);
     }
 
-    public Member update (Member members, Long id){
+    public Member update (Member member, Long id){
 
-          return memberGateway.update(members, id);
+          return memberGateway.update(member, id);
     }
 }

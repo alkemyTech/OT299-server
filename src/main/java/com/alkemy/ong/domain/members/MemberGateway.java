@@ -8,7 +8,7 @@ public interface MemberGateway {
 
     public void deleteById (Long id);
 
-    public Member save(Member members);
+    public Member save(Member member);
 
-    public Member update (Member members,Long id);
+    public Member update (Member member,Long id);
 }

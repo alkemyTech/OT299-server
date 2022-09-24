@@ -40,12 +40,12 @@ public class MemberController {
         return new ResponseEntity<>(toDto(member),HttpStatus.CREATED);
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<MemberDto>update (@RequestBody MemberDto memberDto,
                                             @RequestParam (name="id") Long id){
         memberDto.setId(id);
         Member member = memberService.update(toModel(memberDto), id);
-        return new ResponseEntity<>(toDto(member),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(toDto(member), HttpStatus.OK );
     }
 
     private MemberDto toDto (Member member){
