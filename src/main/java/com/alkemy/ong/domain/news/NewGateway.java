@@ -6,4 +6,6 @@ public interface NewGateway {
 
     public void deleteById (Long id);
 
+    List<New> findAll();
+    New findById (Long id);
 }
