@@ -11,7 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 @AllArgsConstructor
 @RequestMapping("/categories")
@@ -23,7 +24,7 @@ public class CategoriesController {
     @GetMapping
     public ResponseEntity<List<CategoriesDtoByName>> findAll() {
         return ResponseEntity.ok().body(categoriesService.findAll()
-                .stream().map(this::toDtoByName).collect(Collectors.toList()));
+                .stream().map(this::toDtoByName).collect(toList()));
     }
 
     @GetMapping("/{id}")
@@ -39,9 +40,8 @@ public class CategoriesController {
 
     @PutMapping
     public ResponseEntity<CategoriesDtoById> updateCategory(@RequestParam(name = "id") Long id, @RequestBody CategoriesDtoById categoriesDtoById){
-        categoriesDtoById.setId(id);
         Categories categories = categoriesService.updateCategory(id, toModelById(categoriesDtoById));
-        return new ResponseEntity<>(toDtoById(categories), HttpStatus.CREATED);
+        return new ResponseEntity<>(toDtoById(categories), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
