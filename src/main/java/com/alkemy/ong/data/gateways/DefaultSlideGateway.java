@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -22,6 +23,12 @@ public class DefaultSlideGateway implements SlideGateway {
     @Override
     public List<Slide> findAll() {
         return slideRepository.findAll().stream().map(this::toModel).collect(toList());
+    }
+
+    @Override
+    public Slide findById(Long id) {
+        SlideEntity slideEntity = slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id));
+        return  toModel(slideEntity);
     }
     @Override
      public void deleteById(Long id) {

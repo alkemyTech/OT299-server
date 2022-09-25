@@ -1,6 +1,5 @@
 package com.alkemy.ong.domain.categories;
 
-import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -15,7 +14,16 @@ public class CategoriesService {
         return categoriesGateway.findAll();
     }
 
+    public Categories findById(long id){
+       return categoriesGateway.findById(id);
+    }
+
+    public Categories createCategory(Categories categories) {
+        return categoriesGateway.createCategory(categories);
+    }
+
     public void deleteById(Long id) {
         categoriesGateway.deleteById(id);
     }
+
 }

@@ -8,6 +8,11 @@ import com.alkemy.ong.domain.news.NewGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+
+import static java.util.stream.Collectors.*;
+
 @Component
 @RequiredArgsConstructor
 public class DefaultNewGateway implements NewGateway {
@@ -19,6 +24,22 @@ public class DefaultNewGateway implements NewGateway {
             new ResourceNotFoundException("New", "id", id));
         newRepository.deleteById(news.getId());
     }
+
+    @Override
+    public List<New> findAll() {
+        return newRepository.findAll()
+                .stream()
+                .map(this::toModel)
+                .collect(toList());
+    }
+
+    @Override
+    public New findById(Long id) {
+        NewEntity newEntity = newRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("New","id", id));
+        return toModel(newEntity);
+    }
+
     private New toModel(NewEntity newEntity){
         return New.builder()
                 .id(newEntity.getId())
