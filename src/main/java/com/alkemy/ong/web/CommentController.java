@@ -33,7 +33,8 @@ public class CommentController {
     }
 
     private CommentDto commentToDto(Comment comment){
-        return CommentDto.builder().body(comment.getBody()).build();
+        return
+                CommentDto.builder().body(comment.getBody()).build();
     }
 
     @Getter
