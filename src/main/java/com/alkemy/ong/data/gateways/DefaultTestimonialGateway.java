@@ -5,6 +5,7 @@ import com.alkemy.ong.data.repositories.TestimonialRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonials.Testimonial;
 import com.alkemy.ong.domain.testimonials.TestimonialGateway;
+import com.alkemy.ong.web.TestimonialController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -29,10 +30,9 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
 
     @Override
     public Testimonial update(Long id, Testimonial testimonial) {
-        Testimonial testimonialFound = toModel(repository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Testimonial", "id", id)));
-        testimonial.setCreatedAt(testimonialFound.getCreatedAt()); // To avoid createdAt = Null in responseDto
-        return toModel(repository.save(toEntity(testimonial)));
+        repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Testimonial", "id", id));
+        testimonial.setId(id);
+        return toModel(repository.save(toEntityUpdate(testimonial)));
     }
 
     private Testimonial toModel(TestimonialEntity entity){
@@ -47,4 +47,9 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .createdAt(testimonial.getCreatedAt()).deleted(testimonial.isDeleted()).build();
     }
 
+
+    private TestimonialEntity toEntityUpdate(Testimonial testimonial) {
+        return TestimonialEntity.builder().id(testimonial.getId()).content(testimonial.getContent())
+                .name(testimonial.getName()).image(testimonial.getImage()).build();
+    }
 }

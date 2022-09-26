@@ -33,15 +33,15 @@ public class TestimonialController {
     @PutMapping
     public ResponseEntity<TestimonialDto> update(@RequestParam(name = "id") Long id,
                                                  @Valid @RequestBody TestimonialDto testimonialDto) {
-        testimonialDto.setId(id);
         Testimonial testimonial = testimonialService.update(id, toModel(testimonialDto));
-        return new ResponseEntity<>(toDto(testimonial), HttpStatus.CREATED);
+        return new ResponseEntity<>(toDto(testimonial), HttpStatus.OK);
     }
 
     private Testimonial toModel(TestimonialDto testimonialDto){
         return Testimonial.builder().id(testimonialDto.id).name(testimonialDto.name).content(testimonialDto.content)
-                .image(testimonialDto.image).updatedAt(testimonialDto.updatedAt).createdAt(testimonialDto.createdAt)
-                .deleted(testimonialDto.deleted).build();
+                .image(testimonialDto.image)
+                .updatedAt(testimonialDto.updatedAt).createdAt(testimonialDto.createdAt).deleted(testimonialDto.deleted)
+                .build();
     }
 
     private TestimonialDto toDto(Testimonial testimonial) {
