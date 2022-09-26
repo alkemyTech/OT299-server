@@ -33,7 +33,7 @@ public class ActivityEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false, insertable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
