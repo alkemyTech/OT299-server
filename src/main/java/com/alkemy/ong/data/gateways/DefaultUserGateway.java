@@ -2,9 +2,10 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Component
-@RequiredArgsConstructor
+@Builder
 public class DefaultUserGateway implements UserGateway {
     private final UserRepository repository;
 
@@ -20,6 +21,13 @@ public class DefaultUserGateway implements UserGateway {
         return repository.findAll().stream()
                 .map(this::toModel)
                 .collect(toList());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        User user = toModel(repository.findById(id).orElseThrow(() ->
+            new ResourceNotFoundException("User", "id", id)));
+        repository.deleteById(user.getId());
     }
 
     private User toModel(UserEntity entity) {
