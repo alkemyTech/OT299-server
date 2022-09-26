@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
     List<UserEntity> findAll();
 
-    void updateById(Long id);
+    UserEntity updateById(Long id, UserEntity user);
 }

@@ -3,6 +3,8 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +25,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateById(@PathVariable("id") Long id, @RequestBody User user) {
-        service.updateById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<UserDTO> updateById(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) {
+        User user = service.updateById(id, toModel(userDTO));
+        return new ResponseEntity(toDTO(user), HttpStatus.OK);
     }
 
-    private UserDTO toDTO(User user) {
+    private UserDTO toDTO(@NotNull User user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
@@ -36,6 +38,17 @@ public class UserController {
                 .email(user.getEmail())
                 .photo(user.getPhoto())
                 .roleId(user.getRoleId())
+                .build();
+    }
+
+    private User toModel(UserDTO userDTO) {
+        return User.builder()
+                .id(userDTO.getId())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .email(userDTO.getEmail())
+                .photo(userDTO.getPhoto())
+                .roleId(userDTO.getRoleId())
                 .build();
     }
 

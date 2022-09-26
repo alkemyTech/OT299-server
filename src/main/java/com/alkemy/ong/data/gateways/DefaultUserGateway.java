@@ -1,8 +1,8 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.entities.RoleEntity;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
-import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,9 @@ public class DefaultUserGateway implements UserGateway {
     }
 
     @Override
-    public void updateById(Long id) {
+    public User updateById(Long id, User user) {
+        return toModel(repository.updateById(id, toEntity(user)));
+
     }
 
     private User toModel(UserEntity entity) {
@@ -39,6 +41,21 @@ public class DefaultUserGateway implements UserGateway {
                 .updatedAt(entity.getUpdatedAt())
                 .createdAt(entity.getCreatedAt())
                 .deleted(entity.isDeleted())
+                .build();
+    }
+
+    private UserEntity toEntity(User user) {
+        return UserEntity.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .photo(user.getPhoto())
+                .roleId(new RoleEntity(user.getRoleId()))
+                .updatedAt(user.getUpdatedAt())
+                .createdAt(user.getCreatedAt())
+                .deleted(user.isDeleted())
                 .build();
     }
 }

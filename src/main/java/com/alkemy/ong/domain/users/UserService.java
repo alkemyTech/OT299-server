@@ -15,6 +15,5 @@ public class UserService {
         return gateway.findAll();
     }
 
-    public void updateById(Long id) { gateway.updateById(id);
-    }
+    public User updateById(Long id, User user) { return gateway.updateById(id, user); }
 }
