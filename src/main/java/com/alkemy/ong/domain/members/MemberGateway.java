@@ -6,7 +6,7 @@ public interface MemberGateway {
 
     List<Member> findAll();
 
-    public void deleteById (Long id);
+    void deleteById (Long id);
 
-    public Member save(Member members);
+    Member save(Member members);
 }
