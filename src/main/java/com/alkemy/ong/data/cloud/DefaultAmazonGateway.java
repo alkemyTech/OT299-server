@@ -1,14 +1,14 @@
-package com.alkemy.ong.web;
+package com.alkemy.ong.data.cloud;
 
+import com.alkemy.ong.domain.cloud.AmazonGateway;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -16,8 +16,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-@Service
-public class AmazonClient {
+@Component
+public class DefaultAmazonGateway implements AmazonGateway {
 
     private AmazonS3 s3client;
 
@@ -67,9 +67,4 @@ public class AmazonClient {
         return fileUrl;
     }
 
-    public String deleteFileFromS3Bucket(String fileUrl) {
-        String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName + "/", fileName));
-        return "Successfully deleted";
-    }
 }

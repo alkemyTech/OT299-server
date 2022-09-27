@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.cloud.AmazonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,20 +9,16 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/storage")
 public class BucketController {
 
-    private AmazonClient amazonClient;
+    private AmazonService amazonService;
 
     @Autowired
-    BucketController(AmazonClient amazonClient) {
-        this.amazonClient = amazonClient;
+    BucketController(AmazonService amazonService) {
+        this.amazonService = amazonService;
     }
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
-        return this.amazonClient.uploadFile(file);
+        return this.amazonService.uploadFile(file);
     }
 
-    @DeleteMapping("/deleteFile")
-    public String deleteFile(@RequestPart(value = "url") String fileUrl) {
-        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
-    }
 }
