@@ -40,7 +40,7 @@ public class DefaultSlideGateway implements SlideGateway {
     public Slide updateById(Long id, Slide slide) {
         slide.setId(id);
         SlideEntity slideEntity = slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id));
-        return toModel(slideRepository.save(updateEntity(slide)));
+        return toModel(updateEntity(slideEntity, slide));
     }
 
     private Slide toModel(SlideEntity slideEntity) {
@@ -55,13 +55,12 @@ public class DefaultSlideGateway implements SlideGateway {
     }
 
 
-    private SlideEntity updateEntity(Slide slide) {
-        return SlideEntity.builder()
-                .id(slide.getId())
-                .imageUrl(slide.getImageUrl())
-                .slideText(slide.getSlideText())
-                .slideOrder(slide.getSlideOrder())
-                .build();
+    private SlideEntity updateEntity(SlideEntity slideEntity, Slide slide) {
+       slideEntity.setImageUrl(slide.getImageUrl());
+       slideEntity.setSlideText(slide.getSlideText());
+       slideEntity.setSlideOrder(slide.getSlideOrder());
+       return slideRepository.save(slideEntity);
+
     }
 
 
