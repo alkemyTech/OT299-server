@@ -3,7 +3,6 @@ package com.alkemy.ong.domain.categories;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -19,13 +18,16 @@ public class CategoriesService {
        return categoriesGateway.findById(id);
     }
 
-    //public Categories createByName(String name) {
-       //return categoriesGateway.createByName(name);
-   // }
+    public Categories createCategory(Categories categories) {
+        return categoriesGateway.createCategory(categories);
+    }
+
+    public Categories updateCategory(Long id, Categories categories) {
+        return categoriesGateway.updateCategory(id ,categories);
+    }
 
     public void deleteById(Long id) {
         categoriesGateway.deleteById(id);
     }
-
 
 }

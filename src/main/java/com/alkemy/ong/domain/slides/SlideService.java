@@ -18,6 +18,10 @@ public class SlideService {
         return slideGateway.findAll();
     }
 
+    public Slide findById(Long id) {
+        return slideGateway.findById(id);
+    }
+
     public void deleteById(Long id) {
        slideGateway.deleteById(id);
     }

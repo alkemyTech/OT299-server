@@ -9,5 +9,7 @@ public interface CommentGateway {
 
     List<Comment> findAll();
 
+    Comment createComment(Comment comment);
+
     void deleteById(Long id);
 }

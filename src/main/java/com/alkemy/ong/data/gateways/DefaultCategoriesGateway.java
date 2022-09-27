@@ -24,8 +24,21 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
 
     @Override
     public Categories findById(long id){
-        CategoriesEntity categoriesEntity = categoriesRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Category", "id", id));
+        CategoriesEntity categoriesEntity = categoriesRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Category", "id", id));
         return toModel(categoriesEntity);
+    }
+
+    @Override
+    public Categories createCategory(Categories categories) {
+        return toModel(categoriesRepository.save(toEntity(categories)));
+    }
+
+    @Override
+    public Categories updateCategory(Long id, Categories categories) {
+        CategoriesEntity categoriesEntity = categoriesRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Category", "id", id));
+        return toModel(updateEntity(categoriesEntity, categories));
     }
 
     @Override
@@ -45,6 +58,25 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
                 .updatedAt(categoriesEntity.getUpdatedAt())
                 .deleted(categoriesEntity.isDeleted())
                 .build();
+    }
+
+    private CategoriesEntity toEntity(Categories categories) {
+        return CategoriesEntity.builder()
+                .id(categories.getId())
+                .name(categories.getName())
+                .description(categories.getDescription())
+                .image(categories.getImage())
+                .createdAt(categories.getCreatedAt())
+                .updatedAt(categories.getUpdatedAt())
+                .deleted(categories.isDeleted())
+                .build();
+    }
+
+    private CategoriesEntity updateEntity(CategoriesEntity categoriesEntity, Categories categories) {
+        categoriesEntity.setName(categories.getName());
+        categoriesEntity.setDescription(categories.getDescription());
+        categoriesEntity.setImage(categories.getImage());
+        return categoriesRepository.save(categoriesEntity);
     }
 
 }

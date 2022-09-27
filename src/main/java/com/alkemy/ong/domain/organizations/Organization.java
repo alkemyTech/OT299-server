@@ -25,6 +25,12 @@ public class Organization {
 
     private String aboutUsText;
 
+    private String facebook;
+
+    private String linkedin;
+
+    private String instagram;
+
     private LocalDateTime updatedAt;
 
     private LocalDateTime createdAt;

@@ -15,4 +15,8 @@ public class ActivityService {
         return activityGateway.createActivity(activity);
     }
 
+    public Activity update(Long id, Activity activity) {
+        return activityGateway.update(id, activity);
+    }
+
 }
