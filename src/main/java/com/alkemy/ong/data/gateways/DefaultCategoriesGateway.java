@@ -38,7 +38,7 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
     public Categories updateCategory(Long id, Categories categories) {
         CategoriesEntity categoriesEntity = categoriesRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Category", "id", id));
-        return toModelForUpdate(updateEntity(categoriesEntity, categories));
+        return toModel(updateEntity(categoriesEntity, categories));
     }
 
     @Override
@@ -69,15 +69,6 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
                 .createdAt(categories.getCreatedAt())
                 .updatedAt(categories.getUpdatedAt())
                 .deleted(categories.isDeleted())
-                .build();
-    }
-
-    private Categories toModelForUpdate (CategoriesEntity categoriesEntity){
-        return Categories.builder()
-                .id(categoriesEntity.getId())
-                .name(categoriesEntity.getName())
-                .description(categoriesEntity.getDescription())
-                .image(categoriesEntity.getImage())
                 .build();
     }
 
