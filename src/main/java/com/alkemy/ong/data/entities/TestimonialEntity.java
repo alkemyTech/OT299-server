@@ -31,7 +31,7 @@ public class TestimonialEntity {
 
     private String content;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
