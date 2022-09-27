@@ -1,6 +1,5 @@
 package com.alkemy.ong.domain.categories;
 
-import com.alkemy.ong.data.entities.CategoriesEntity;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
