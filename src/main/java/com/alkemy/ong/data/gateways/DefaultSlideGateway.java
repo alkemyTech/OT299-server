@@ -36,6 +36,13 @@ public class DefaultSlideGateway implements SlideGateway {
         slideRepository.deleteById(slide.getId());
     }
 
+    @Override
+    public Slide updateById(Long id, Slide slide) {
+        slide.setId(id);
+        SlideEntity slideEntity = slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id));
+        return toModel(slideRepository.save(updateEntity(slide)));
+    }
+
     private Slide toModel(SlideEntity slideEntity) {
         return Slide.builder().id(slideEntity.getId())
                 .imageUrl(slideEntity.getImageUrl())
@@ -46,5 +53,17 @@ public class DefaultSlideGateway implements SlideGateway {
                 .deleted(slideEntity.isDeleted())
                 .build();
     }
+
+
+    private SlideEntity updateEntity(Slide slide) {
+        return SlideEntity.builder()
+                .id(slide.getId())
+                .imageUrl(slide.getImageUrl())
+                .slideText(slide.getSlideText())
+                .slideOrder(slide.getSlideOrder())
+                .build();
+    }
+
+
 
 }
