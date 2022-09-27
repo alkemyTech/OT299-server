@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
     List<UserEntity> findAll();
+
+    void deleteById(Long id);
 }
