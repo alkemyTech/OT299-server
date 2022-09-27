@@ -38,8 +38,8 @@ public class CategoriesController {
         return new ResponseEntity(toDto(categories), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<CategoriesDtoById> updateCategory(@RequestParam(name = "id") Long id, @RequestBody CategoriesDtoById categoriesDtoById){
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriesDtoById> updateCategory(@PathVariable(name = "id") Long id, @RequestBody CategoriesDtoById categoriesDtoById){
         Categories categories = categoriesService.updateCategory(id, toModelById(categoriesDtoById));
         return new ResponseEntity<>(toDtoById(categories), HttpStatus.OK);
     }
