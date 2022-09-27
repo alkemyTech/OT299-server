@@ -23,8 +23,8 @@ public class ActivityController {
         return new ResponseEntity<>(toDto(activity), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<ActivityDto> update(@RequestParam(name = "id") Long id, @Valid @RequestBody ActivityDto activityDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ActivityDto> update(@PathVariable final Long id, @Valid @RequestBody ActivityDto activityDto) {
         Activity activity = activityService.update(id, toModel(activityDto));
         return new ResponseEntity<>(toDto(activity), HttpStatus.OK);
     }
