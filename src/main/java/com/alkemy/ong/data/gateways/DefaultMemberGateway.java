@@ -21,7 +21,6 @@ public class DefaultMemberGateway implements MemberGateway {
         return memberRepository.findAll().stream()
                 .map(this::toModel)
                 .collect(toList());
-
     }
 
     @Override
@@ -33,9 +32,17 @@ public class DefaultMemberGateway implements MemberGateway {
     }
 
     @Override
-    public Member save(Member members) {
-        return toModel((memberRepository.save(toEntity(members))));
+    public Member save(Member member) {
+        return toModel((memberRepository.save(toEntity(member))));
     }
+
+    @Override
+    public Member update(Member member, Long id) {
+        MemberEntity memberEntity = memberRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Member", "id", id)) ;
+        return toModel(updateMember(memberEntity, member));
+    }
+
 
     private Member toModel(MemberEntity memberEntity){
         return  Member.builder()
@@ -64,5 +71,14 @@ public class DefaultMemberGateway implements MemberGateway {
                 .updatedAt(member.getUpdatedAt())
                 .deleted(member.isDeleted())
                 .build();
+    }
+    private MemberEntity updateMember(MemberEntity memberEntity, Member member ){
+        memberEntity.setName(member.getName());
+        memberEntity.setFacebookUrl(member.getFacebookUrl());
+        memberEntity.setInstagramUrl(member.getInstagramUrl());
+        memberEntity.setLinkedinUrl(memberEntity.getLinkedinUrl());
+        memberEntity.setImage(member.getImage());
+        memberEntity.setDescription(member.getDescription());
+        return memberRepository.save(memberEntity);
     }
 }

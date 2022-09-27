@@ -14,4 +14,5 @@ public class UserService {
     public List<User> findAll() {
         return gateway.findAll();
     }
+    public void deleteById(Long id) {gateway.deleteById(id); }
 }
