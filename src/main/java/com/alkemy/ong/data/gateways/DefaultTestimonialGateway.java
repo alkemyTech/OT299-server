@@ -30,11 +30,9 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
 
     @Override
     public Testimonial update(Long id, Testimonial testimonial) {
-        Testimonial testimonialFound = toModel(repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Testimonial", "id", id)));
-        testimonialFound.setName(testimonial.getName());
-        testimonialFound.setContent(testimonial.getContent());
-        testimonialFound.setImage(testimonial.getImage());
-        return toModel(repository.save(toEntity(testimonialFound)));
+        TestimonialEntity testimonialEntity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Testimonial", "id", id));
+        return toModel(updateTestimonial(testimonialEntity, testimonial));
+
     }
 
     private Testimonial toModel(TestimonialEntity entity){
@@ -48,4 +46,12 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
                 .name(testimonial.getName()).image(testimonial.getImage()).updatedAt(testimonial.getUpdatedAt())
                 .createdAt(testimonial.getCreatedAt()).deleted(testimonial.isDeleted()).build();
     }
+
+    private TestimonialEntity updateTestimonial(TestimonialEntity testimonialEntity, Testimonial testimonial) {
+        testimonialEntity.setName(testimonial.getName());
+        testimonialEntity.setContent(testimonial.getContent());
+        testimonialEntity.setImage(testimonial.getImage());
+        return repository.save(testimonialEntity);
+    }
+
 }
