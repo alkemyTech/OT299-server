@@ -1,7 +1,9 @@
 package com.alkemy.ong.data.gateways;
 
+import com.alkemy.ong.data.entities.ActivityEntity;
 import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.repositories.CommentRepository;
+import com.alkemy.ong.domain.activities.Activity;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
@@ -35,6 +37,12 @@ public class DefaultCommentsGateway implements CommentGateway {
         commentRepository.deleteById(comment.getId());
     }
 
+    @Override
+    public Comment updateComment(Long id, Comment comment) {
+        CommentEntity commentEntity = commentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
+        return toModel(updateCommentMapper(commentEntity, comment));
+    }
+
     private Comment toModel (CommentEntity commentEntity) {
         return Comment.builder()
                 .id(commentEntity.getId())
@@ -55,5 +63,12 @@ public class DefaultCommentsGateway implements CommentGateway {
                 .createdAt(comment.getCreatedAt())
                 .deleted(comment.isDeleted())
                 .build();
+    }
+
+    private CommentEntity updateCommentMapper(CommentEntity commentEntity, Comment comment) {
+        commentEntity.setUserId(comment.getUserId());
+        commentEntity.setBody(comment.getBody());
+        commentEntity.setNewsId(comment.getNewsId());
+        return commentRepository.save(commentEntity);
     }
 }

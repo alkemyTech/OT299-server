@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.activities.Activity;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,12 @@ public class CommentController {
     public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentDto commentDto){
         Comment comment = commentService.createComment(toModelForCreate(commentDto));
         return new ResponseEntity<>(toDtoForCreate(comment), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CommentDto> updateComment(@PathVariable final Long id, @Valid @RequestBody CommentDto commentDto) {
+        Comment comment = commentService.updateComment(id, toModelForCreate(commentDto));
+        return new ResponseEntity<>(toDto(comment), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
