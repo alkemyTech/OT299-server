@@ -1,7 +1,5 @@
 package com.alkemy.ong.data.entities;
 
-import javax.management.relation.Role;
-
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;

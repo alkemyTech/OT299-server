@@ -7,4 +7,5 @@ import java.util.List;
 public interface UserGateway {
     List<User> findAll();
     void deleteById(Long id);
+    User updateById(Long Id, User user);
 }
