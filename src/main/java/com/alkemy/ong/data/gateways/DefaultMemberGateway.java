@@ -38,7 +38,14 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public Member update(Member member, Long id) {
-        memberRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Member", "id", id));
+        Member memberFounded = toModel(memberRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Member", "id", id))) ;
+       memberFounded.setName(member.getName());
+       memberFounded.setFacebookUrl(member.getFacebookUrl());
+       memberFounded.setInstagramUrl(member.getInstagramUrl());
+       memberFounded.setLinkedinUrl(member.getLinkedinUrl());
+       memberFounded.setImage(member.getImage());
+       memberFounded.setDescription(member.getDescription());
         return toModel(memberRepository.save(toEntity(member)));
     }
 
@@ -66,9 +73,9 @@ public class DefaultMemberGateway implements MemberGateway {
                 .linkedinUrl(member.getLinkedinUrl())
                 .image(member.getImage())
                 .description(member.getDescription())
-               // .createdAt(member.getCreatedAt())
-                //.updatedAt(member.getUpdatedAt())
-                //.deleted(member.isDeleted())
+                .createdAt(member.getCreatedAt())
+                .updatedAt(member.getUpdatedAt())
+                .deleted(member.isDeleted())
                 .build();
     }
 }
