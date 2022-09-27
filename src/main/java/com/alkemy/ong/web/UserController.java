@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.toList;
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
-    UserService service;
+    private final UserService service;
 
     @GetMapping()
     public ResponseEntity<List<UserDTO>> findAll() {

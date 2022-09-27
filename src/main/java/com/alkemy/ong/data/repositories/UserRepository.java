@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
     List<UserEntity> findAll();
-
-    UserEntity updateById(Long id, UserEntity user);
 }

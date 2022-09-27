@@ -3,6 +3,7 @@ package com.alkemy.ong.data.gateways;
 import com.alkemy.ong.data.entities.RoleEntity;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
+import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,9 @@ public class DefaultUserGateway implements UserGateway {
 
     @Override
     public User updateById(Long id, User user) {
-        return toModel(repository.updateById(id, toEntity(user)));
-
+        UserEntity entity = repository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User","id",id));
+        return toModel(repository.save(toEntity(entity, user)));
     }
 
     private User toModel(UserEntity entity) {
@@ -44,18 +46,14 @@ public class DefaultUserGateway implements UserGateway {
                 .build();
     }
 
-    private UserEntity toEntity(User user) {
-        return UserEntity.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .photo(user.getPhoto())
-                .roleId(new RoleEntity(user.getRoleId()))
-                .updatedAt(user.getUpdatedAt())
-                .createdAt(user.getCreatedAt())
-                .deleted(user.isDeleted())
-                .build();
+    private UserEntity toEntity(UserEntity entity, User user) {
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setId(user.getRoleId());
+        entity.setFirstName(user.getFirstName());
+        entity.setLastName(user.getLastName());
+        entity.setEmail(user.getEmail());
+        entity.setPhoto(user.getPhoto());
+        entity.setRoleId(roleEntity);
+        return entity;
     }
 }
