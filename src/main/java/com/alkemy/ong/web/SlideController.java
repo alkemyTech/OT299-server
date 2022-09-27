@@ -24,6 +24,11 @@ public class SlideController {
                 .body(slideService.findAll().stream().map(this::toDto).collect(toList()));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Slide> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(slideService.findById(id));
+    }
+
     private SlideDto toDto (Slide slide) {
         return SlideDto.builder().id(slide.getId())
                 .imageUrl(slide.getImageUrl())

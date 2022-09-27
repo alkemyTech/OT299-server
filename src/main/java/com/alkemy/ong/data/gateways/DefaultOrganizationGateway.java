@@ -32,6 +32,9 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
                 .email(organizationEntity.getEmail())
                 .welcomeText(organizationEntity.getWelcomeText())
                 .aboutUsText(organizationEntity.getAboutUsText())
+                .facebook(organizationEntity.getFacebook())
+                .linkedin(organizationEntity.getLinkedin())
+                .instagram(organizationEntity.getInstagram())
                 .updatedAt(organizationEntity.getUpdatedAt())
                 .updatedAt(organizationEntity.getCreatedAt())
                 .deleted(organizationEntity.isDeleted()).build();

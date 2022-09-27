@@ -5,6 +5,7 @@ import com.alkemy.ong.data.repositories.TestimonialRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.testimonials.Testimonial;
 import com.alkemy.ong.domain.testimonials.TestimonialGateway;
+import com.alkemy.ong.web.TestimonialController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,13 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         return toModel(repository.save(toEntity(testimonial)));
     }
 
+    @Override
+    public Testimonial update(Long id, Testimonial testimonial) {
+        TestimonialEntity testimonialEntity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Testimonial", "id", id));
+        return toModel(updateTestimonial(testimonialEntity, testimonial));
+
+    }
+
     private Testimonial toModel(TestimonialEntity entity){
         return Testimonial.builder().id(entity.getId()).content(entity.getContent())
                 .name(entity.getName()).image(entity.getImage()).updatedAt(entity.getUpdatedAt())
@@ -37,6 +45,13 @@ public class DefaultTestimonialGateway implements TestimonialGateway {
         return TestimonialEntity.builder().id(testimonial.getId()).content(testimonial.getContent())
                 .name(testimonial.getName()).image(testimonial.getImage()).updatedAt(testimonial.getUpdatedAt())
                 .createdAt(testimonial.getCreatedAt()).deleted(testimonial.isDeleted()).build();
+    }
+
+    private TestimonialEntity updateTestimonial(TestimonialEntity testimonialEntity, Testimonial testimonial) {
+        testimonialEntity.setName(testimonial.getName());
+        testimonialEntity.setContent(testimonial.getContent());
+        testimonialEntity.setImage(testimonial.getImage());
+        return repository.save(testimonialEntity);
     }
 
 }
