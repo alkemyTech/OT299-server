@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.categories.CategoriesService;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewService;
 import lombok.*;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import static java.util.stream.Collectors.toList;
 public class NewController {
 
     NewService newService;
+
+    CategoriesService categoriesService;
 
     @DeleteMapping (path = "/{id}")
     public ResponseEntity delete(@PathVariable (value = "id") Long id){
@@ -37,6 +41,11 @@ public class NewController {
     public ResponseEntity<New> findById (@PathVariable Long id){
         return ResponseEntity.ok(newService.findById(id));
     }
+    @PostMapping
+    public ResponseEntity<NewDto> create(@Valid @RequestBody NewDto newDto){
+         New news = newService.create(toModel(newDto));
+         return new ResponseEntity<>(toDto(news), HttpStatus.CREATED);
+    }
 
     private NewDto toDto (New news){
         return NewDto.builder()
@@ -48,6 +57,19 @@ public class NewController {
                 .createdAt(news.getCreatedAt())
                 .updatedAt(news.getUpdatedAt())
                 .deleted(news.isDeleted())
+                .build();
+    }
+
+    private New toModel (NewDto newDto){
+        return New.builder()
+                .id(newDto.getId())
+                .name(newDto.getName())
+                .content(newDto.getContent())
+                .image(newDto.getImage())
+                .categoryId(newDto.getCategoryId())
+                .createdAt(newDto.getCreatedAt())
+                .updatedAt(newDto.getUpdatedAt())
+                .deleted(newDto.isDeleted())
                 .build();
     }
 
