@@ -35,7 +35,7 @@ public class DefaultUserGateway implements UserGateway {
     public User updateById(Long id, User user) {
         UserEntity entity = repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("User","id",id));
-        return toModel(repository.save(toEntity(entity, user)));
+        return toModel(repository.save(updateEntity(entity, user)));
     }
 
     private User toModel(UserEntity entity) {
@@ -53,7 +53,7 @@ public class DefaultUserGateway implements UserGateway {
                 .build();
     }
 
-    private UserEntity toEntity(UserEntity entity, User user) {
+    private UserEntity updateEntity(UserEntity entity, User user) {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setId(user.getRoleId());
         entity.setFirstName(user.getFirstName());
