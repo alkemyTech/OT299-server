@@ -30,8 +30,8 @@ public class TestimonialController {
         return new ResponseEntity<>(toDto(testimonial), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<TestimonialDto> update(@RequestParam(name = "id") Long id,
+    @PutMapping("/{id}")
+    public ResponseEntity<TestimonialDto> update(@PathVariable final Long id,
                                                  @Valid @RequestBody TestimonialDto testimonialDto) {
         Testimonial testimonial = testimonialService.update(id, toModel(testimonialDto));
         return new ResponseEntity<>(toDto(testimonial), HttpStatus.OK);
