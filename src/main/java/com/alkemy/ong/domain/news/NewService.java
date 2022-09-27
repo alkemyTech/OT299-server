@@ -25,9 +25,11 @@ public class NewService {
         return newGateway.findById(id);
     }
     public New create (New news){
+
         return newGateway.save(news);
     }
     public New update (New news, Long id){
+
         return newGateway.update(news, id);
     }
 }
