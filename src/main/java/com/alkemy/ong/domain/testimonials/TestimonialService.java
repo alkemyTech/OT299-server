@@ -18,4 +18,9 @@ public class TestimonialService {
     public Testimonial create(Testimonial testimonial) {
         return testimonialGateway.create(testimonial);
     }
+
+    public Testimonial update(Long id, Testimonial testimonial) {
+        return testimonialGateway.update(id, testimonial);
+    }
+
 }

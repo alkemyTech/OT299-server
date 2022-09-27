@@ -6,11 +6,13 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.*;
 
 @AllArgsConstructor
 @RequestMapping("/categories")
@@ -20,8 +22,9 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @GetMapping
-    public ResponseEntity<CategoriesDtoByName> findAll() {
-        return new ResponseEntity(categoriesService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<CategoriesDtoByName>> findAll() {
+        return ResponseEntity.ok().body(categoriesService.findAll()
+                .stream().map(this::toDtoByName).collect(toList()));
     }
 
     @GetMapping("/{id}")
@@ -35,8 +38,15 @@ public class CategoriesController {
         return new ResponseEntity(toDto(categories), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriesDtoById> updateCategory(@PathVariable(name = "id") Long id, @RequestBody CategoriesDtoById categoriesDtoById){
+        Categories categories = categoriesService.updateCategory(id, toModelById(categoriesDtoById));
+        return new ResponseEntity<>(toDtoById(categories), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCategory(@PathVariable Long id) {
+        categoriesService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -84,11 +94,52 @@ public class CategoriesController {
         return CategoriesDtoByName.builder().name(categories.getName()).build();
     }
 
+    private Categories toModelByName(CategoriesDtoByName categoriesDtoByName) {
+        return Categories.builder().name(categoriesDtoByName.name).build();
+    }
+
     @Getter
     @Setter
     @Builder
     public static class CategoriesDtoByName {
         private String name;
+    }
+
+    private CategoriesDtoById toDtoById(Categories categories) {
+        return CategoriesDtoById.builder()
+                .id(categories.getId())
+                .name(categories.getName())
+                .description(categories.getDescription())
+                .image(categories.getImage())
+                .createdAt(categories.getCreatedAt())
+                .updatedAt(categories.getUpdatedAt())
+                .deleted(categories.isDeleted())
+                .build();
+    }
+
+   private Categories toModelById(CategoriesDtoById categoriesDtoById) {
+       return Categories.builder()
+               .id(categoriesDtoById.id)
+               .name(categoriesDtoById.name)
+               .description(categoriesDtoById.description)
+               .image(categoriesDtoById.image)
+               .createdAt(categoriesDtoById.createdAt)
+               .updatedAt(categoriesDtoById.updatedAt)
+               .deleted(categoriesDtoById.deleted)
+               .build();
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class CategoriesDtoById {
+        private long id;
+        private String name;
+        private String description;
+        private String image;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+        private boolean deleted = false;
     }
 
 }

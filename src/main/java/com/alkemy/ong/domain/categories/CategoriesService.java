@@ -22,6 +22,10 @@ public class CategoriesService {
         return categoriesGateway.createCategory(categories);
     }
 
+    public Categories updateCategory(Long id, Categories categories) {
+        return categoriesGateway.updateCategory(id ,categories);
+    }
+
     public void deleteById(Long id) {
         categoriesGateway.deleteById(id);
     }
