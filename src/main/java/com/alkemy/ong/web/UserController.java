@@ -3,7 +3,6 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import lombok.*;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +23,20 @@ public class UserController {
                 .body(service.findAll().stream().map(this::toDTO).collect(toList()));
     }
 
+    @DeleteMapping("/{id}")
+    public  ResponseEntity deleteUser(@PathVariable Long id) {
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateById(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) {
         User user = service.updateById(id, toModel(userDTO));
         return new ResponseEntity(toDTO(user), HttpStatus.OK);
     }
 
-    private UserDTO toDTO(@NotNull User user) {
+    private UserDTO toDTO(User user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
@@ -63,4 +69,6 @@ public class UserController {
         private String photo;
         private Long roleId;
     }
+
+
 }
