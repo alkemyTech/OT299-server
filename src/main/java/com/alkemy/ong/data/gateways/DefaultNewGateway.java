@@ -40,6 +40,13 @@ public class DefaultNewGateway implements NewGateway {
         return toModel(newEntity);
     }
 
+    @Override
+    public New update(New news, Long id) {
+        NewEntity newEntity = newRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("New", "id", id));
+        return toModel(updateNew(newEntity, news));
+    }
+
     private New toModel(NewEntity newEntity){
         return New.builder()
                 .id(newEntity.getId())
@@ -51,5 +58,12 @@ public class DefaultNewGateway implements NewGateway {
                 .updatedAt(newEntity.getUpdatedAt())
                 .deleted(newEntity.isDeleted())
                 .build();
+    }
+    private NewEntity updateNew (NewEntity newEntity, New news){
+        newEntity.setName(news.getName());
+        newEntity.setContent(news.getContent());
+        newEntity.setImage(news.getImage());
+        newEntity.setCategoryId(news.getCategoryId());
+        return newRepository.save(newEntity);
     }
 }

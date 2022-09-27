@@ -24,4 +24,7 @@ public class NewService {
 
         return newGateway.findById(id);
     }
+    public New update (New news, Long id){
+        return newGateway.update(news, id);
+    }
 }
