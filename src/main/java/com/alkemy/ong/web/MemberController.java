@@ -58,6 +58,7 @@ public class MemberController {
                 .createdAt(member.getCreatedAt())
                 .updateAt(member.getUpdatedAt())
                 .deleted(member.isDeleted())
+                .description(member.getDescription())
                 .build();
     }
 
@@ -72,6 +73,7 @@ public class MemberController {
                 .createdAt(memberDto.getCreatedAt())
                 .updatedAt(memberDto.getUpdateAt())
                 .deleted(memberDto.isDeleted())
+                .description(memberDto.getDescription())
                 .build();
     }
     @Setter

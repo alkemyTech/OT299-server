@@ -76,7 +76,7 @@ public class DefaultMemberGateway implements MemberGateway {
         memberEntity.setName(member.getName());
         memberEntity.setFacebookUrl(member.getFacebookUrl());
         memberEntity.setInstagramUrl(member.getInstagramUrl());
-        memberEntity.setLinkedinUrl(memberEntity.getLinkedinUrl());
+        memberEntity.setLinkedinUrl(member.getLinkedinUrl());
         memberEntity.setImage(member.getImage());
         memberEntity.setDescription(member.getDescription());
         return memberRepository.save(memberEntity);
