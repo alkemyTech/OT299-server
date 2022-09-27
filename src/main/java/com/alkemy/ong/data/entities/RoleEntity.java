@@ -33,4 +33,7 @@ public class RoleEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
     private boolean deleted = false;
+
+    public RoleEntity(Long roleId) {
+    }
 }
