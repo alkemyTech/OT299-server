@@ -29,6 +29,9 @@ public class OrganizationsController {
                 .image(organization.getImage())
                 .address(organization.getAddress())
                 .phone(organization.getPhone())
+                .facebook(organization.getFacebook())
+                .linkedin(organization.getLinkedin())
+                .instagram(organization.getInstagram())
                 .build();
     }
 
@@ -41,6 +44,9 @@ public class OrganizationsController {
         private String image;
         private String address;
         private int phone;
+        private String facebook;
+        private String linkedin;
+        private String instagram;
     }
 
 }

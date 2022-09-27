@@ -24,6 +24,11 @@ public class DefaultCommentsGateway implements CommentGateway {
     }
 
     @Override
+    public Comment createComment(Comment comment) {
+        return toModel(commentRepository.save(toEntity(comment)));
+    }
+
+    @Override
     public void deleteById(Long id) {
         Comment comment = toModel(commentRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Comment", "id", id)));
@@ -39,6 +44,16 @@ public class DefaultCommentsGateway implements CommentGateway {
                 .updatedAt(commentEntity.getUpdatedAt())
                 .createdAt(commentEntity.getCreatedAt())
                 .deleted(commentEntity.isDeleted())
+                .build();
+    }
+    private CommentEntity toEntity (Comment comment) {
+        return CommentEntity.builder()
+                .userId(comment.getUserId())
+                .body(comment.getBody())
+                .newsId(comment.getNewsId())
+                .updatedAt(comment.getUpdatedAt())
+                .createdAt(comment.getCreatedAt())
+                .deleted(comment.isDeleted())
                 .build();
     }
 }

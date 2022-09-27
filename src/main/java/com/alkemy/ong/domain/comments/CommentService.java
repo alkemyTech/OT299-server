@@ -14,6 +14,10 @@ public class CommentService {
         return commentGateway.findAll();
     }
 
+    public Comment createComment(Comment comment) {
+        return commentGateway.createComment(comment);
+    }
+
     public void deleteById(Long id){
         commentGateway.deleteById(id);
     }
