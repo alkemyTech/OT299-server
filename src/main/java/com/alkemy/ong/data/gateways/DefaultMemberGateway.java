@@ -38,15 +38,9 @@ public class DefaultMemberGateway implements MemberGateway {
 
     @Override
     public Member update(Member member, Long id) {
-        Member memberFounded = toModel(memberRepository.findById(id).orElseThrow(()->
-                new ResourceNotFoundException("Member", "id", id))) ;
-       memberFounded.setName(member.getName());
-       memberFounded.setFacebookUrl(member.getFacebookUrl());
-       memberFounded.setInstagramUrl(member.getInstagramUrl());
-       memberFounded.setLinkedinUrl(member.getLinkedinUrl());
-       memberFounded.setImage(member.getImage());
-       memberFounded.setDescription(member.getDescription());
-        return toModel(memberRepository.save(toEntity(member)));
+        MemberEntity memberEntity = memberRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("Member", "id", id)) ;
+        return toModel(updateMember(memberEntity, member));
     }
 
 
@@ -77,5 +71,14 @@ public class DefaultMemberGateway implements MemberGateway {
                 .updatedAt(member.getUpdatedAt())
                 .deleted(member.isDeleted())
                 .build();
+    }
+    private MemberEntity updateMember(MemberEntity memberEntity, Member member ){
+        memberEntity.setName(member.getName());
+        memberEntity.setFacebookUrl(member.getFacebookUrl());
+        memberEntity.setInstagramUrl(member.getInstagramUrl());
+        memberEntity.setLinkedinUrl(memberEntity.getLinkedinUrl());
+        memberEntity.setImage(member.getImage());
+        memberEntity.setDescription(member.getDescription());
+        return memberRepository.save(memberEntity);
     }
 }
