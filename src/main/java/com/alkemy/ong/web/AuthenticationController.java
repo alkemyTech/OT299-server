@@ -20,7 +20,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public String authentication(@Valid @RequestBody UserAuthDTO userAuthDTO) {
-        return "";
+        return service.authentication(userAuthDTO.getEmail(), userAuthDTO.getPassword());
     }
 
     @Setter

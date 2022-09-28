@@ -7,9 +7,11 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.Builder;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,25 +29,24 @@ public class DefaultUserGateway implements UserGateway {
     @Override
     public void deleteById(Long id) {
         UserEntity entity = repository.findById(id).orElseThrow(() ->
-            new ResourceNotFoundException("User", "id", id));
+                new ResourceNotFoundException("User", "id", id));
         repository.deleteById(entity.getId());
     }
 
     @Override
     public User updateById(Long id, User user) {
         UserEntity entity = repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("User","id",id));
+                new ResourceNotFoundException("User", "id", id));
         return toModel(repository.save(toEntity(entity, user)));
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return null;
-    }
-
-    @Override
     public String authentication(String email, String password) {
-        return null;
+        UserEntity entity = repository.findByEmail(email);
+        if (Objects.nonNull(entity)) {
+        //TODO: comparar contraseña encriptada con contraseña enviada en petición, verificar que la contraseña sea válida
+        }
+        return "";
     }
 
     private User toModel(UserEntity entity) {
