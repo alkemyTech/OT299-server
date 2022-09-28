@@ -7,7 +7,6 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.Builder;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,16 +36,34 @@ public class DefaultUserGateway implements UserGateway {
     public User updateById(Long id, User user) {
         UserEntity entity = repository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("User", "id", id));
-        return toModel(repository.save(toEntity(entity, user)));
+        return toModel(repository.save(updateEntity(entity, user)));
     }
 
     @Override
-    public String authentication(String email, String password) {
-        UserEntity entity = repository.findByEmail(email);
-        if (Objects.nonNull(entity)) {
-        //TODO: comparar contraseña encriptada con contraseña enviada en petición, verificar que la contraseña sea válida
+    public User save(User user) {
+        return toModel(repository.save(updateEntity(new UserEntity(), user)));
+    }
+
+    @Override
+    public String encryptPassword(String password) {
+        return null;
+    }
+
+    @Override
+    public boolean verifyPassword(String originalPassword, String hashPassword) {
+        return false;
+    }
+
+    @Override
+    public String authentication(String email, String password) throws Exception {
+        if (Objects.isNull(repository.findByEmail(email))) {
+            return "User not found";
+            //throw new Exception();
         }
-        return "";
+
+        //TODO: comparar contraseña encriptada con contraseña enviada en petición,
+        // verificar que la contraseña sea válida
+        return "ok: true";
     }
 
     private User toModel(UserEntity entity) {
@@ -64,9 +81,11 @@ public class DefaultUserGateway implements UserGateway {
                 .build();
     }
 
-    private UserEntity toEntity(UserEntity entity, User user) {
+
+    private UserEntity updateEntity(UserEntity entity, User user) {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setId(user.getRoleId());
+        entity.setId(user.getId());
         entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());

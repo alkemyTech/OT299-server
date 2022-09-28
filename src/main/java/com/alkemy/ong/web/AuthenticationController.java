@@ -19,7 +19,7 @@ public class AuthenticationController {
     private final UserService service;
 
     @PostMapping("/login")
-    public String authentication(@Valid @RequestBody UserAuthDTO userAuthDTO) {
+    public String authentication(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
         return service.authentication(userAuthDTO.getEmail(), userAuthDTO.getPassword());
     }
 

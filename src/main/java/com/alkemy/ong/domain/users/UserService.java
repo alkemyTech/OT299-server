@@ -20,11 +20,15 @@ public class UserService {
         gateway.deleteById(id);
     }
 
+    public User save(User user) {
+        return gateway.save(user);
+    }
+
     public User updateById(Long id, User user) {
         return gateway.updateById(id, user);
     }
 
-    public String authentication(String email, String password) {
+    public String authentication(String email, String password) throws Exception {
         return gateway.authentication(email, password);
     }
 }

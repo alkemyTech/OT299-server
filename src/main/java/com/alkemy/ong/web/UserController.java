@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity deleteUser(@PathVariable Long id) {
+    public ResponseEntity deleteUser(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
@@ -32,8 +32,12 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateById(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) {
-        User user = service.updateById(id, toModel(userDTO));
-        return new ResponseEntity(toDTO(user), HttpStatus.OK);
+        return new ResponseEntity(toDTO(service.updateById(id, toModel(userDTO))), HttpStatus.OK);
+    }
+
+   @PostMapping()
+    public ResponseEntity<UserDTO> save(@RequestBody UserDTO userDTO) {
+        return new ResponseEntity(toDTO(service.save(toModel(userDTO))), HttpStatus.OK);
     }
 
     private UserDTO toDTO(User user) {
