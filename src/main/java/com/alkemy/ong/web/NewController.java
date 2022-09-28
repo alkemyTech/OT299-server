@@ -46,6 +46,12 @@ public class NewController {
          New news = newService.create(toModel(newDto));
          return new ResponseEntity<>(toDto(news), HttpStatus.CREATED);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<NewController.NewDto>update (@Valid @RequestBody NewController.NewDto newDto,
+                                                             @PathVariable final Long id){
+        New news = newService.update(toModel(newDto), id);
+        return new ResponseEntity<>(toDto(news), HttpStatus.OK );
+    }
 
     private NewDto toDto (New news){
         return NewDto.builder()
