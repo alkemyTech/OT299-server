@@ -66,9 +66,7 @@ public class DefaultCommentsGateway implements CommentGateway {
     }
 
     private CommentEntity updateCommentMapper(CommentEntity commentEntity, Comment comment) {
-        commentEntity.setUserId(comment.getUserId());
         commentEntity.setBody(comment.getBody());
-        commentEntity.setNewsId(comment.getNewsId());
         return commentRepository.save(commentEntity);
     }
 }

@@ -32,14 +32,14 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentDto> createComment(@Valid @RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentCreateDto> createComment(@Valid @RequestBody CommentCreateDto commentDto){
         Comment comment = commentService.createComment(toModelForCreate(commentDto));
         return new ResponseEntity<>(toDtoForCreate(comment), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable final Long id, @Valid @RequestBody CommentDto commentDto) {
-        Comment comment = commentService.updateComment(id, toModelForCreate(commentDto));
+        Comment comment = commentService.updateComment(id, toModel(commentDto));
         return new ResponseEntity<>(toDto(comment), HttpStatus.OK);
     }
 
@@ -54,18 +54,23 @@ public class CommentController {
                 .body(comment.getBody()).build();
     }
 
-    private CommentDto toDtoForCreate(Comment comment){
-        return CommentDto.builder()
+    private CommentCreateDto toDtoForCreate(Comment comment){
+        return CommentCreateDto.builder()
                 .postId(comment.getNewsId())
                 .userId(comment.getUserId())
                 .body(comment.getBody()).build();
     }
 
-    private Comment toModelForCreate(CommentDto commentDto){
+    private Comment toModelForCreate(CommentCreateDto commentCreateDto){
 
         return Comment.builder()
-                .newsId(commentDto.getPostId())
-                .userId(commentDto.getUserId())
+                .newsId(commentCreateDto.getPostId())
+                .userId(commentCreateDto.getUserId())
+                .body(commentCreateDto.getBody()).build();
+    }
+
+    private Comment toModel(CommentDto commentDto){
+        return Comment.builder()
                 .body(commentDto.getBody()).build();
     }
 
@@ -73,13 +78,22 @@ public class CommentController {
     @Getter
     @Setter
     @Builder
-    public static class CommentDto{
+    public static class CommentCreateDto{
 
         @Min(value = 1, message = "The field postId cannot be null or less than 1.")
         private long postId;
 
         @Min(value = 1, message = "The field userId cannot be null or less than 1.")
         private long userId;
+
+        @NotEmpty(message = "The field body cannot be null or empty.")
+        private String body;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class CommentDto{
 
         @NotEmpty(message = "The field body cannot be null or empty.")
         private String body;
