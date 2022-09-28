@@ -39,7 +39,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable final Long id,  @RequestBody CommentDto commentDto) {
+    public ResponseEntity<CommentDto> updateComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
         Comment comment = commentService.updateComment(id, toModel(commentDto));
         return new ResponseEntity<>(toDto(comment), HttpStatus.OK);
     }
@@ -52,11 +52,13 @@ public class CommentController {
 
     private CommentDto toDto(Comment comment){
         return CommentDto.builder()
+                .id(comment.getId())
                 .body(comment.getBody()).build();
     }
 
     private CommentCreateDto toDtoForCreate(Comment comment){
         return CommentCreateDto.builder()
+                .id(comment.getId())
                 .postId(comment.getNewsId())
                 .userId(comment.getUserId())
                 .body(comment.getBody()).build();
@@ -82,6 +84,9 @@ public class CommentController {
     public static class CommentCreateDto{
 
         @Min(value = 1, message = "The field postId cannot be null or less than 1.")
+        private Long id;
+
+        @Min(value = 1, message = "The field postId cannot be null or less than 1.")
         private long postId;
 
         @Min(value = 1, message = "The field userId cannot be null or less than 1.")
@@ -99,6 +104,8 @@ public class CommentController {
 
         public CommentDto() {
         }
+
+        private Long id;
 
         @NotEmpty(message = "The field body cannot be null or empty.")
         private String body;
