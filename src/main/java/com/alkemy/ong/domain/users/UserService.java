@@ -26,6 +26,7 @@ public class UserService {
 
     public String authentication(String email, String password) {
         gateway.getUserByEmail(email);
-        return gateway.authentication(email, password);
+        gateway.authentication(email, password);
+        return "";
     }
 }
