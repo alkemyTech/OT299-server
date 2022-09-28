@@ -28,7 +28,7 @@ public class SlideEntity {
     private String slideText;
     private String slideOrder;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

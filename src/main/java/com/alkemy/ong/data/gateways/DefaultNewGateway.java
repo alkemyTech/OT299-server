@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
+
 
 
 import static java.util.stream.Collectors.*;
@@ -51,9 +51,20 @@ public class DefaultNewGateway implements NewGateway {
 
         return toModel((newRepository.save(toEntity(news, categoriesEntity))));
     }
+    @Override
+    public New update(New news, Long id) {
+
+        NewEntity newEntity = newRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException("New", "id", id));
+
+        CategoriesEntity categoryEntity = categoriesRepository.findById(news.getCategoryId()).orElseThrow(()->
+                new ResourceNotFoundException("Category", "id", id));
 
 
-    private New toModel(NewEntity newEntity) {
+        return toModel(updateNew(newEntity, news, categoryEntity));
+    }
+
+    private New toModel(NewEntity newEntity){
         return New.builder()
                 .id(newEntity.getId())
                 .name(newEntity.getName())
@@ -75,5 +86,12 @@ public class DefaultNewGateway implements NewGateway {
                 .updatedAt(news.getUpdatedAt())
                 .deleted(news.isDeleted())
                 .build();
+    }
+    private NewEntity updateNew (NewEntity newEntity, New news, CategoriesEntity categoryEntity){
+        newEntity.setName(news.getName());
+        newEntity.setContent(news.getContent());
+        newEntity.setImage(news.getImage());
+        newEntity.setCategoryId(categoryEntity);
+        return newRepository.save(newEntity);
     }
 }
