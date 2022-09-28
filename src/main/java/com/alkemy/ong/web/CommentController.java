@@ -6,6 +6,7 @@ import com.alkemy.ong.domain.comments.CommentService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable final Long id, @Valid @RequestBody CommentDto commentDto) {
+    public ResponseEntity<CommentDto> updateComment(@PathVariable final Long id,  @RequestBody CommentDto commentDto) {
         Comment comment = commentService.updateComment(id, toModel(commentDto));
         return new ResponseEntity<>(toDto(comment), HttpStatus.OK);
     }
@@ -93,7 +94,11 @@ public class CommentController {
     @Getter
     @Setter
     @Builder
+    @AllArgsConstructor
     public static class CommentDto{
+
+        public CommentDto() {
+        }
 
         @NotEmpty(message = "The field body cannot be null or empty.")
         private String body;
