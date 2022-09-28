@@ -38,6 +38,16 @@ public class DefaultUserGateway implements UserGateway {
         return toModel(repository.save(toEntity(entity, user)));
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+        return null;
+    }
+
+    @Override
+    public String authentication(String email, String password) {
+        return null;
+    }
+
     private User toModel(UserEntity entity) {
         return User.builder()
                 .id(entity.getId())
