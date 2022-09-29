@@ -7,7 +7,7 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.Builder;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -45,27 +45,27 @@ public class DefaultUserGateway implements UserGateway {
         return toModel(repository.save(updateEntity(new UserEntity(), user)));
     }
 
-    @Override
-    public String encryptPassword(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt());
-    }
 
     @Override
-    public boolean verifyPassword(String originalPassword, String hashPassword) {
-        return false;
-    }
-
-    @Override
-    public String authentication(String email, String password) throws Exception {
-        if (Objects.isNull(repository.findByEmail(email))) {
-            return "User not found";
-            //throw new Exception();
+    public boolean authentication(String email, String password) throws Exception {
+        UserEntity entity = repository.findByEmail(email);
+        if (Objects.isNull(entity)) {
+            throw new Exception();
+        } else {
+            return verifyPassword(password, entity.getPassword());
         }
-
-        //TODO: comparar contraseña encriptada con contraseña enviada en petición,
-        // verificar que la contraseña sea válida
-        return "ok: true";
     }
+
+    private String encryptPassword(String password) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder.encode(password);
+    }
+
+    private boolean verifyPassword(String originalPassword, String hashPassword) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder.matches(originalPassword, hashPassword);
+    }
+
 
     private User toModel(UserEntity entity) {
         return User.builder()

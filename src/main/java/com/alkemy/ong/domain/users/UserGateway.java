@@ -12,12 +12,7 @@ public interface UserGateway {
 
     User updateById(Long Id, User user);
 
-
     User save(User user);
 
-    String encryptPassword(String password);
-
-    boolean verifyPassword(String originalPassword, String hashPassword);
-
-    String authentication(String email, String password) throws Exception;
+    boolean authentication(String email, String password) throws Exception;
 }
