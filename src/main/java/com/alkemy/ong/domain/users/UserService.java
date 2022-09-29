@@ -28,6 +28,10 @@ public class UserService {
         return gateway.updateById(id, user);
     }
 
+    public String encryptPassword(String password) {
+        return gateway.encryptPassword(password);
+    }
+
     public String authentication(String email, String password) throws Exception {
         return gateway.authentication(email, password);
     }

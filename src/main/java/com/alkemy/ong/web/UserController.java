@@ -46,6 +46,7 @@ public class UserController {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
+                .password(user.getPassword())
                 .photo(user.getPhoto())
                 .roleId(user.getRoleId())
                 .build();
@@ -57,6 +58,7 @@ public class UserController {
                 .firstName(userDTO.getFirstName())
                 .lastName(userDTO.getLastName())
                 .email(userDTO.getEmail())
+                .password(userDTO.getPassword())
                 .photo(userDTO.getPhoto())
                 .roleId(userDTO.getRoleId())
                 .build();
@@ -70,6 +72,7 @@ public class UserController {
         private String firstName;
         private String lastName;
         private String email;
+        private String password;
         private String photo;
         private Long roleId;
     }

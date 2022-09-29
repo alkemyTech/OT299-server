@@ -20,7 +20,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public String authentication(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
-        return service.authentication(userAuthDTO.getEmail(), userAuthDTO.getPassword());
+        return service.authentication(userAuthDTO.getEmail(), service.encryptPassword(userAuthDTO.getPassword()));
     }
 
     @Setter

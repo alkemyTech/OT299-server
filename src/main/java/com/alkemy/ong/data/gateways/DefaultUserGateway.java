@@ -7,6 +7,7 @@ import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.Builder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class DefaultUserGateway implements UserGateway {
 
     @Override
     public String encryptPassword(String password) {
-        return null;
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     @Override
@@ -72,7 +73,7 @@ public class DefaultUserGateway implements UserGateway {
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
-                .password(entity.getPassword())
+                .password(encryptPassword(entity.getPassword()))
                 .photo(entity.getPhoto())
                 .roleId(entity.getRoleId().getId())
                 .updatedAt(entity.getUpdatedAt())
@@ -89,6 +90,7 @@ public class DefaultUserGateway implements UserGateway {
         entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
+        entity.setPassword(encryptPassword(user.getPassword()));
         entity.setPhoto(user.getPhoto());
         entity.setRoleId(roleEntity);
         return entity;
