@@ -45,7 +45,6 @@ public class DefaultUserGateway implements UserGateway {
         return toModel(repository.save(updateEntity(new UserEntity(), user)));
     }
 
-
     @Override
     public boolean authentication(String email, String password) throws Exception {
         UserEntity entity = repository.findByEmail(email);
