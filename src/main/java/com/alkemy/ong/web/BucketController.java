@@ -21,4 +21,9 @@ public class BucketController {
         return this.amazonService.uploadFile(file);
     }
 
+    @DeleteMapping("/deleteFile")
+    public String deleteFile(@RequestPart(value = "url") String fileUrl) {
+        return this.amazonService.deleteFile(fileUrl);
+    }
+
 }

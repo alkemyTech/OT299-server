@@ -14,4 +14,8 @@ public class AmazonService {
         return amazonGateway.uploadFile(file);
     }
 
+    public String deleteFile(String fileUrl) {
+        return amazonGateway.deleteFile(fileUrl);
+    }
+
 }

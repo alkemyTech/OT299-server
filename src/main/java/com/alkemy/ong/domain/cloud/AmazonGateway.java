@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface AmazonGateway {
 
     String uploadFile(MultipartFile file);
-
+    String deleteFile(String fileUrl);
 }
