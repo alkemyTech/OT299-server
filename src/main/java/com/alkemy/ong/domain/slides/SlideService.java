@@ -25,4 +25,8 @@ public class SlideService {
     public void deleteById(Long id) {
        slideGateway.deleteById(id);
     }
+
+    public Slide updateById(Long id, Slide slide) {
+        return slideGateway.updateById(id, slide);
+    }
 }

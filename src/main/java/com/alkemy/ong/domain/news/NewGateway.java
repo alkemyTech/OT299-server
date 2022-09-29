@@ -9,4 +9,5 @@ public interface NewGateway {
     List<New> findAll();
     New findById (Long id);
     public New save (New news);
+    public New update (New news, Long id);
 }
