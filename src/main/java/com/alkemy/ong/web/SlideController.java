@@ -3,13 +3,13 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.slides.Slide;
 import com.alkemy.ong.domain.slides.SlideService;
 import lombok.*;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -32,6 +32,13 @@ public class SlideController {
         return ResponseEntity.ok(slideService.findById(id));
     }
 
+    @PostMapping
+    public ResponseEntity<SlideDto> createSlide(@Valid @RequestBody SlideDto slideDto) {
+        slideDto.setImageUrl(Base64.encodeBase64URLSafeString((slideDto.getImageUrl().getBytes())));
+        Slide slide = slideService.createSlide(toModel(slideDto));
+        return new ResponseEntity<>(toDto(slide), HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/{id}")
         public ResponseEntity deleteSlide(@PathVariable Long id) {
         slideService.deleteById(id);
@@ -50,6 +57,7 @@ public class SlideController {
                 .imageUrl(slideDto.imageUrl)
                 .slideText(slideDto.slideText)
                 .slideOrder(slideDto.slideOrder)
+                .organizationId(slideDto.organizationId)
                 .build();
     }
     private SlideDto toDto (Slide slide) {
@@ -57,6 +65,7 @@ public class SlideController {
                 .imageUrl(slide.getImageUrl())
                 .slideText(slide.getSlideText())
                 .slideOrder(slide.getSlideOrder())
+                .organizationId(slide.getOrganizationId())
                 .build();
     }
 
@@ -67,6 +76,8 @@ public class SlideController {
         private Long id;
         private String imageUrl;
         private String slideText;
-        private String slideOrder;
+        private Long slideOrder;
+
+        private Long organizationId;
     }
 }
