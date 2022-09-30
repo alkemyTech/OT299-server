@@ -1,24 +1,34 @@
 package com.alkemy.ong.web;
 
-import com.alkemy.ong.data.entities.ContactsEntity;
 import com.alkemy.ong.domain.contacts.Contacts;
 import com.alkemy.ong.domain.contacts.ContactsService;
 import lombok.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 import static java.util.stream.Collectors.*;
 
 @AllArgsConstructor
 @RestController
+@RequestMapping("/contacts")
 public class ContactsController {
 
     ContactsService contactsService;
 
-    @GetMapping("/contacts")
+    @GetMapping
     public List<ContactsDto> findAll(){
         return contactsService.findAll().stream().map(this::toDto).collect(toList());
+    }
+
+    @PostMapping
+    public ResponseEntity<ContactsController.ContactsDto> createContact(@Valid @RequestBody ContactsController.ContactsDto contactsDto){
+        Contacts contacts = contactsService.createContact(toModel(contactsDto));
+        return new ResponseEntity(toDto(contacts), HttpStatus.CREATED);
     }
 
     private ContactsDto toDto (Contacts contacts){
@@ -34,13 +44,29 @@ public class ContactsController {
                 .build();
         }
 
+    private Contacts toModel(ContactsController.ContactsDto contactsDto){
+        return Contacts.builder()
+                .name(contactsDto.name)
+                .phone(contactsDto.phone)
+                .email(contactsDto.email)
+                .message(contactsDto.message)
+                .createdAt(contactsDto.createdAt)
+                .updatedAt(contactsDto.updatedAt)
+                .deleted(contactsDto.deleted)
+                .build();
+    }
+
     @Getter
     @Setter
     @Builder
     public static class ContactsDto{
         private long id;
+        @NotBlank(message = "Name is required")
+        @Pattern(regexp="^[A-Za-z]*$", message = "Invalid Input")
         private String name;
         private long phone;
+        @NotBlank(message = "email is required")
+        @Pattern(regexp="^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", message = "Invalid Input")
         private String email;
         private String message;
         private LocalDateTime createdAt;
