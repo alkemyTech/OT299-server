@@ -22,6 +22,8 @@ public class SlideService {
         return slideGateway.findById(id);
     }
 
+    public List<Slide> findByOrganizationId(Long organizationId) { return slideGateway.findByOrganizationId(organizationId); }
+
     public Slide createSlide(Slide slide) { return slideGateway.createSlide(slide); }
 
     public void deleteById(Long id) {

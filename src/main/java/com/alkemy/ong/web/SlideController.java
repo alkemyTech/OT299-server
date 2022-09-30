@@ -57,6 +57,7 @@ public class SlideController {
                 .imageUrl(slideDto.imageUrl)
                 .slideText(slideDto.slideText)
                 .slideOrder(slideDto.slideOrder)
+                .organizationId(slideDto.organizationId)
                 .build();
     }
     private SlideDto toDto (Slide slide) {
@@ -64,6 +65,7 @@ public class SlideController {
                 .imageUrl(slide.getImageUrl())
                 .slideText(slide.getSlideText())
                 .slideOrder(slide.getSlideOrder())
+                .organizationId(slide.getOrganizationId())
                 .build();
     }
 
@@ -75,5 +77,7 @@ public class SlideController {
         private String imageUrl;
         private String slideText;
         private Long slideOrder;
+
+        private Long organizationId;
     }
 }

@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -30,6 +32,13 @@ public class DefaultSlideGateway implements SlideGateway {
     public Slide findById(Long id) {
         SlideEntity slideEntity = slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id));
         return  toModel(slideEntity);
+    }
+
+    @Override
+    public List<Slide> findByOrganizationId(Long organizationId) {
+        List<Slide> slideListByOrganizationId = slideRepository.findAllByOrganizationId(organizationId).stream().map(this::toModel).collect(toList());
+        Collections.sort(slideListByOrganizationId, (Comparator.<Slide>comparingLong(slideOne -> slideOne.getSlideOrder()).thenComparingLong(slideTwo -> slideTwo.getSlideOrder())));
+        return slideListByOrganizationId;
     }
 
     @Override
@@ -60,6 +69,7 @@ public class DefaultSlideGateway implements SlideGateway {
                 .imageUrl(slideEntity.getImageUrl())
                 .slideOrder(slideEntity.getSlideOrder())
                 .slideText(slideEntity.getSlideText())
+                .organizationId(slideEntity.getOrganizationId())
                 .createdAt(slideEntity.getCreatedAt())
                 .updatedAt(slideEntity.getUpdatedAt())
                 .deleted(slideEntity.isDeleted())
@@ -72,6 +82,7 @@ public class DefaultSlideGateway implements SlideGateway {
                 .imageUrl(slide.getImageUrl())
                 .slideText(slide.getSlideText())
                 .slideOrder(slide.getSlideOrder())
+                .organizationId(slide.getOrganizationId())
                 .createdAt(slide.getCreatedAt())
                 .updatedAt(slide.getUpdatedAt())
                 .deleted(slide.isDeleted())

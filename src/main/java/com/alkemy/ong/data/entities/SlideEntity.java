@@ -28,6 +28,9 @@ public class SlideEntity {
     private String slideText;
     private Long slideOrder;
 
+    @Column(name = "organization_id")
+    private Long organizationId;
+
     @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;

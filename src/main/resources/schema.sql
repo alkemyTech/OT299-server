@@ -148,9 +148,10 @@ CREATE TABLE IF NOT EXISTS SLIDES
     id          BIGINT(50) NOT NULL AUTO_INCREMENT,
     image_url   VARCHAR(100),
     slide_text  VARCHAR(200),
-    slide_order BIGINT(50),
+    slide_order BIGINT(50) UNIQUE,
     created_at  TIMESTAMP DEFAULT NOW(),
     updated_at  TIMESTAMP DEFAULT NOW(),
     deleted     BIT       DEFAULT 0,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT fkorganization FOREIGN KEY (organization_id) REFERENCES ORGANIZATIONS(id)
 );

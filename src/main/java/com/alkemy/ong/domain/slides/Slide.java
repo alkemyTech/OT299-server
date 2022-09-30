@@ -13,6 +13,7 @@ public class Slide {
     private String imageUrl;
     private String slideText;
     private Long slideOrder;
+    private Long organizationId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean deleted;
