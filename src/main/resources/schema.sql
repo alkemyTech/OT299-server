@@ -147,6 +147,5 @@ CREATE TABLE IF NOT EXISTS SLIDES
     created_at  TIMESTAMP DEFAULT NOW(),
     updated_at  TIMESTAMP DEFAULT NOW(),
     deleted     BIT       DEFAULT 0,
-    PRIMARY KEY (id),
-    CONSTRAINT fkorganization FOREIGN KEY (organization_id) REFERENCES ORGANIZATIONS(id)
+    PRIMARY KEY (id)
 );
