@@ -37,3 +37,7 @@ VALUES  (1, 'Maria','Iraola','mariairaola@somosmas.com','SomosUnaOng_1001','http
         (19, 'ContributorMock12','Mock12','Mock12@somosmas.com','Mock12','',2),
         (20, 'ContributorMock13','Mock13','Mock13@somosmas.com','Mock13','',2);
 
+INSERT INTO SLIDES(ID, IMAGE_URL, SLIDE_TEXT, SLIDE_ORDER)
+VALUES  (1,'www.imaginejemplo1.com','Slide de ejemplo 1', 'Primero'),
+        (2,'www.imaginejemplo2.com','Slide de ejemplo 2', 'Segundo'),
+        (3,'www.imaginejemplo3.com','Slide de ejemplo 3', 'Tercero');

@@ -39,17 +39,30 @@ CREATE TABLE IF NOT EXISTS ACTIVITIES
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS CATEGORIES
+(
+    id          BIGINT(50)  NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(50) NOT NULL,
+    description VARCHAR(50) DEFAULT NULL,
+    image       VARCHAR(50) DEFAULT NULL,
+    created_at  TIMESTAMP   DEFAULT NOW(),
+    updated_at  TIMESTAMP   DEFAULT NOW(),
+    deleted    BIT       DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS NEWS
 (
     id         BIGINT(50)   NOT NULL AUTO_INCREMENT,
     name       VARCHAR(50)  NOT NULL,
     content    TEXT         NOT NULL,
     image      VARCHAR(100) NOT NULL,
+    category_id BIGINT(50) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted    BIT       DEFAULT 0,
     PRIMARY KEY (id),
-    FOREIGN KEY (category_id) REFERENCES CATEGORIES (id);
+    FOREIGN KEY (category_id) REFERENCES CATEGORIES (id)
 
 );
 
@@ -117,17 +130,6 @@ CREATE TABLE IF NOT EXISTS MEMBERS(
   PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS CATEGORIES
-(
-    id          BIGINT(50)  NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(50) NOT NULL,
-    description VARCHAR(50) DEFAULT NULL,
-    image       VARCHAR(50) DEFAULT NULL,
-    created_at  TIMESTAMP   DEFAULT NOW(),
-    updated_at  TIMESTAMP   DEFAULT NOW(),
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE IF NOT EXISTS CONTACTS
 (
     id         BIGINT(50)  NOT NULL AUTO_INCREMENT,
@@ -146,9 +148,10 @@ CREATE TABLE IF NOT EXISTS SLIDES
     id          BIGINT(50) NOT NULL AUTO_INCREMENT,
     image_url   VARCHAR(100),
     slide_text  VARCHAR(200),
-    slide_order VARCHAR(50),
+    slide_order BIGINT(50) UNIQUE,
     created_at  TIMESTAMP DEFAULT NOW(),
     updated_at  TIMESTAMP DEFAULT NOW(),
     deleted     BIT       DEFAULT 0,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CONSTRAINT fkorganization FOREIGN KEY (organization_id) REFERENCES ORGANIZATIONS(id)
 );

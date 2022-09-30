@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.comments;
 
+import com.alkemy.ong.domain.categories.Categories;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -16,6 +17,10 @@ public class CommentService {
 
     public Comment createComment(Comment comment) {
         return commentGateway.createComment(comment);
+    }
+
+    public Comment updateComment(Long id, Comment comment) {
+        return commentGateway.updateComment(id ,comment);
     }
 
     public void deleteById(Long id){
