@@ -26,9 +26,9 @@ public class SlideEntity {
 
     private String imageUrl;
     private String slideText;
-    private String slideOrder;
+    private Long slideOrder;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

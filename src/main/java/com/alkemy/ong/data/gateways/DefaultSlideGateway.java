@@ -8,6 +8,7 @@ import com.alkemy.ong.domain.slides.SlideGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+
 import java.util.List;
 
 
@@ -30,10 +31,28 @@ public class DefaultSlideGateway implements SlideGateway {
         SlideEntity slideEntity = slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id));
         return  toModel(slideEntity);
     }
+
+    @Override
+    public Slide createSlide(Slide slide) {
+        List<Slide> slideList = slideRepository.findAll().stream().map(this::toModel).collect(toList());
+        if (slide.getSlideOrder() == null) {
+            slide.setSlideOrder(slideList.stream().count() + 1);
+        }
+        return  toModel(slideRepository.save(toEntity(slide)));
+    }
+
+
     @Override
      public void deleteById(Long id) {
         Slide slide = toModel(slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id)));
         slideRepository.deleteById(slide.getId());
+    }
+
+    @Override
+    public Slide updateById(Long id, Slide slide) {
+        slide.setId(id);
+        SlideEntity slideEntity = slideRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Slide", "id", id));
+        return toModel(updateEntity(slideEntity, slide));
     }
 
     private Slide toModel(SlideEntity slideEntity) {
@@ -46,5 +65,28 @@ public class DefaultSlideGateway implements SlideGateway {
                 .deleted(slideEntity.isDeleted())
                 .build();
     }
+
+    private SlideEntity toEntity(Slide slide) {
+        return SlideEntity.builder()
+                .id(slide.getId())
+                .imageUrl(slide.getImageUrl())
+                .slideText(slide.getSlideText())
+                .slideOrder(slide.getSlideOrder())
+                .createdAt(slide.getCreatedAt())
+                .updatedAt(slide.getUpdatedAt())
+                .deleted(slide.isDeleted())
+                .build();
+    }
+
+
+    private SlideEntity updateEntity(SlideEntity slideEntity, Slide slide) {
+       slideEntity.setImageUrl(slide.getImageUrl());
+       slideEntity.setSlideText(slide.getSlideText());
+       slideEntity.setSlideOrder(slide.getSlideOrder());
+       return slideRepository.save(slideEntity);
+
+    }
+
+
 
 }

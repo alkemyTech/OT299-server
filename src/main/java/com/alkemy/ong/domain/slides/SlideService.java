@@ -22,7 +22,12 @@ public class SlideService {
         return slideGateway.findById(id);
     }
 
+    public Slide createSlide(Slide slide) { return slideGateway.createSlide(slide); }
+
     public void deleteById(Long id) {
        slideGateway.deleteById(id);
+    }
+    public Slide updateById(Long id, Slide slide) {
+        return slideGateway.updateById(id, slide);
     }
 }

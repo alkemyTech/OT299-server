@@ -9,5 +9,10 @@ public interface SlideGateway {
 
     Slide findById(Long id);
 
+    Slide createSlide(Slide slide);
+
     void deleteById(Long id);
+
+    Slide updateById(Long id, Slide slide);
+
 }
