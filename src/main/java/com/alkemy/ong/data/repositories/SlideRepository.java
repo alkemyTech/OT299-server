@@ -14,4 +14,5 @@ public interface SlideRepository extends CrudRepository<SlideEntity, Long> {
 
     void deleteById(Long id);
 
+    List<SlideEntity> findAllByOrganizationId(Long organizationId);
 }
