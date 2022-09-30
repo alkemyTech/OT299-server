@@ -12,4 +12,7 @@ public interface CommentGateway {
     Comment createComment(Comment comment);
 
     void deleteById(Long id);
+
+
+    Comment updateComment(Long id, Comment comment);
 }

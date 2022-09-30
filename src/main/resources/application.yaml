@@ -12,3 +12,9 @@ spring:
       accessKey:
       secretKey:
       bucketName:
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
