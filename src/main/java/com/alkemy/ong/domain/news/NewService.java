@@ -1,6 +1,10 @@
 package com.alkemy.ong.domain.news;
 
+import com.alkemy.ong.domain.OngPage;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +20,8 @@ public class NewService {
         newGateway.deleteById(id);
     }
 
-    public List<New> findAll(){
-        return newGateway.findAll();
+    public OngPage<New> findAll(int page){
+        return newGateway.findAll (page);
     }
 
     public New findById( Long id){
@@ -32,4 +36,8 @@ public class NewService {
 
         return newGateway.update(news, id);
     }
+
+   // public Page<New> getAll(Pageable pageable) {
+    //    return newGateway.findAll(pageable);
+   // }
 }

@@ -4,10 +4,14 @@ import com.alkemy.ong.data.entities.CategoriesEntity;
 import com.alkemy.ong.data.entities.NewEntity;
 import com.alkemy.ong.data.repositories.CategoriesRepository;
 import com.alkemy.ong.data.repositories.NewRepository;
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,13 +34,19 @@ public class DefaultNewGateway implements NewGateway {
         newRepository.deleteById(news.getId());
     }
 
-    @Override
-    public List<New> findAll() {
-        return newRepository.findAll()
-                .stream()
-                .map(this::toModel)
-                .collect(toList());
+   @Override
+    public OngPage<New> findAll(int page) {
+       Page <NewEntity> newsEntityPage = newRepository.findAll(PageRequest.of(page, 10));
+       List <New> news = newsEntityPage.getContent().stream().map(this::toModel).collect(toList());
+       OngPage <New> newsPage = new OngPage<>();
+       newsPage.setBody(news);
+       newsPage.setPreviousPage(page);
+       newsPage.setNextPage(page, newsEntityPage.getTotalPages());
+       newsPage.setResource("news");
+       return newsPage;
     }
+
+
 
     @Override
     public New findById(Long id) {

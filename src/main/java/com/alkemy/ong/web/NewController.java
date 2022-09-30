@@ -1,18 +1,23 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.CategoriesService;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewService;
 import lombok.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
+
+
 
 @RestController
 @RequestMapping("/news")
@@ -29,13 +34,29 @@ public class NewController {
     return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("")
+  /* @GetMapping("")
     public List<NewDto> findAll(){
+
         return newService.findAll()
                 .stream()
                 .map(this::toDto)
                 .collect(toList());
-    }
+    }*/
+  @GetMapping("")
+    public ResponseEntity<?> findAll (@RequestParam Map<String, Object> params) {
+       int page = Integer.valueOf((String) params.get("page")) ;
+
+       OngPage<New> pageNew = newService.findAll(page);
+       /*int totalPage = pageNew.getTotalPages();
+       if (totalPage > 0) {
+           List<NewDto> pages = newService.findAll()
+                   .stream()
+                   .map(this::toDto)
+                   .collect(toList());
+       }*/
+
+       return ResponseEntity.ok(pageNew);
+   }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<New> findById (@PathVariable Long id){
@@ -52,6 +73,7 @@ public class NewController {
         New news = newService.update(toModel(newDto), id);
         return new ResponseEntity<>(toDto(news), HttpStatus.OK );
     }
+
 
     private NewDto toDto (New news){
         return NewDto.builder()
