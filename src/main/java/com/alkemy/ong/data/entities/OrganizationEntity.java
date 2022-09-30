@@ -43,6 +43,12 @@ public class OrganizationEntity {
     @Column(name = "about_us_text")
     private String aboutUsText;
 
+    private String facebook;
+
+    private String linkedin;
+
+    private String instagram;
+
     @Column(name = "updated_at")
     @UpdateTimestamp()
     private LocalDateTime updatedAt;

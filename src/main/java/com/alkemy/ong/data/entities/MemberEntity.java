@@ -41,7 +41,7 @@ public class MemberEntity {
 
     private String description;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

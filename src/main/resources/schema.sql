@@ -13,11 +13,14 @@ CREATE TABLE IF NOT EXISTS ORGANIZATIONS
     id            BIGINT(50)   NOT NULL AUTO_INCREMENT,
     name          VARCHAR(50)  NOT NULL,
     image         VARCHAR(100) NOT NULL,
-    address       VARCHAR(50)  NULL,
-    phone         INTEGER      NULL,
+    address       VARCHAR(50),
+    phone         INTEGER,
     email         VARCHAR(50)  NOT NULL,
     welcome_text  TEXT         NOT NULL,
     about_us_text TEXT,
+    facebook      VARCHAR(100),
+    linkedin      VARCHAR(100),
+    instagram     VARCHAR(100),
     created_at    TIMESTAMP DEFAULT NOW(),
     updated_at    TIMESTAMP DEFAULT NOW(),
     deleted       BIT       DEFAULT 0,
@@ -36,17 +39,30 @@ CREATE TABLE IF NOT EXISTS ACTIVITIES
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS CATEGORIES
+(
+    id          BIGINT(50)  NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(50) NOT NULL,
+    description VARCHAR(50) DEFAULT NULL,
+    image       VARCHAR(50) DEFAULT NULL,
+    created_at  TIMESTAMP   DEFAULT NOW(),
+    updated_at  TIMESTAMP   DEFAULT NOW(),
+    deleted    BIT       DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS NEWS
 (
     id         BIGINT(50)   NOT NULL AUTO_INCREMENT,
     name       VARCHAR(50)  NOT NULL,
     content    TEXT         NOT NULL,
     image      VARCHAR(100) NOT NULL,
+    category_id BIGINT(50) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW(),
     deleted    BIT       DEFAULT 0,
     PRIMARY KEY (id),
-    FOREIGN KEY (category_id) REFERENCES CATEGORIES (id);
+    FOREIGN KEY (category_id) REFERENCES CATEGORIES (id)
 
 );
 
@@ -112,17 +128,6 @@ CREATE TABLE IF NOT EXISTS MEMBERS(
   updated_at    TIMESTAMP   DEFAULT NOW(),
   deleted       BIT         DEFAULT 0,
   PRIMARY KEY (id)
-);
-
-CREATE TABLE IF NOT EXISTS CATEGORIES
-(
-    id          BIGINT(50)  NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(50) NOT NULL,
-    description VARCHAR(50) DEFAULT NULL,
-    image       VARCHAR(50) DEFAULT NULL,
-    created_at  TIMESTAMP   DEFAULT NOW(),
-    updated_at  TIMESTAMP   DEFAULT NOW(),
-    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS CONTACTS

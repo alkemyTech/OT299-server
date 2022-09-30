@@ -5,7 +5,6 @@ import com.alkemy.ong.data.repositories.OrganizationRepository;
 import com.alkemy.ong.domain.organizations.OrganizationGateway;
 import com.alkemy.ong.domain.organizations.Organization;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +21,14 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
         return organization;
     }
 
+    @Override
+    public Organization updateOrganization(Long id, Organization organization) {
+        OrganizationEntity organizationEntity = organizationRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Organization", "id", id));
+        return toModel(updateOrganizationMapper(organization, organizationEntity));
+
+    }
+
     private Organization toModel(OrganizationEntity organizationEntity){
 
         return Organization.builder().id(organizationEntity.getId())
@@ -32,8 +39,25 @@ public class DefaultOrganizationGateway implements OrganizationGateway {
                 .email(organizationEntity.getEmail())
                 .welcomeText(organizationEntity.getWelcomeText())
                 .aboutUsText(organizationEntity.getAboutUsText())
+                .facebook(organizationEntity.getFacebook())
+                .linkedin(organizationEntity.getLinkedin())
+                .instagram(organizationEntity.getInstagram())
                 .updatedAt(organizationEntity.getUpdatedAt())
                 .updatedAt(organizationEntity.getCreatedAt())
                 .deleted(organizationEntity.isDeleted()).build();
+    }
+
+    private OrganizationEntity updateOrganizationMapper(Organization organization, OrganizationEntity organizationEntity){
+        organizationEntity.setName(organization.getName());
+        organizationEntity.setImage(organization.getImage());
+        organizationEntity.setAddress(organization.getAddress());
+        organizationEntity.setPhone(organization.getPhone());
+        organizationEntity.setEmail(organization.getEmail());
+        organizationEntity.setWelcomeText(organization.getWelcomeText());
+        organizationEntity.setAboutUsText(organization.getAboutUsText());
+        organizationEntity.setFacebook(organization.getFacebook());
+        organizationEntity.setLinkedin(organization.getLinkedin());
+        organizationEntity.setInstagram(organization.getInstagram());
+        return organizationRepository.save(organizationEntity);
     }
 }

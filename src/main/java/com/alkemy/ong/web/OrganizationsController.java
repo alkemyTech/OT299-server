@@ -3,11 +3,14 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.organizations.Organization;
 import com.alkemy.ong.domain.organizations.OrganizationService;
 import lombok.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @RestController
 @RequestMapping("/organization/public")
@@ -21,6 +24,13 @@ public class OrganizationsController {
         return ResponseEntity.ok(toDto(organizationService.findOrganizationById(id)));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<OrganizationDto>update (@Valid @RequestBody OrganizationDto organizationDto,
+                                                             @PathVariable final Long id){
+        Organization organization = organizationService.updateOrganization(id, toModel(organizationDto));
+        return new ResponseEntity<>(toDto(organization), HttpStatus.OK );
+    }
+
 
     private OrganizationDto toDto(Organization organization){
 
@@ -29,6 +39,24 @@ public class OrganizationsController {
                 .image(organization.getImage())
                 .address(organization.getAddress())
                 .phone(organization.getPhone())
+                .facebook(organization.getFacebook())
+                .linkedin(organization.getLinkedin())
+                .instagram(organization.getInstagram())
+                .build();
+    }
+
+    private Organization toModel(OrganizationDto organizationDto){
+        return Organization.builder()
+                .name(organizationDto.getName())
+                .image(organizationDto.getImage())
+                .address(organizationDto.getAddress())
+                .phone(organizationDto.getPhone())
+                .email(organizationDto.getEmail())
+                .welcomeText(organizationDto.getWelcomeText())
+                .aboutUsText(organizationDto.getAboutUsText())
+                .facebook(organizationDto.getFacebook())
+                .linkedin(organizationDto.getLinkedin())
+                .instagram(organizationDto.getInstagram())
                 .build();
     }
 
@@ -37,10 +65,26 @@ public class OrganizationsController {
     @Builder
     public static class OrganizationDto {
 
+        @NotEmpty(message = "The field name cannot be null or empty.")
+        @Pattern(regexp="^[\\p{L} .'-]+$",message = "Invalid Input for field name.")
         private String name;
+
         private String image;
         private String address;
+
+        @Min(value = 1, message = "The field phone cannot be null and only receive numbers.")
         private int phone;
+
+        @NotEmpty(message = "The field email cannot be null or empty.")
+        private String email;
+
+        @NotEmpty(message = "The field welcomeText cannot be null or empty.")
+        private String welcomeText;
+
+        private String aboutUsText;
+        private String facebook;
+        private String linkedin;
+        private String instagram;
     }
 
 }

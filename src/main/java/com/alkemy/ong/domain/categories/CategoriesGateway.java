@@ -12,6 +12,8 @@ public interface CategoriesGateway {
 
     Categories createCategory(Categories categories);
 
+    Categories updateCategory(Long id, Categories categories);
+
     void deleteById(Long id);
 
 }
