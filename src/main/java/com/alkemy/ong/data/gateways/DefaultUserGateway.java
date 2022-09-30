@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -46,13 +47,11 @@ public class DefaultUserGateway implements UserGateway {
     }
 
     @Override
-    public boolean authentication(String email, String password) throws Exception {
-        UserEntity entity = repository.findByEmail(email);
-        if (Objects.isNull(entity)) {
-            throw new Exception();
-        } else {
-            return verifyPassword(password, entity.getPassword());
-        }
+    public boolean authenticate(String email, String password) {
+        Optional<UserEntity> entity = Optional.ofNullable(repository.findByEmail(email).orElseThrow(() ->
+                new ResourceNotFoundException("Email", email, 404L)));
+            return verifyPassword(password, entity.get().getPassword());
+
     }
 
     private String encryptPassword(String password) {

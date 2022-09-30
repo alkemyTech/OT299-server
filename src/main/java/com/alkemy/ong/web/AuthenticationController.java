@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,15 +20,17 @@ public class AuthenticationController {
     private final UserService service;
 
     @PostMapping("/login")
-    public boolean authentication(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
-        return service.authentication(userAuthDTO.getEmail(), userAuthDTO.getPassword());
+    public boolean authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
+        return service.authenticate(userAuthDTO.getEmail(), userAuthDTO.getPassword());
     }
 
     @Setter
     @Getter
     @Builder
     public static class UserAuthDTO {
+        @NotNull
         private String email;
+        @NotNull
         private String password;
     }
 }

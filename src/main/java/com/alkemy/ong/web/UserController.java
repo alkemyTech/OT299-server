@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseEntity(toDTO(service.updateById(id, toModel(userDTO))), HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<UserDTO> save(@RequestBody UserDTO userDTO) {
         return new ResponseEntity(toDTO(service.save(toModel(userDTO))), HttpStatus.OK);
     }

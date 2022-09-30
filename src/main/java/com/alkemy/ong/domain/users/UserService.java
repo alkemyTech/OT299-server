@@ -27,7 +27,7 @@ public class UserService {
         return gateway.updateById(id, user);
     }
 
-    public boolean authentication(String email, String password) throws Exception {
-        return gateway.authentication(email, password);
+    public boolean authenticate(String email, String password) throws Exception {
+        return gateway.authenticate(email, password);
     }
 }

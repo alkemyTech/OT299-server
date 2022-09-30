@@ -14,5 +14,5 @@ public interface UserGateway {
 
     User save(User user);
 
-    boolean authentication(String email, String password) throws Exception;
+    boolean authenticate(String email, String password) throws Exception;
 }
