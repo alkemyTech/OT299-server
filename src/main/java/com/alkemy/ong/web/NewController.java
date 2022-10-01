@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.CategoriesService;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewService;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+
+
 
 @RestController
 @RequestMapping("/news")
@@ -29,13 +30,13 @@ public class NewController {
     return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("")
-    public List<NewDto> findAll(){
-        return newService.findAll()
-                .stream()
-                .map(this::toDto)
-                .collect(toList());
-    }
+  @GetMapping
+    public ResponseEntity<OngPage<New>> findAll (@RequestParam Integer page) {
+
+       OngPage<New> pageNews = newService.findAll(page);
+
+       return ResponseEntity.ok(pageNews);
+   }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<New> findById (@PathVariable Long id){
@@ -52,6 +53,7 @@ public class NewController {
         New news = newService.update(toModel(newDto), id);
         return new ResponseEntity<>(toDto(news), HttpStatus.OK );
     }
+
 
     private NewDto toDto (New news){
         return NewDto.builder()

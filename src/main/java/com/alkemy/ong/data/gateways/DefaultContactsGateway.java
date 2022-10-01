@@ -20,6 +20,11 @@ public class DefaultContactsGateway implements ContactsGateway {
         return contactsRepository.findAll().stream().map(this::toModel).collect(toList());
     }
 
+    @Override
+    public Contacts createContact(Contacts contacts) {
+        return toModel(contactsRepository.save(toEntity(contacts)));
+    }
+
     private Contacts toModel (ContactsEntity contactsEntity) {
         return Contacts.builder()
                 .id(contactsEntity.getId())
@@ -32,4 +37,17 @@ public class DefaultContactsGateway implements ContactsGateway {
                 .deleted(contactsEntity.isDeleted())
                 .build();
     }
+
+    private ContactsEntity toEntity(Contacts contacts) {
+        return ContactsEntity.builder()
+                .id(contacts.getId())
+                .name(contacts.getName())
+                .phone(contacts.getPhone())
+                .email(contacts.getEmail())
+                .createdAt(contacts.getCreatedAt())
+                .updatedAt(contacts.getUpdatedAt())
+                .deleted(contacts.isDeleted())
+                .build();
+    }
+
 }
