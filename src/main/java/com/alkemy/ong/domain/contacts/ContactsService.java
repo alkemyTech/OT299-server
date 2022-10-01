@@ -7,9 +7,15 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class ContactsService {
+
     ContactsGateway contactsGateway;
 
     public List<Contacts> findAll() {
         return contactsGateway.findAll();
     }
+
+    public Contacts createContact(Contacts contacts) {
+        return contactsGateway.createContact(contacts);
+    }
+
 }
