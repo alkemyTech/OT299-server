@@ -16,6 +16,7 @@ public class NewService {
     }
 
     public OngPage<New> findAll(int pageNumber){
+
         return newGateway.findAll(pageNumber);
     }
 
