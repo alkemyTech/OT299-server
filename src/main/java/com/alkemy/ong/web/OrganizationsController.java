@@ -2,6 +2,8 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.organizations.Organization;
 import com.alkemy.ong.domain.organizations.OrganizationService;
+import com.alkemy.ong.domain.slides.Slide;
+import com.alkemy.ong.domain.slides.SlideService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/organization/public")
@@ -18,6 +22,8 @@ import javax.validation.constraints.Pattern;
 public class OrganizationsController {
 
     private final OrganizationService organizationService;
+
+    private final SlideService slideService;
 
     @GetMapping("/{id}")
     public ResponseEntity<OrganizationDto> findOrganizationById(@PathVariable(name = "id") Long id){
@@ -31,10 +37,10 @@ public class OrganizationsController {
         return new ResponseEntity<>(toDto(organization), HttpStatus.OK );
     }
 
-
     private OrganizationDto toDto(Organization organization){
 
         return OrganizationDto.builder()
+                .id(organization.getId())
                 .name(organization.getName())
                 .image(organization.getImage())
                 .address(organization.getAddress())
@@ -42,6 +48,7 @@ public class OrganizationsController {
                 .facebook(organization.getFacebook())
                 .linkedin(organization.getLinkedin())
                 .instagram(organization.getInstagram())
+                .slides(slideService.findByOrganizationId(organization.getId()).stream().map(this::slideDto).collect(Collectors.toList()))
                 .build();
     }
 
@@ -60,10 +67,22 @@ public class OrganizationsController {
                 .build();
     }
 
+    private SlideController.SlideDto slideDto(Slide slide){
+        return SlideController.SlideDto.builder()
+                .id(slide.getId())
+                .imageUrl(slide.getImageUrl())
+                .slideText(slide.getSlideText())
+                .slideOrder(slide.getSlideOrder())
+                .organizationId(slide.getOrganizationId())
+                .build();
+    }
+
     @Setter
     @Getter
     @Builder
     public static class OrganizationDto {
+
+        private Long id;
 
         @NotEmpty(message = "The field name cannot be null or empty.")
         @Pattern(regexp="^[\\p{L} .'-]+$",message = "Invalid Input for field name.")
@@ -85,6 +104,8 @@ public class OrganizationsController {
         private String facebook;
         private String linkedin;
         private String instagram;
+
+        private List<SlideController.SlideDto> slides;
     }
 
 }

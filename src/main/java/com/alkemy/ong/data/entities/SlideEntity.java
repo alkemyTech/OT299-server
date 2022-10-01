@@ -26,7 +26,10 @@ public class SlideEntity {
 
     private String imageUrl;
     private String slideText;
-    private String slideOrder;
+    private Long slideOrder;
+
+    @Column(name = "organization_id")
+    private Long organizationId;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
