@@ -5,13 +5,14 @@ import com.alkemy.ong.data.entities.NewEntity;
 import com.alkemy.ong.data.repositories.CategoriesRepository;
 import com.alkemy.ong.data.repositories.NewRepository;
 import com.alkemy.ong.domain.OngPage;
+import com.alkemy.ong.domain.OngPage.OngPageBuilder;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class DefaultNewGateway implements NewGateway {
     private final NewRepository newRepository;
     private final CategoriesRepository categoriesRepository;
 
+    @Value("${pagination.pageSize}")
+    private int PAGE_SIZE;
+
     @Override
     public void deleteById(Long id) {
         NewEntity news = newRepository.findById(id).orElseThrow(() ->
@@ -35,18 +39,18 @@ public class DefaultNewGateway implements NewGateway {
     }
 
    @Override
-    public OngPage<New> findAll(int page) {
-       Page <NewEntity> newsEntityPage = newRepository.findAll(PageRequest.of(page, 10));
-       List <New> news = newsEntityPage.getContent().stream().map(this::toModel).collect(toList());
-       OngPage <New> newsPage = new OngPage<>();
-       newsPage.setBody(news);
-       newsPage.setPreviousPage(page);
-       newsPage.setNextPage(page, newsEntityPage.getTotalPages());
-       newsPage.setResource("news");
-       return newsPage;
+    public OngPage<New> findAll(int pageNumber) {
+       Page<NewEntity> newsEntityPage = newRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE));
+       List<New> news = newsEntityPage.getContent().stream()
+               .map(this::toModel)
+               .collect(toList());
+
+       return new OngPageBuilder<New>("news")
+               .body(news)
+               .pageNumber(pageNumber)
+               .totalPages(newsEntityPage.getTotalPages())
+               .build();
     }
-
-
 
     @Override
     public New findById(Long id) {
