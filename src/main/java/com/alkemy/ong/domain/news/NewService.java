@@ -1,9 +1,8 @@
 package com.alkemy.ong.domain.news;
 
+import com.alkemy.ong.domain.OngPage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -16,8 +15,8 @@ public class NewService {
         newGateway.deleteById(id);
     }
 
-    public List<New> findAll(){
-        return newGateway.findAll();
+    public OngPage<New> findAll(int pageNumber){
+        return newGateway.findAll(pageNumber);
     }
 
     public New findById( Long id){
