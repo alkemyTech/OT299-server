@@ -31,8 +31,4 @@ public class NewService {
 
         return newGateway.update(news, id);
     }
-
-   // public Page<New> getAll(Pageable pageable) {
-    //    return newGateway.findAll(pageable);
-   // }
 }
