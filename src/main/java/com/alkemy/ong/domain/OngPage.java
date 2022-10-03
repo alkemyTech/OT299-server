@@ -59,7 +59,7 @@ public class OngPage<T> {
             return null;
         }
         private String getPreviousPage() {
-            if(pageNumber > 0 && pageNumber < totalPages){
+            if(pageNumber > 0 && pageNumber < totalPages - 1){
                 return buildUrl() + (pageNumber -1);
             }
             return null;
