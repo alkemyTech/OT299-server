@@ -2,17 +2,18 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.CategoriesService;
+import com.alkemy.ong.domain.comments.CommentService;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
-
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -23,6 +24,10 @@ public class NewController {
     NewService newService;
 
     CategoriesService categoriesService;
+
+    CommentController commentController;
+
+    private final CommentService commentService;
 
     @DeleteMapping (path = "/{id}")
     public ResponseEntity delete(@PathVariable (value = "id") Long id){
@@ -37,6 +42,15 @@ public class NewController {
 
        return ResponseEntity.ok(pageNews);
    }
+
+    @GetMapping("{id}/comments")
+    public ResponseEntity<List<CommentController.CommentCreateDto>> findCommentsByNewId(@PathVariable Long id){
+        return ResponseEntity.ok()
+                .body(commentService.findByNewsId(id)
+                        .stream()
+                        .map(commentController::toDtoForCreate)
+                        .collect(toList()));
+    }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<New> findById (@PathVariable Long id){
@@ -80,6 +94,7 @@ public class NewController {
                 .deleted(newDto.isDeleted())
                 .build();
     }
+
 
     @Setter
     @Getter
