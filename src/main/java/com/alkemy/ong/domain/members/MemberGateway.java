@@ -1,10 +1,12 @@
 package com.alkemy.ong.domain.members;
 
+import com.alkemy.ong.domain.OngPage;
+
 import java.util.List;
 
 public interface MemberGateway {
 
-    List<Member> findAll();
+    public OngPage<Member> findAll(int pageNumber);
 
     public void deleteById (Long id);
 

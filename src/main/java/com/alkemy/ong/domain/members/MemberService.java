@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.members;
 
+import com.alkemy.ong.domain.OngPage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,9 @@ public class MemberService {
 
     private final MemberGateway memberGateway;
 
-      public List<Member> findAll() {
+      public OngPage<Member> findAll(int pageNumber) {
 
-        return memberGateway.findAll();
+        return memberGateway.findAll(pageNumber);
     }
 
     public void deleteById(Long id) {

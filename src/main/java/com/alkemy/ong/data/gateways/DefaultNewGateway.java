@@ -4,10 +4,15 @@ import com.alkemy.ong.data.entities.CategoriesEntity;
 import com.alkemy.ong.data.entities.NewEntity;
 import com.alkemy.ong.data.repositories.CategoriesRepository;
 import com.alkemy.ong.data.repositories.NewRepository;
+import com.alkemy.ong.domain.OngPage;
+import com.alkemy.ong.domain.OngPage.OngPageBuilder;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +28,9 @@ public class DefaultNewGateway implements NewGateway {
     private final NewRepository newRepository;
     private final CategoriesRepository categoriesRepository;
 
+    @Value("${pagination.pageSize}")
+    private int PAGE_SIZE;
+
     @Override
     public void deleteById(Long id) {
         NewEntity news = newRepository.findById(id).orElseThrow(() ->
@@ -30,12 +38,18 @@ public class DefaultNewGateway implements NewGateway {
         newRepository.deleteById(news.getId());
     }
 
-    @Override
-    public List<New> findAll() {
-        return newRepository.findAll()
-                .stream()
-                .map(this::toModel)
-                .collect(toList());
+   @Override
+    public OngPage<New> findAll(int pageNumber) {
+       Page<NewEntity> newsEntityPage = newRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE));
+       List<New> news = newsEntityPage.getContent().stream()
+               .map(this::toModel)
+               .collect(toList());
+
+       return new OngPageBuilder<New>("news")
+               .body(news)
+               .pageNumber(pageNumber)
+               .totalPages(newsEntityPage.getTotalPages())
+               .build();
     }
 
     @Override
