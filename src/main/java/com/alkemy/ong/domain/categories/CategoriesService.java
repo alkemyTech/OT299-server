@@ -1,8 +1,8 @@
 package com.alkemy.ong.domain.categories;
 
+import com.alkemy.ong.domain.OngPage;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -10,8 +10,8 @@ public class CategoriesService {
 
     CategoriesGateway categoriesGateway;
 
-    public List<Categories> findAll(){
-        return categoriesGateway.findAll();
+    public OngPage<Categories> findAll(int pageNumber){
+        return categoriesGateway.findAll(pageNumber);
     }
 
     public Categories findById(long id){

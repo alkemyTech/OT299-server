@@ -1,16 +1,16 @@
 package com.alkemy.ong.data.repositories;
 
 import com.alkemy.ong.data.entities.CategoriesEntity;
-import com.alkemy.ong.domain.categories.Categories;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface CategoriesRepository extends CrudRepository<CategoriesEntity, Long> {
 
-        List<CategoriesEntity> findAll();
+        Page<CategoriesEntity> findAll(Pageable pageable);
 
         Optional<CategoriesEntity> findById(long id);
 
