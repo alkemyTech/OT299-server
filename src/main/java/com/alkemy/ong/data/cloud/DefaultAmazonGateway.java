@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.xml.bind.DatatypeConverter;
+import java.io.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class DefaultAmazonGateway implements AmazonGateway {
@@ -44,8 +44,37 @@ public class DefaultAmazonGateway implements AmazonGateway {
         return convFile;
     }
 
-    private String generateFileName(MultipartFile multiPart) {
-        return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
+    public File getImageFromBase64(String base64String) {
+        String[] strings = base64String.split(",");
+        String extension;
+        switch (strings[0]) {
+            case "data:image/jpeg;base64":
+                extension = ".jpeg";
+                break;
+            case "data:image/png;base64":
+                extension = ".png";
+                break;
+            default:
+                extension = ".jpg";
+                break;
+        }
+        // convert base64 string to binary data
+        byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+        File file = new File(UUID.randomUUID() + extension);
+        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+            outputStream.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    private String generateFileName(File file) {
+        return new Date().getTime() + "-" + file.getName().replace(" ", "_");
+    }
+
+    private String generateFileName(MultipartFile file) {
+        return new Date().getTime() + "-" + file.getName().replace(" ", "_");
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
@@ -53,7 +82,7 @@ public class DefaultAmazonGateway implements AmazonGateway {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
-    public String uploadFile(MultipartFile multipartFile) {
+    public String uploadMultipartFile(MultipartFile multipartFile) {
 
         String fileUrl = "";
         try {
@@ -61,6 +90,19 @@ public class DefaultAmazonGateway implements AmazonGateway {
             String fileName = generateFileName(multipartFile);
             fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
             uploadFileTos3bucket(fileName, file);
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileUrl;
+    }
+
+    public String uploadFile(File file) {
+        String fileUrl = "";
+        try {
+            String fileName = generateFileName(file);
+            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            uploadFileTos3bucket(file.getName(), file);
             file.delete();
         } catch (Exception e) {
             e.printStackTrace();
