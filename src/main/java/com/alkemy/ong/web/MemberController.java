@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
 import lombok.*;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.List;
 
-import static java.util.stream.Collectors.*;
 
 @RestController
 @RequestMapping("/members")
@@ -21,11 +20,9 @@ public class MemberController {
 
     MemberService memberService;
     @GetMapping()
-    public List<MemberDto> findAll() {
-
-        return  memberService.findAll().stream()
-                .map(this::toDto)
-                .collect(toList());
+    public ResponseEntity<OngPage<Member>> findAll(@RequestParam Integer page) {
+        OngPage<Member> pageMembers = memberService.findAll(page);
+        return  ResponseEntity.ok(pageMembers);
     }
 
     @DeleteMapping(path = "/{id}")
