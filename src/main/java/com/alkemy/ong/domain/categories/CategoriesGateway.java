@@ -1,12 +1,12 @@
 package com.alkemy.ong.domain.categories;
 
+import com.alkemy.ong.domain.OngPage;
 import org.springframework.stereotype.Component;
-import java.util.List;
 
 @Component
 public interface CategoriesGateway {
 
-    List<Categories> findAll();
+    OngPage<Categories> findAll(int pageNumber);
 
     Categories findById(long id);
 

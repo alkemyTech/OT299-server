@@ -2,10 +2,14 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.CategoriesEntity;
 import com.alkemy.ong.data.repositories.CategoriesRepository;
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.Categories;
 import com.alkemy.ong.domain.categories.CategoriesGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
@@ -17,9 +21,21 @@ public class DefaultCategoriesGateway implements CategoriesGateway {
 
     private final CategoriesRepository categoriesRepository;
 
+    @Value("${pagination.pageSize}")
+    private int PAGE_SIZE;
+
     @Override
-    public List<Categories> findAll(){
-        return categoriesRepository.findAll().stream().map(this::toModel).collect(toList());
+    public OngPage<Categories> findAll(int pageNumber) {
+        Page<CategoriesEntity> categoriesEntityPage = categoriesRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE));
+        List<Categories> categories = categoriesEntityPage.getContent().stream()
+                .map(this::toModel)
+                .collect(toList());
+
+        return new OngPage.OngPageBuilder<Categories>("categories")
+                .body(categories)
+                .pageNumber(pageNumber)
+                .totalPages(categoriesEntityPage.getTotalPages())
+                .build();
     }
 
     @Override

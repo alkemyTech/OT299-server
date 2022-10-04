@@ -2,25 +2,41 @@ package com.alkemy.ong.data.gateways;
 
 import com.alkemy.ong.data.entities.MemberEntity;
 import com.alkemy.ong.data.repositories.MemberRepository;
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
+
 
 @Component
 @RequiredArgsConstructor
 public class DefaultMemberGateway implements MemberGateway {
     private final  MemberRepository memberRepository;
+
+    @Value("${pagination.pageSize}")
+    private int PAGE_SIZE;
     @Override
-    public List<Member> findAll() {
-        return memberRepository.findAll().stream()
+    public OngPage<Member> findAll(int pageNumber) {
+        Page<MemberEntity> membersEntityPage = memberRepository.findAll(PageRequest.of(pageNumber, PAGE_SIZE));
+        List<Member> members = membersEntityPage.getContent().stream()
                 .map(this::toModel)
                 .collect(toList());
+
+        return new OngPage.OngPageBuilder<Member>("members")
+                .body(members)
+                .pageNumber(pageNumber)
+                .totalPages(membersEntityPage.getTotalPages())
+                .build();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.alkemy.ong.domain.news;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -26,4 +27,7 @@ public class New {
     private LocalDateTime updatedAt;
 
     private boolean deleted;
+
+    public void addAttribute(String list, List<New> content) {
+    }
 }
