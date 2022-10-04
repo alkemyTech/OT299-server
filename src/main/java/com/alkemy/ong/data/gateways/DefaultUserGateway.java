@@ -4,10 +4,15 @@ import com.alkemy.ong.data.entities.RoleEntity;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.exceptions.UnauthorizedException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.Builder;
+
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -27,15 +32,26 @@ public class DefaultUserGateway implements UserGateway {
     @Override
     public void deleteById(Long id) {
         UserEntity entity = repository.findById(id).orElseThrow(() ->
-            new ResourceNotFoundException("User", "id", id));
+                new ResourceNotFoundException("User", "id", id));
         repository.deleteById(entity.getId());
     }
 
     @Override
     public User updateById(Long id, User user) {
         UserEntity entity = repository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("User","id",id));
-        return toModel(repository.save(toEntity(entity, user)));
+                new ResourceNotFoundException("User", "id", id));
+        return toModel(repository.save(updateEntity(entity, user)));
+    }
+
+    public User save(User user) {
+        return toModel(repository.save(updateEntity(new UserEntity(), user)));
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        UserEntity entity = repository.findByEmail(email).orElseThrow(() ->
+                new UnauthorizedException());
+        return toModel(entity);
     }
 
     private User toModel(UserEntity entity) {
@@ -53,12 +69,14 @@ public class DefaultUserGateway implements UserGateway {
                 .build();
     }
 
-    private UserEntity toEntity(UserEntity entity, User user) {
+    private UserEntity updateEntity(UserEntity entity, User user) {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setId(user.getRoleId());
+        entity.setId(user.getId());
         entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
+        entity.setPassword(user.getPassword());
         entity.setPhoto(user.getPhoto());
         entity.setRoleId(roleEntity);
         return entity;
