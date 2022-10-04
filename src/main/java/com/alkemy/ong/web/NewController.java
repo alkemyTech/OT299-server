@@ -2,6 +2,7 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.CategoriesService;
+import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentService;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewService;
@@ -31,8 +32,8 @@ public class NewController {
 
     @DeleteMapping (path = "/{id}")
     public ResponseEntity delete(@PathVariable (value = "id") Long id){
-    newService.deleteById(id);
-    return ResponseEntity.noContent().build();
+        newService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
   @GetMapping
@@ -44,12 +45,14 @@ public class NewController {
    }
 
     @GetMapping("{id}/comments")
-    public ResponseEntity<List<CommentController.CommentCreateDto>> findCommentsByNewId(@PathVariable Long id){
+    public ResponseEntity<NewDto> findCommentsByNewId(@PathVariable Long id){
+        NewDto newDto = toDto(newService.findById(id));
+        List<CommentController.CommentCreateDto> commentCreateDto = commentService.findByNewsId(id)
+                .stream()
+                .map(commentController::toDtoForCreate)
+                .collect(toList());
         return ResponseEntity.ok()
-                .body(commentService.findByNewsId(id)
-                        .stream()
-                        .map(commentController::toDtoForCreate)
-                        .collect(toList()));
+                .body(addCommentsToDto(newDto, commentCreateDto));
     }
 
     @GetMapping(path = "/{id}")
@@ -68,6 +71,11 @@ public class NewController {
         return new ResponseEntity<>(toDto(news), HttpStatus.OK );
     }
 
+    private NewDto addCommentsToDto(NewDto newDto, List<CommentController.CommentCreateDto> commentCreateDtos){
+        newDto.setComments(commentCreateDtos);
+        return newDto;
+
+    }
 
     private NewDto toDto (New news){
         return NewDto.builder()
@@ -110,6 +118,7 @@ public class NewController {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private boolean deleted;
+        private List<CommentController.CommentCreateDto> comments;
 
     }
 }
