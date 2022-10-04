@@ -1,13 +1,15 @@
 package com.alkemy.ong.domain.news;
 
-import java.util.List;
+import com.alkemy.ong.domain.OngPage;
+
 
 public interface NewGateway {
 
-    public void deleteById (Long id);
+    void deleteById (Long id);
 
-    List<New> findAll();
+
+    OngPage<New> findAll(int pageNumber);
     New findById (Long id);
-    public New save (New news);
-    public New update (New news, Long id);
+    New save (New news);
+    New update (New news, Long id);
 }

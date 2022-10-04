@@ -1,7 +1,6 @@
 package com.alkemy.ong.domain.contacts;
 
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 
