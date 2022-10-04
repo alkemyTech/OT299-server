@@ -1,6 +1,8 @@
 package com.alkemy.ong.data.repositories;
 
 import com.alkemy.ong.data.entities.TestimonialEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +13,5 @@ public interface TestimonialRepository extends CrudRepository<TestimonialEntity,
 
     List<TestimonialEntity> findAll();
     void deleteById(Long id);
+    Page<TestimonialEntity> findAll(Pageable pageable);
 }

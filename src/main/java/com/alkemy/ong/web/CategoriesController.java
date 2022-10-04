@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.Categories;
 import com.alkemy.ong.domain.categories.CategoriesService;
 import lombok.*;
@@ -10,9 +11,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.*;
 
 @AllArgsConstructor
 @RequestMapping("/categories")
@@ -22,9 +20,9 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @GetMapping
-    public ResponseEntity<List<CategoriesDtoByName>> findAll() {
-        return ResponseEntity.ok().body(categoriesService.findAll()
-                .stream().map(this::toDtoByName).collect(toList()));
+    public ResponseEntity<OngPage<Categories>> pageAll(@RequestParam Integer page) {
+        OngPage<Categories> pageCategories = categoriesService.findAll(page);
+        return ResponseEntity.ok(pageCategories);
     }
 
     @GetMapping("/{id}")
