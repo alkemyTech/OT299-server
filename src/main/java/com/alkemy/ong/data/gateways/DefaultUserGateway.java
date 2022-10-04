@@ -4,15 +4,17 @@ import com.alkemy.ong.data.entities.RoleEntity;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.exceptions.UnauthorizedException;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.Builder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -41,29 +43,16 @@ public class DefaultUserGateway implements UserGateway {
         return toModel(repository.save(updateEntity(entity, user)));
     }
 
-    @Override
     public User save(User user) {
         return toModel(repository.save(updateEntity(new UserEntity(), user)));
     }
 
     @Override
-    public boolean authenticate(String email, String password) {
-        Optional<UserEntity> entity = Optional.ofNullable(repository.findByEmail(email).orElseThrow(() ->
-                new ResourceNotFoundException("Email", email, 404L)));
-            return verifyPassword(password, entity.get().getPassword());
-
+    public User findByEmail(String email) {
+        UserEntity entity = repository.findByEmail(email).orElseThrow(() ->
+                new UnauthorizedException());
+        return toModel(entity);
     }
-
-    private String encryptPassword(String password) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder.encode(password);
-    }
-
-    private boolean verifyPassword(String originalPassword, String hashPassword) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder.matches(originalPassword, hashPassword);
-    }
-
 
     private User toModel(UserEntity entity) {
         return User.builder()
@@ -71,7 +60,7 @@ public class DefaultUserGateway implements UserGateway {
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .email(entity.getEmail())
-                .password(encryptPassword(entity.getPassword()))
+                .password(entity.getPassword())
                 .photo(entity.getPhoto())
                 .roleId(entity.getRoleId().getId())
                 .updatedAt(entity.getUpdatedAt())
@@ -80,7 +69,6 @@ public class DefaultUserGateway implements UserGateway {
                 .build();
     }
 
-
     private UserEntity updateEntity(UserEntity entity, User user) {
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setId(user.getRoleId());
@@ -88,7 +76,7 @@ public class DefaultUserGateway implements UserGateway {
         entity.setFirstName(user.getFirstName());
         entity.setLastName(user.getLastName());
         entity.setEmail(user.getEmail());
-        entity.setPassword(encryptPassword(user.getPassword()));
+        entity.setPassword(user.getPassword());
         entity.setPhoto(user.getPhoto());
         entity.setRoleId(roleEntity);
         return entity;
