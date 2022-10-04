@@ -11,4 +11,6 @@ public interface CommentRepository extends CrudRepository<CommentEntity, Long> {
     List<CommentEntity> findByOrderByCreatedAt();
 
     void deleteById(Long id);
+
+    List<CommentEntity> findByNewsId(long newsId);
 }
