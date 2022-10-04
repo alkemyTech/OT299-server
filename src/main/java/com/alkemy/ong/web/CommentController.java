@@ -56,7 +56,7 @@ public class CommentController {
                 .body(comment.getBody()).build();
     }
 
-    private CommentCreateDto toDtoForCreate(Comment comment){
+    public CommentCreateDto toDtoForCreate(Comment comment){
         return CommentCreateDto.builder()
                 .id(comment.getId())
                 .postId(comment.getNewsId())

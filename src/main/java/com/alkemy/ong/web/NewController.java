@@ -2,17 +2,19 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.CategoriesService;
+import com.alkemy.ong.domain.comments.Comment;
+import com.alkemy.ong.domain.comments.CommentService;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
-
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -24,10 +26,14 @@ public class NewController {
 
     CategoriesService categoriesService;
 
+    CommentController commentController;
+
+    private final CommentService commentService;
+
     @DeleteMapping (path = "/{id}")
     public ResponseEntity delete(@PathVariable (value = "id") Long id){
-    newService.deleteById(id);
-    return ResponseEntity.noContent().build();
+        newService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
   @GetMapping
@@ -37,6 +43,17 @@ public class NewController {
 
        return ResponseEntity.ok(pageNews);
    }
+
+    @GetMapping("{id}/comments")
+    public ResponseEntity<NewDto> findCommentsByNewId(@PathVariable Long id){
+        NewDto newDto = toDto(newService.findById(id));
+        List<CommentController.CommentCreateDto> commentCreateDto = commentService.findByNewsId(id)
+                .stream()
+                .map(commentController::toDtoForCreate)
+                .collect(toList());
+        return ResponseEntity.ok()
+                .body(addCommentsToDto(newDto, commentCreateDto));
+    }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<New> findById (@PathVariable Long id){
@@ -54,6 +71,11 @@ public class NewController {
         return new ResponseEntity<>(toDto(news), HttpStatus.OK );
     }
 
+    private NewDto addCommentsToDto(NewDto newDto, List<CommentController.CommentCreateDto> commentCreateDtos){
+        newDto.setComments(commentCreateDtos);
+        return newDto;
+
+    }
 
     private NewDto toDto (New news){
         return NewDto.builder()
@@ -81,6 +103,7 @@ public class NewController {
                 .build();
     }
 
+
     @Setter
     @Getter
     @AllArgsConstructor
@@ -95,6 +118,7 @@ public class NewController {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private boolean deleted;
+        private List<CommentController.CommentCreateDto> comments;
 
     }
 }
