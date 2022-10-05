@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class Slide {
+
     private Long id;
     private String imageUrl;
     private String slideText;
