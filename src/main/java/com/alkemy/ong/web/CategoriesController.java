@@ -3,7 +3,10 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.categories.Categories;
 import com.alkemy.ong.domain.categories.CategoriesService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,44 +24,80 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @GetMapping
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "404", description = "Not Found")
-    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+    })
     public ResponseEntity<OngPage<Categories>> pageAll(@RequestParam Integer page) {
         OngPage<Categories> pageCategories = categoriesService.findAll(page);
         return ResponseEntity.ok(pageCategories);
     }
 
     @GetMapping("/{id}")
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "404", description = "Not Found")
-    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
+                            mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                            value = "{error: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "error: Category not found with: id :")})}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+            })
     public ResponseEntity<Categories> findCategoryById(@PathVariable(name = "id") long id) {
         return ResponseEntity.ok(categoriesService.findById(id));
     }
 
     @PostMapping
-    @ApiResponse(responseCode = "201", description = "Created")
-    @ApiResponse(responseCode = "400", description = "Bad Request")
-    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created"),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Name is required]}")})}),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+    })
     public ResponseEntity<CategoriesDto> createCategory(@Valid @RequestBody CategoriesDto categoriesDto){
         Categories categories = categoriesService.createCategory(toModel(categoriesDto));
         return new ResponseEntity(toDto(categories), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "404", description = "Not Found")
-    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "error: Category not found with: id :")})}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+    })
     public ResponseEntity<CategoriesDtoById> updateCategory(@PathVariable(name = "id") Long id, @RequestBody CategoriesDtoById categoriesDtoById){
         Categories categories = categoriesService.updateCategory(id, toModelById(categoriesDtoById));
         return new ResponseEntity<>(toDtoById(categories), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @ApiResponse(responseCode = "204", description = "No Content")
-    @ApiResponse(responseCode = "404", description = "Not Found")
-    @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "error: Category not found with: id :")})}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+    })
     public ResponseEntity deleteCategory(@PathVariable Long id) {
         categoriesService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
