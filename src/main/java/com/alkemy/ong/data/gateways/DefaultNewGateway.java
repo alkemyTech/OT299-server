@@ -78,7 +78,7 @@ public class DefaultNewGateway implements NewGateway {
         return toModel(updateNew(newEntity, news, categoryEntity));
     }
 
-    private New toModel(NewEntity newEntity){
+    public New toModel(NewEntity newEntity){
         return New.builder()
                 .id(newEntity.getId())
                 .name(newEntity.getName())
