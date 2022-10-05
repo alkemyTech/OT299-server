@@ -1,12 +1,12 @@
 package com.alkemy.ong.data.gateways;
 
-import com.alkemy.ong.data.entities.ActivityEntity;
 import com.alkemy.ong.data.entities.CommentEntity;
 import com.alkemy.ong.data.repositories.CommentRepository;
-import com.alkemy.ong.domain.activities.Activity;
+import com.alkemy.ong.data.repositories.NewRepository;
 import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.comments.CommentGateway;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
+import com.alkemy.ong.domain.news.New;
 import lombok.Builder;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 public class DefaultCommentsGateway implements CommentGateway {
 
     private final CommentRepository commentRepository;
+    private final NewRepository newRepository;
+    private final DefaultNewGateway defaultNewGateway;
 
 
     @Override
@@ -28,6 +30,13 @@ public class DefaultCommentsGateway implements CommentGateway {
     @Override
     public Comment createComment(Comment comment) {
         return toModel(commentRepository.save(toEntity(comment)));
+    }
+
+    @Override
+    public List<Comment> findByNewsId(Long newsId) {
+        New post = defaultNewGateway.toModel(newRepository.findById(newsId).orElseThrow(() ->
+                new ResourceNotFoundException("New", "id", newsId)));
+        return commentRepository.findByNewsId(newsId).stream().map(this::toModel).collect(Collectors.toList());
     }
 
     @Override
@@ -54,6 +63,7 @@ public class DefaultCommentsGateway implements CommentGateway {
                 .deleted(commentEntity.isDeleted())
                 .build();
     }
+
     private CommentEntity toEntity (Comment comment) {
         return CommentEntity.builder()
                 .userId(comment.getUserId())

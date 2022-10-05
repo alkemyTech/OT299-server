@@ -11,6 +11,8 @@ public interface CommentGateway {
 
     Comment createComment(Comment comment);
 
+    List<Comment> findByNewsId(Long NewsId);
+
     void deleteById(Long id);
 
 
