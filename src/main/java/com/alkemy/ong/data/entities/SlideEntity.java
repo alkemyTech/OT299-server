@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
@@ -27,7 +26,6 @@ public class SlideEntity {
 
     private String imageUrl;
     private String slideText;
-
     private Long slideOrder;
 
     @Column(name = "organization_id")
