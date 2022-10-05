@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.testimonials.Testimonial;
 import com.alkemy.ong.domain.testimonials.TestimonialService;
 import lombok.*;
@@ -17,6 +18,12 @@ import java.time.LocalDateTime;
 public class TestimonialController {
 
     private final TestimonialService testimonialService;
+
+    @GetMapping
+    public ResponseEntity<OngPage<Testimonial>> pageAll(@RequestParam Integer page) {
+        OngPage<Testimonial> pageTestimonials = testimonialService.findAll(page);
+        return ResponseEntity.ok(pageTestimonials);
+    }
 
     @DeleteMapping
     public ResponseEntity<Void> delete(@RequestParam(name = "id") Long id){

@@ -23,6 +23,10 @@ public class CommentService {
         return commentGateway.updateComment(id ,comment);
     }
 
+    public List<Comment> findByNewsId(Long newsId){
+        return commentGateway.findByNewsId(newsId);
+    }
+
     public void deleteById(Long id){
         commentGateway.deleteById(id);
     }
