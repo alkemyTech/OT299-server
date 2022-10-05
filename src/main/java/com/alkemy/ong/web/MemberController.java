@@ -3,6 +3,11 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +24,12 @@ import java.time.LocalDateTime;
 public class MemberController {
 
     MemberService memberService;
+
+    @Operation(summary = "Get a list of Members")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of Members", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Member.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Member.class))),
+            @ApiResponse(responseCode = "404", description = "Members not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Member.class))) })
     @GetMapping()
     public ResponseEntity<OngPage<Member>> findAll(@RequestParam Integer page) {
         OngPage<Member> pageMembers = memberService.findAll(page);
