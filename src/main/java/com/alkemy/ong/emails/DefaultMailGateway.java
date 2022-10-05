@@ -26,11 +26,10 @@ public class DefaultMailGateway implements MailGateway {
     @Value("${emailSender}")
     private String emailSender;
     @Override
-    public void sendMail(String recipientEmail) {
+    public void sendMail(String recipientEmail, String subject, String contentValue) {
         Email from = new Email(this.emailSender);
-        String subject = "Sending with SendGrid is Fun";
         Email to = new Email(recipientEmail);
-        Content content = new Content("text/plain", "and easy to do anywhere, even with Java");
+        Content content = new Content("text/plain", contentValue);
         Mail mail = new Mail(from, subject, to, content);
 
         Request request = new Request();

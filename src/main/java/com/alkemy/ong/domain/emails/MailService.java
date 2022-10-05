@@ -9,8 +9,8 @@ public class MailService {
 
     private final MailGateway mailGateway;
 
-    public void sendMail(String recipientEmail){
-        mailGateway.sendMail(recipientEmail);
+    public void sendMail(Email email){
+        mailGateway.sendMail(email.getEmailRecipient(), email.getSubject(), email.getContent());
     }
 
 }
