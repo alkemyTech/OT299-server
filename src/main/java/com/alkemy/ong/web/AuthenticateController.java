@@ -2,6 +2,7 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+import com.alkemy.ong.domain.auth.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,14 +14,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,19 +28,19 @@ import java.util.Map;
 public class AuthenticateController {
     private final AuthenticationManager authenticationManager;
     private final UserService service;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
-        Map<String, Object> response = new HashMap<>();
-
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userAuthDTO.email, userAuthDTO.password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserDTO user = toDTO(service.findByEmail(userAuthDTO.getEmail()));
-        response.put("User", user);
+        UserDetails userDetails = service.loadUserByUsername(user.email);
+        String jwtToken = jwtUtil.generateToken(userDetails);
 
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new UserAuthResponseDTO(jwtToken), HttpStatus.OK);
     }
 
     @Setter
@@ -51,6 +51,13 @@ public class AuthenticateController {
         private String email;
         @NotNull
         private String password;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    public static class UserAuthResponseDTO {
+        private String jwt;
     }
 
     @Setter
