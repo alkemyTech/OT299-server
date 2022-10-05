@@ -13,6 +13,13 @@ spring:
       secretKey:
       bucketName:
 
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      file-size-threshold: 2KB
+      max-request-size: 25MB
+
 logging:
   level:
     org:

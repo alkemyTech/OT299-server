@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.cloud.AmazonService;
 import com.alkemy.ong.domain.slides.Slide;
 import com.alkemy.ong.domain.slides.SlideService;
 import lombok.*;
@@ -8,8 +9,10 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -20,6 +23,7 @@ import static java.util.stream.Collectors.toList;
 public class SlideController {
 
     SlideService slideService;
+    private final AmazonService amazonService;
 
 
     @GetMapping()
@@ -35,7 +39,9 @@ public class SlideController {
 
     @PostMapping
     public ResponseEntity<SlideDto> createSlide(@Valid @RequestBody SlideDto slideDto) {
-        slideDto.setImageUrl(Base64.encodeBase64URLSafeString((slideDto.getImageUrl().getBytes())));
+        File image = amazonService.getImageFromBase64(slideDto.imageUrl);
+        String imgUrl = amazonService.uploadFile(image);
+        slideDto.setImageUrl(imgUrl);
         Slide slide = slideService.createSlide(toModel(slideDto));
         return new ResponseEntity<>(toDto(slide), HttpStatus.CREATED);
     }
