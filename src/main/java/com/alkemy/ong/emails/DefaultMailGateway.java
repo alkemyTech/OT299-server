@@ -1,6 +1,7 @@
 package com.alkemy.ong.emails;
 
-import com.alkemy.ong.domain.emails.SendGridMailGateway;
+import com.alkemy.ong.domain.emails.MailGateway;
+import com.alkemy.ong.domain.exceptions.MailException;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -16,14 +17,16 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Component
-public class DefaultSendGridMailGateway implements SendGridMailGateway {
+public class DefaultMailGateway implements MailGateway {
 
     private final SendGrid sendGrid;
+
+    private static final String ERROR_MESSAGE = "failed to send email";
 
     @Value("${emailSender}")
     private String emailSender;
     @Override
-    public Integer sendMail(String recipientEmail) {
+    public void sendMail(String recipientEmail) {
         Email from = new Email(this.emailSender);
         String subject = "Sending with SendGrid is Fun";
         Email to = new Email(recipientEmail);
@@ -31,18 +34,19 @@ public class DefaultSendGridMailGateway implements SendGridMailGateway {
         Mail mail = new Mail(from, subject, to, content);
 
         Request request = new Request();
-        Integer statusCode = null;
         try {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = this.sendGrid.api(request);
-            statusCode= response.getStatusCode();
+            if(response.getStatusCode()!=200 && response.getStatusCode()!=202){
+                throw new MailException(ERROR_MESSAGE);
+            }
+
 
         } catch (IOException ex) {
             ex.printStackTrace();
+            throw new MailException(ERROR_MESSAGE);
         }
-
-        return statusCode;
     }
 }

@@ -3,7 +3,7 @@ package com.alkemy.ong.domain.emails;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface SendGridMailGateway {
+public interface MailGateway {
 
-    Integer sendMail(String recipientEmail);
+    void sendMail(String recipientEmail);
 }
