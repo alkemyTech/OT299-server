@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthenticateController {
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder encoder;
     private final UserService service;
 
    @PostMapping("/login")
@@ -45,6 +47,9 @@ public class AuthenticateController {
 
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody User userRegister) {
+       //encriptar
+        String passwordEncryp = encoder.encode(userRegister.getPassword());
+        userRegister.setPassword(passwordEncryp);
         UserDTO user = toDTO(service.save(userRegister));
         return new ResponseEntity<>(userRegister, HttpStatus.CREATED);
     }
@@ -55,6 +60,7 @@ public class AuthenticateController {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
+                .roleId(user.getRoleId())
                 .build();
     }
 
@@ -78,6 +84,7 @@ public class AuthenticateController {
         private String firstName;
         private String lastName;
         private String email;
+        private Long roleId;
     }
 
     @Setter

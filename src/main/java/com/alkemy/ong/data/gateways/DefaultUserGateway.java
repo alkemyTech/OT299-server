@@ -41,6 +41,7 @@ public class DefaultUserGateway implements UserGateway {
     }
 
     public User save(User user) {
+
         return toModel(repository.save(updateEntity(new UserEntity(), user)));
     }
 
