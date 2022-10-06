@@ -101,9 +101,6 @@ public class NewController {
     @ApiResponse(responseCode = "400",  description = "Bad Request", content = {@Content(
             mediaType = "application/json", examples = {@ExampleObject(name= "errors",
             value = "{errors: [Name is required]}")})})
-    @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
-            mediaType = "application/json", examples = {@ExampleObject(name= "errors",
-            value = "error: Category not found with: id :")})})
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
             mediaType = "application/json", examples = {@ExampleObject(name= "errors",
             value = "{error: [Internal Server Error]}")})})
