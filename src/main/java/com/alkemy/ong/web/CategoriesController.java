@@ -40,7 +40,7 @@ public class CategoriesController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
                             mediaType = "application/json", examples = {@ExampleObject(name= "errors",
-                            value = "{error: [Invalid Input]}")})}),
+                            value = "{errors: [Invalid Input]}")})}),
             @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "error: Category not found with: id :")})}),
@@ -57,10 +57,10 @@ public class CategoriesController {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
-                    value = "{error: [Name is required]}")})}),
+                    value = "{errors: [Name is required]}")})}),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
-                    value = "{error: [Invalid Input]}")})}),
+                    value = "{errors: [Invalid Input]}")})}),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "{error: [Internal Server Error]}")})})
@@ -75,7 +75,7 @@ public class CategoriesController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
-                    value = "{error: [Invalid Input]}")})}),
+                    value = "{errors: [Invalid Input]}")})}),
             @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "error: Category not found with: id :")})}),
