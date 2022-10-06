@@ -9,6 +9,7 @@ import com.alkemy.ong.domain.news.NewService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import static java.util.stream.Collectors.toList;
 
 
 @RestController
+@PreAuthorize("hasRole('ROLE_1')")
 @RequestMapping("/news")
 @AllArgsConstructor
 public class NewController {
@@ -36,14 +38,16 @@ public class NewController {
         return ResponseEntity.noContent().build();
     }
 
-  @GetMapping
+    @PreAuthorize("permitAll()")
+    @GetMapping
     public ResponseEntity<OngPage<New>> findAll (@RequestParam Integer page) {
 
        OngPage<New> pageNews = newService.findAll(page);
 
        return ResponseEntity.ok(pageNews);
-   }
+    }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("{id}/comments")
     public ResponseEntity<NewDto> findCommentsByNewId(@PathVariable Long id){
         NewDto newDto = toDto(newService.findById(id));
@@ -55,15 +59,18 @@ public class NewController {
                 .body(addCommentsToDto(newDto, commentCreateDto));
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping(path = "/{id}")
     public ResponseEntity<New> findById (@PathVariable Long id){
         return ResponseEntity.ok(newService.findById(id));
     }
+
     @PostMapping
     public ResponseEntity<NewDto> create(@Valid @RequestBody NewDto newDto){
          New news = newService.create(toModel(newDto));
          return new ResponseEntity<>(toDto(news), HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<NewController.NewDto>update (@Valid @RequestBody NewController.NewDto newDto,
                                                              @PathVariable final Long id){

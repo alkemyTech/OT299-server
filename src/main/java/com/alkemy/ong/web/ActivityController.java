@@ -5,12 +5,14 @@ import com.alkemy.ong.domain.activities.ActivityService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @RestController
+@PreAuthorize("hasRole('ROLE_1')")
 @RequestMapping("/activities")
 @AllArgsConstructor
 public class ActivityController {

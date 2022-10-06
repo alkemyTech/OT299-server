@@ -15,7 +15,6 @@ import java.util.function.Function;
 @Service
 public class JwtUtil {
 
-    private static final long serialVersionUID = 234234523523L;
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     @Value("${jwt.secret}")
@@ -45,6 +44,7 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("ROLE", userDetails.getAuthorities().toString());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 

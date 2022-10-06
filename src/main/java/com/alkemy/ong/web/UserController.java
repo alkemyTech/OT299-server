@@ -5,6 +5,7 @@ import com.alkemy.ong.domain.users.UserService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @RestController
+@PreAuthorize("hasRole('ROLE_1')")
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
