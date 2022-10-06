@@ -7,7 +7,6 @@ import com.alkemy.ong.domain.slides.SlideService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,7 +30,6 @@ public class OrganizationsController {
         return ResponseEntity.ok(toDto(organizationService.findOrganizationById(id)));
     }
 
-    @PreAuthorize("hasRole('ROLE_1')")
     @PutMapping("/{id}")
     public ResponseEntity<OrganizationDto>update (@Valid @RequestBody OrganizationDto organizationDto,
                                                              @PathVariable final Long id){

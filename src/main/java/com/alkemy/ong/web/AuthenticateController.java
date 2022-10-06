@@ -2,7 +2,7 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
-import com.alkemy.ong.domain.auth.util.JwtUtil;
+import com.alkemy.ong.web.security.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

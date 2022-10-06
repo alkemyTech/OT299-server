@@ -6,7 +6,6 @@ import com.alkemy.ong.domain.testimonials.TestimonialService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,14 +13,12 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @RestController
-@PreAuthorize("hasRole('ROLE_1')")
 @RequestMapping("/testimonials")
 @AllArgsConstructor
 public class TestimonialController {
 
     private final TestimonialService testimonialService;
 
-    @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<OngPage<Testimonial>> pageAll(@RequestParam Integer page) {
         OngPage<Testimonial> pageTestimonials = testimonialService.findAll(page);

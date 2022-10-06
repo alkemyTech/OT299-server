@@ -6,7 +6,6 @@ import com.alkemy.ong.domain.categories.CategoriesService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -15,20 +14,17 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @RequestMapping("/categories")
-@PreAuthorize("hasRole('ROLE_1')")
 @RestController
 public class CategoriesController {
 
     CategoriesService categoriesService;
 
-    @PreAuthorize("permitAll()")
     @GetMapping
     public ResponseEntity<OngPage<Categories>> pageAll(@RequestParam Integer page) {
         OngPage<Categories> pageCategories = categoriesService.findAll(page);
         return ResponseEntity.ok(pageCategories);
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping("/{id}")
     public ResponseEntity<Categories> findCategoryById(@PathVariable(name = "id") long id) {
         return ResponseEntity.ok(categoriesService.findById(id));

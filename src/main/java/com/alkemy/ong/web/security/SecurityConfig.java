@@ -1,10 +1,10 @@
 package com.alkemy.ong.web.security;
 
-import com.alkemy.ong.domain.auth.filter.JwtFilter;
 import com.alkemy.ong.domain.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,8 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/*",  "/testimonials/**", "/users/**", "/slides/**", "/news/**", "/members/**",
-                "/organization/**", "/contacts/**", "/comments/**", "/categories/**", "/activities/**" )
+                .antMatchers(HttpMethod.POST,"/auth/*")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/**")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()

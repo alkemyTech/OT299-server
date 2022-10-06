@@ -5,7 +5,6 @@ import com.alkemy.ong.domain.contacts.ContactsService;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -21,13 +20,11 @@ public class ContactsController {
 
     ContactsService contactsService;
 
-    @PreAuthorize("permitAll()")
     @GetMapping
     public List<ContactsDto> findAll(){
         return contactsService.findAll().stream().map(this::toDto).collect(toList());
     }
 
-    @PreAuthorize("hasRole('ROLE_1')")
     @PostMapping
     public ResponseEntity<ContactsController.ContactsDto> createContact(@Valid @RequestBody ContactsController.ContactsDto contactsDto){
         Contacts contacts = contactsService.createContact(toModel(contactsDto));
