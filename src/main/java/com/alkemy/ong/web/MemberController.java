@@ -3,11 +3,8 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.OngPage;
 import com.alkemy.ong.domain.members.Member;
 import com.alkemy.ong.domain.members.MemberService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
+
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,30 +22,37 @@ public class MemberController {
 
     MemberService memberService;
 
-    @Operation(summary = "Get a list of Members")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "List of Members", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Member.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Member.class))),
-            @ApiResponse(responseCode = "404", description = "Members not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Member.class))) })
     @GetMapping()
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "400", description = "Bad Request")
+    @ApiResponse(responseCode = "404", description = "Not Found")
     public ResponseEntity<OngPage<Member>> findAll(@RequestParam Integer page) {
         OngPage<Member> pageMembers = memberService.findAll(page);
         return  ResponseEntity.ok(pageMembers);
     }
 
     @DeleteMapping(path = "/{id}")
+    @ApiResponse(responseCode = "204", description = "No Content")
+    @ApiResponse(responseCode = "400", description = "Bad Request")
+    @ApiResponse(responseCode = "404", description = "Not Found")
     public ResponseEntity delete(@PathVariable Long id){
         memberService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping()
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "400", description = "Bad Request")
+    @ApiResponse(responseCode = "404", description = "Not Found")
     public ResponseEntity<MemberDto> create(@Valid @RequestBody MemberDto memberDto){
         Member member = memberService.create(toModel(memberDto));
         return new ResponseEntity<>(toDto(member),HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "400", description = "Bad Request")
+    @ApiResponse(responseCode = "404", description = "Not Found")
     public ResponseEntity<MemberDto>update (@Valid @RequestBody MemberDto memberDto,
                                             @PathVariable final Long id){
         Member member = memberService.update(toModel(memberDto), id);
