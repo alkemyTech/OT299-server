@@ -33,7 +33,7 @@ public class NewController {
 
     @DeleteMapping (path = "/{id}")
     @ApiResponse(responseCode = "204", description = "No Content")
-    @ApiResponse(responseCode = "400", description = "Bad Request")
+    @ApiResponse(responseCode = "400", description = "Invalid input")
     @ApiResponse(responseCode = "404", description = "Not Found")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity delete(@PathVariable (value = "id") Long id){
@@ -43,7 +43,8 @@ public class NewController {
 
   @GetMapping
   @ApiResponse(responseCode = "204", description = "No Content")
-  @ApiResponse(responseCode = "400", description = "Bad Request")
+  @ApiResponse(responseCode = "400", description = "Invalid input")
+  @ApiResponse(responseCode = "404", description = "New not found with: id :")
   @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity<OngPage<New>> findAll (@RequestParam Integer page) {
 
@@ -64,27 +65,27 @@ public class NewController {
     }
 
     @GetMapping(path = "/{id}")
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "400", description = "Bad Request")
-    @ApiResponse(responseCode = "404", description = "Not Found")
+    @ApiResponse(responseCode = "200", description = "List of News")
+    @ApiResponse(responseCode = "400", description = "Invalid input")
+    @ApiResponse(responseCode = "404", description = "New not found with: id :")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity<New> findById (@PathVariable Long id){
 
         return ResponseEntity.ok(newService.findById(id));
     }
     @PostMapping
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "400", description = "Bad Request")
-    @ApiResponse(responseCode = "404", description = "Not Found")
+    @ApiResponse(responseCode = "200", description = "Show fields new create")
+    @ApiResponse(responseCode = "400", description = "Invalid input")
+    @ApiResponse(responseCode = "404", description = "New not found with: id :")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity<NewDto> create(@Valid @RequestBody NewDto newDto){
          New news = newService.create(toModel(newDto));
          return new ResponseEntity<>(toDto(news), HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "400", description = "Bad Request")
-    @ApiResponse(responseCode = "404", description = "Not Found")
+    @ApiResponse(responseCode = "200", description = "Update fields entity New")
+    @ApiResponse(responseCode = "400", description = "Invalid input")
+    @ApiResponse(responseCode = "404", description = "New not found with: id :")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity<NewController.NewDto>update (@Valid @RequestBody NewController.NewDto newDto,
                                                              @PathVariable final Long id){
