@@ -46,7 +46,6 @@ public class NewController {
     }
 
     @GetMapping
-  @GetMapping
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
           mediaType = "application/json", examples = {@ExampleObject(name= "errors",
