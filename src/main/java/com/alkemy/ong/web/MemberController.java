@@ -31,7 +31,7 @@ public class MemberController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @ApiResponse(responseCode = "200", description = "No Content")
+    @ApiResponse(responseCode = "204", description = "No Content")
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Not Found")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
@@ -50,7 +50,7 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    @ApiResponse(responseCode = "201", description = "Ok")
+    @ApiResponse(responseCode = "200", description = "Ok")
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Not Found")
     @ApiResponse(responseCode = "500", description = "Internal Server Error")
