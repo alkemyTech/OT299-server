@@ -24,35 +24,36 @@ public class MemberController {
 
     @GetMapping()
     @ApiResponse(responseCode = "200", description = "OK")
-    @ApiResponse(responseCode = "400", description = "Bad Request")
-    @ApiResponse(responseCode = "404", description = "Not Found")
+    @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity<OngPage<Member>> findAll(@RequestParam Integer page) {
         OngPage<Member> pageMembers = memberService.findAll(page);
         return  ResponseEntity.ok(pageMembers);
     }
 
     @DeleteMapping(path = "/{id}")
-    @ApiResponse(responseCode = "204", description = "No Content")
+    @ApiResponse(responseCode = "200", description = "No Content")
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Not Found")
+    @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity delete(@PathVariable Long id){
         memberService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping()
-    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400", description = "Bad Request")
-    @ApiResponse(responseCode = "404", description = "Not Found")
+    @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity<MemberDto> create(@Valid @RequestBody MemberDto memberDto){
         Member member = memberService.create(toModel(memberDto));
         return new ResponseEntity<>(toDto(member),HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @ApiResponse(responseCode = "200", description = "OK")
+    @ApiResponse(responseCode = "201", description = "Ok")
     @ApiResponse(responseCode = "400", description = "Bad Request")
     @ApiResponse(responseCode = "404", description = "Not Found")
+    @ApiResponse(responseCode = "500", description = "Internal Server Error")
     public ResponseEntity<MemberDto>update (@Valid @RequestBody MemberDto memberDto,
                                             @PathVariable final Long id){
         Member member = memberService.update(toModel(memberDto), id);
