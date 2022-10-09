@@ -31,7 +31,7 @@ public class AuthenticateController {
     private final PasswordEncoder encoder;
     private final UserService service;
 
-   @PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
         Map<String, Object> response = new HashMap<>();
 
@@ -47,11 +47,10 @@ public class AuthenticateController {
 
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody User userRegister) {
-       //encriptar
-        String passwordEncryp = encoder.encode(userRegister.getPassword());
-        userRegister.setPassword(passwordEncryp);
+        String passwordEncrypted = encoder.encode(userRegister.getPassword());
+        userRegister.setPassword(passwordEncrypted);
         UserDTO user = toDTO(service.save(userRegister));
-        return new ResponseEntity<>(userRegister, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     private UserDTO toDTO(User user) {
