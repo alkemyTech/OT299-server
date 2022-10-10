@@ -5,9 +5,6 @@ import com.alkemy.ong.domain.categories.CategoriesService;
 import com.alkemy.ong.domain.comments.CommentService;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.news.NewService;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +45,7 @@ public class NewController {
         return ResponseEntity.noContent().build();
     }
 
-  @GetMapping
+    @GetMapping
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
           mediaType = "application/json", examples = {@ExampleObject(name= "errors",
@@ -58,7 +55,7 @@ public class NewController {
        OngPage<New> pageNews = newService.findAll(page);
 
        return ResponseEntity.ok(pageNews);
-   }
+    }
 
     @GetMapping("{id}/comments")
     @ApiResponse(responseCode = "200", description = "OK")
@@ -96,6 +93,7 @@ public class NewController {
 
         return ResponseEntity.ok(newService.findById(id));
     }
+
     @PostMapping
     @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400",  description = "Bad Request", content = {@Content(
@@ -108,6 +106,7 @@ public class NewController {
          New news = newService.create(toModel(newDto));
          return new ResponseEntity<>(toDto(news), HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "400",  description = "Bad Request", content = {@Content(
