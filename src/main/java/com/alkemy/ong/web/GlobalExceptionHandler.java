@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.exceptions.MailException;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.exceptions.UnauthorizedException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -26,6 +27,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             ResourceNotFoundException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(MailException.class)
+    protected ResponseEntity<Object> mailConflict(
+            MailException ex, WebRequest request) {
+        return handleExceptionInternal(ex, ex.getMessage(),
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @Override

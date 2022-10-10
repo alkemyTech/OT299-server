@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class MemberController {
 
     MemberService memberService;
+
     @GetMapping()
     public ResponseEntity<OngPage<Member>> findAll(@RequestParam Integer page) {
         OngPage<Member> pageMembers = memberService.findAll(page);
