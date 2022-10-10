@@ -21,12 +21,12 @@ VALUES  (1, 'Maria','Iraola','mariairaola@somosmas.com','SomosUnaOng_1001','http
         (3, 'Miriam', 'Rodriguez', 'miriamrodriguez@somosmas.com', 'MuchosMasMiembros_1011', 'https://drive.google.com/file/d/1PNHzyL26jzsHltv281_rc3vEKdtTg2dF/view?usp=sharing', 1),
         (4, 'Cecilia','Mendez','ceciliamendez@somosmas.com','CreandoNuevasOportunidades_1100','https://drive.google.com/file/d/18Jub8i5qQnjBpuR-EsVx9Xtc0tzS2dmx/view?usp=sharing',1),
         (5, 'Mario','Fuetes','mariofuentes@somosmas.com','VamosArriba_1101','',1),
-        (6, 'AdministratorMock1','Mock1','Mock1@somosmas.com','Mock1','',1),
+        (6, 'AdministratorMock1','Mock1','Mock1@somosmas.com',"Mock1",'',1),
         (7, 'AdministratorMock2','Mock2','Mock2@somosmas.com','Mock2','',1),
         (8, 'AdministratorMock3','Mock3','Mock3@somosmas.com','Mock3','',1),
         (9, 'AdministratorMock4','Mock4','Mock4@somosmas.com','Mock4','',1),
         (10, 'AdministratorMock5','Mock5','Mock5@somosmas.com','Mock5','',1),
-        (11, 'ContributorMock6','Mock6','Mock6@somosmas.com','Mock6','',2),
+        (11, 'ContributorMock6','Mock6','Mock6@somosmas.com',"Mock6",'',2),
         (12, 'ContributorMock7','Mock7','Mock7@somosmas.com','Mock7','',2),
         (13, 'ContributorMock8','Mock8','Mock8@somosmas.com','Mock8','',2),
         (14, 'ContributorMock9','Mock9','Mock9@somosmas.com','Mock9','',2),
@@ -36,6 +36,8 @@ VALUES  (1, 'Maria','Iraola','mariairaola@somosmas.com','SomosUnaOng_1001','http
         (18, 'ContributorMock11','Mock11','Mock11@somosmas.com','Mock11','',2),
         (19, 'ContributorMock12','Mock12','Mock12@somosmas.com','Mock12','',2),
         (20, 'ContributorMock13','Mock13','Mock13@somosmas.com','Mock13','',2);
+
+
 
 INSERT INTO SLIDES(ID, IMAGE_URL, SLIDE_TEXT, SLIDE_ORDER)
 VALUES  (1,'www.imaginejemplo1.com','Slide de ejemplo 1', 'Primero'),
