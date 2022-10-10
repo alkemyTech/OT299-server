@@ -22,7 +22,6 @@ public class SlideController {
     SlideService slideService;
     private final AmazonService amazonService;
 
-
     @GetMapping()
     public ResponseEntity<List<SlideDto>> findAll() {
         return ResponseEntity.ok()
