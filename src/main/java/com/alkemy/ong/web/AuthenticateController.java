@@ -55,6 +55,7 @@ public class AuthenticateController {
     }
 
     @PostMapping("/register")
+
     public ResponseEntity<?> register(@Valid @RequestBody User userRegister) {
         if (!(service.findByEmail(userRegister.getEmail()) == null)) {
             return new ResponseEntity<>(userRegister, HttpStatus.BAD_REQUEST);
@@ -69,6 +70,7 @@ public class AuthenticateController {
             mailService.sendMail(email);
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
+
     }
 
     private UserDTO toDTO(User user) {
