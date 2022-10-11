@@ -2,6 +2,10 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +34,22 @@ public class AuthenticateController {
     private final UserService service;
 
     @PostMapping("/login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{errors: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{errors: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "error: User not found with: id :")})}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+    })
     public ResponseEntity<?> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
         Map<String, Object> response = new HashMap<>();
 
