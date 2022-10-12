@@ -1,5 +1,7 @@
 package com.alkemy.ong.web.security;
 
+import com.alkemy.ong.domain.users.User;
+import com.alkemy.ong.domain.users.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,8 +19,14 @@ public class JwtUtil {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
+    private final UserService service;
+
     @Value("${jwt.secret}")
     private String secretKey;
+
+    public JwtUtil(UserService service) {
+        this.service = service;
+    }
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -43,8 +51,10 @@ public class JwtUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
+        User user = service.findByEmail(userDetails.getUsername());
         Map<String, Object> claims = new HashMap<>();
         claims.put("ROLE", userDetails.getAuthorities().toString());
+        claims.put("id", user.getId().toString());
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -58,4 +68,17 @@ public class JwtUtil {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+    public Boolean checkIfIsSameUser(String token, int userID ){
+        Claims claims = getAllClaimsFromToken(token);
+        String role = claims.get("ROLE").toString();
+        int tokenId = Integer.parseInt(claims.get("id").toString()) ;
+
+        if(role.equals("[ROLE_1]") || tokenId==userID) {
+
+            return true;
+        }
+        return false;
+    }
+
 }
