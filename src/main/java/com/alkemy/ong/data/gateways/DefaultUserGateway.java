@@ -9,10 +9,7 @@ import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserGateway;
 import lombok.Builder;
 
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -44,13 +41,13 @@ public class DefaultUserGateway implements UserGateway {
     }
 
     public User save(User user) {
+
         return toModel(repository.save(updateEntity(new UserEntity(), user)));
     }
 
     @Override
     public User findByEmail(String email) {
-        UserEntity entity = repository.findByEmail(email).orElseThrow(() ->
-                new UnauthorizedException());
+        UserEntity entity = repository.findByEmail(email).orElseThrow(UnauthorizedException::new);
         return toModel(entity);
     }
 

@@ -48,7 +48,7 @@ public class NewController {
         return ResponseEntity.noContent().build();
     }
 
-  @GetMapping
+    @GetMapping
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
           mediaType = "application/json", examples = {@ExampleObject(name= "errors",
@@ -58,7 +58,7 @@ public class NewController {
        OngPage<New> pageNews = newService.findAll(page);
 
        return ResponseEntity.ok(pageNews);
-   }
+    }
 
     @GetMapping("{id}/comments")
     @ApiResponse(responseCode = "200", description = "OK")
@@ -96,6 +96,7 @@ public class NewController {
 
         return ResponseEntity.ok(newService.findById(id));
     }
+
     @PostMapping
     @ApiResponse(responseCode = "201", description = "Created")
     @ApiResponse(responseCode = "400",  description = "Bad Request", content = {@Content(
@@ -108,6 +109,7 @@ public class NewController {
          New news = newService.create(toModel(newDto));
          return new ResponseEntity<>(toDto(news), HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     @ApiResponse(responseCode = "200", description = "OK")
     @ApiResponse(responseCode = "400",  description = "Bad Request", content = {@Content(
