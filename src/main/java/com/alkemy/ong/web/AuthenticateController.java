@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -56,6 +54,14 @@ public class AuthenticateController {
         UserDTO user = toDTO(service.save(userRegister));
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getAuthUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        String email = jwtUtil.getUsernameFromToken(token);
+        UserDTO user = toDTO(service.findByEmail(email));
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 
     private UserDTO toDTO(User user) {
         return UserDTO.builder()
