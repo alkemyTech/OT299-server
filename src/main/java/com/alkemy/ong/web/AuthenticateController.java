@@ -55,7 +55,7 @@ public class AuthenticateController {
                 new UsernamePasswordAuthenticationToken(userAuthDTO.email, userAuthDTO.password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDTO user = toDTO(service.findByEmail(userAuthDTO.getEmail()));
+        UserRegisteredDTO user = toDTO(service.findByEmail(userAuthDTO.getEmail()));
         UserDetails userDetails = service.loadUserByUsername(user.email);
         String jwtToken = jwtUtil.generateToken(userDetails);
 
@@ -72,11 +72,11 @@ public class AuthenticateController {
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "{error: [Internal Server Error]}")})})
     })
-    public ResponseEntity<UserDTO> register(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
-        String passwordEncrypted = encoder.encode(userRegisterDTO.getPassword());
-        userRegisterDTO.setPassword(passwordEncrypted);
-        UserDTO userDTO = toDTO(service.save(toModel(userRegisterDTO)));
-        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+    public ResponseEntity<UserRegisteredDTO> register(@Valid @RequestBody UserToRegisterDTO userToRegisterDTO) {
+        String passwordEncrypted = encoder.encode(userToRegisterDTO.getPassword());
+        userToRegisterDTO.setPassword(passwordEncrypted);
+        UserRegisteredDTO userRegisteredDTO = toDTO(service.save(toModel(userToRegisterDTO)));
+        return new ResponseEntity<>(userRegisteredDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/me")
@@ -95,15 +95,15 @@ public class AuthenticateController {
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "{error: [Internal Server Error]}")})})
     })
-    public ResponseEntity<UserDTO> getAuthUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public ResponseEntity<UserRegisteredDTO> getAuthUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         String email = jwtUtil.getUsernameFromToken(token);
-        UserDTO user = toDTO(service.findByEmail(email));
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserRegisteredDTO userAuthenticated = toDTO(service.findByEmail(email));
+        return new ResponseEntity<>(userAuthenticated, HttpStatus.OK);
     }
 
 
-    private UserDTO toDTO(User user) {
-        return UserDTO.builder()
+    private UserRegisteredDTO toDTO(User user) {
+        return UserRegisteredDTO.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -112,13 +112,13 @@ public class AuthenticateController {
                 .build();
     }
 
-    private User toModel(UserRegisterDTO userRegisterDTO) {
+    private User toModel(UserToRegisterDTO userToRegisterDTO) {
         return User.builder()
-                .firstName(userRegisterDTO.getFirstName())
-                .lastName(userRegisterDTO.getLastName())
-                .email(userRegisterDTO.getEmail())
-                .password(userRegisterDTO.getPassword())
-                .roleId(userRegisterDTO.getRoleId())
+                .firstName(userToRegisterDTO.getFirstName())
+                .lastName(userToRegisterDTO.getLastName())
+                .email(userToRegisterDTO.getEmail())
+                .password(userToRegisterDTO.getPassword())
+                .roleId(userToRegisterDTO.getRoleId())
                 .build();
     }
 
@@ -144,7 +144,7 @@ public class AuthenticateController {
     @Setter
     @Getter
     @Builder
-    public static class UserDTO {
+    public static class UserRegisteredDTO {
         private Long id;
         private String firstName;
         private String lastName;
@@ -155,7 +155,7 @@ public class AuthenticateController {
     @Setter
     @Getter
     @Builder
-    public static class UserRegisterDTO {
+    public static class UserToRegisterDTO {
         @NotNull
         private String firstName;
         @NotNull
