@@ -5,5 +5,5 @@ import org.springframework.stereotype.Component;
 @Component
 public interface MailGateway {
 
-    void sendMail(String recipientEmail, String subject, String content);
+    void sendMail(String recipientEmail, String subject);
 }

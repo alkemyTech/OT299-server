@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.comments.Comment;
 import com.alkemy.ong.domain.emails.Email;
 import com.alkemy.ong.domain.emails.MailService;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
 
 @RestController
 @AllArgsConstructor
@@ -29,7 +31,7 @@ public class EmailController {
         return Email.builder()
                 .emailRecipient(emailDto.getEmailRecipient())
                 .subject(emailDto.getSubject())
-                .content(emailDto.getContent()).build();
+                .build();
     }
 
     @Getter
@@ -43,7 +45,6 @@ public class EmailController {
 
         private String emailRecipient;
         private String subject;
-        private String content;
     }
 
 }
