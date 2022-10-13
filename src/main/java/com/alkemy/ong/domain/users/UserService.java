@@ -25,16 +25,16 @@ public class UserService implements UserDetailsService {
         gateway.deleteById(id);
     }
 
-    public User save(User user) {
-        return gateway.save(user);
-    }
-
     public User updateById(Long id, User user) {
         return gateway.updateById(id, user);
     }
 
     public User findByEmail(String email) {
         return gateway.findByEmail(email);
+    }
+
+    public User register(User user) {
+        return gateway.register(user);
     }
 
     @Override
@@ -45,6 +45,6 @@ public class UserService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> getAuthorities(User retrievedUser) {
         String role = retrievedUser.getRoleId().toString();
-        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 }

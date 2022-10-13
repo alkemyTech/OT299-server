@@ -3,6 +3,7 @@ package com.alkemy.ong.data.gateways;
 import com.alkemy.ong.data.entities.RoleEntity;
 import com.alkemy.ong.data.entities.UserEntity;
 import com.alkemy.ong.data.repositories.UserRepository;
+import com.alkemy.ong.domain.exceptions.BadRequestException;
 import com.alkemy.ong.domain.exceptions.ResourceNotFoundException;
 import com.alkemy.ong.domain.exceptions.UnauthorizedException;
 import com.alkemy.ong.domain.users.User;
@@ -12,6 +13,7 @@ import lombok.Builder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -40,15 +42,21 @@ public class DefaultUserGateway implements UserGateway {
         return toModel(repository.save(updateEntity(entity, user)));
     }
 
-    public User save(User user) {
-
-        return toModel(repository.save(updateEntity(new UserEntity(), user)));
+    @Override
+    public User findByEmail(String email) {
+        UserEntity entity = repository.findByEmail(email)
+                .orElseThrow(UnauthorizedException::new);
+        return toModel(entity);
     }
 
     @Override
-    public User findByEmail(String email) {
-        UserEntity entity = repository.findByEmail(email).orElseThrow(UnauthorizedException::new);
-        return toModel(entity);
+    public User register(User user) {
+       Optional<UserEntity> optUser = repository.findByEmail(user.getEmail());
+        if (optUser.isPresent()) {
+            throw new BadRequestException();
+        } else {
+            return toModel(repository.save(updateEntity(new UserEntity(), user)));
+        }
     }
 
     private User toModel(UserEntity entity) {

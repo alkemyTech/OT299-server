@@ -12,7 +12,7 @@ public interface UserGateway {
 
     User updateById(Long Id, User user);
 
-    User save(User user);
-
     User findByEmail(String email);
+
+    User register(User user);
 }

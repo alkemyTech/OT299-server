@@ -56,19 +56,14 @@ public class AuthenticateController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody User userRegister) {
-        if (!(service.findByEmail(userRegister.getEmail()) == null)) {
-            return new ResponseEntity<>(userRegister, HttpStatus.BAD_REQUEST);
-        } else {
-            String passwordEncrypted = encoder.encode(userRegister.getPassword());
-            userRegister.setPassword(passwordEncrypted);
-            UserDTO user = toDTO(service.save(userRegister));
-            Email email = null;
-            email.setEmailRecipient(user.getEmail());
-            email.setSubject(SUBJECT);
-            email.setContent(CONTENT);
-            mailService.sendMail(email);
-            return new ResponseEntity<>(user, HttpStatus.CREATED);
-        }
+        String passwordEncrypted = encoder.encode(userRegister.getPassword());
+        userRegister.setPassword(passwordEncrypted);
+
+        UserDTO user = toDTO(service.register(userRegister));
+        mailService.sendMail(Email.builder().emailRecipient(user.getEmail()).subject(SUBJECT).content(CONTENT).build());
+
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+
     }
 
     private UserDTO toDTO(User user) {
