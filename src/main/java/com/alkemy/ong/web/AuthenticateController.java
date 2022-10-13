@@ -24,8 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -39,13 +37,12 @@ public class AuthenticateController {
     @PostMapping("/login")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
-
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "{errors: [Invalid Input]}")})}),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
-                    value = "{errors: [Invalid Input]}")})}),
+                    value = "Las credenciales ingresadas no son validas o no está autorizado para realizar esta operación")})}),
             @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "error: User not found with: id :")})}),
@@ -53,9 +50,7 @@ public class AuthenticateController {
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "{error: [Internal Server Error]}")})})
     })
-    public ResponseEntity<?> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
-        Map<String, Object> response = new HashMap<>();
-
+    public ResponseEntity<UserAuthResponseDTO> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userAuthDTO.email, userAuthDTO.password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -68,14 +63,38 @@ public class AuthenticateController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody User userRegister) {
-        String passwordEncrypted = encoder.encode(userRegister.getPassword());
-        userRegister.setPassword(passwordEncrypted);
-        UserDTO user = toDTO(service.save(userRegister));
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User Created"),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{errors: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+    })
+    public ResponseEntity<UserDTO> register(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+        String passwordEncrypted = encoder.encode(userRegisterDTO.getPassword());
+        userRegisterDTO.setPassword(passwordEncrypted);
+        UserDTO userDTO = toDTO(service.save(toModel(userRegisterDTO)));
+        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/me")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{errors: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "Las credenciales ingresadas no son validas o no está autorizado para realizar esta operación")})}),
+            @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "error: User not found with: id :")})}),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{error: [Internal Server Error]}")})})
+    })
     public ResponseEntity<UserDTO> getAuthUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         String email = jwtUtil.getUsernameFromToken(token);
         UserDTO user = toDTO(service.findByEmail(email));
@@ -90,6 +109,16 @@ public class AuthenticateController {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .roleId(user.getRoleId())
+                .build();
+    }
+
+    private User toModel(UserRegisterDTO userRegisterDTO) {
+        return User.builder()
+                .firstName(userRegisterDTO.getFirstName())
+                .lastName(userRegisterDTO.getLastName())
+                .email(userRegisterDTO.getEmail())
+                .password(userRegisterDTO.getPassword())
+                .roleId(userRegisterDTO.getRoleId())
                 .build();
     }
 
@@ -135,5 +164,7 @@ public class AuthenticateController {
         private String email;
         @NotNull
         private String password;
+        @NotNull
+        private Long roleId;
     }
 }
