@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailTemplate {
 
-    Content content = new Content();
+    Content templateContent = new Content();
 
-    public Content getContent() {
-        content.setType("text/html");
-        content.setValue("<!doctype html>\n" +
+    public Content getContent(String content) {
+        templateContent.setType("text/html");
+        templateContent.setValue("<!doctype html>\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\"\n" +
                 "  xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
                 "\n" +
@@ -310,9 +310,9 @@ public class EmailTemplate {
                 "                      <div\n" +
                 "                        style=\"font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:left;color:#000000;\">\n" +
                 "                        <p style=\"text-align: center;\"><span\n" +
-                "                            style=\"font-size: 24px;\"><strong>T&iacute;tulo</strong></span></p>\n" +
+                "                            style=\"font-size: 24px;\"><strong>ONG app</strong></span></p>\n" +
                 "                        <p style=\"text-align: center;\">&nbsp;</p>\n" +
-                "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\">Texto del email</span></p>\n" +
+                "                        <p style=\"text-align: center;\"><span style=\"font-size: 16px;\">%content%</span></p>\n" +
                 "                      </div>\n" +
                 "\n" +
                 "                    </td>\n" +
@@ -417,6 +417,6 @@ public class EmailTemplate {
                 "</body>\n" +
                 "\n" +
                 "</html>");
-        return content;
+        return templateContent;
     }
 }

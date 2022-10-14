@@ -8,7 +8,6 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -33,7 +31,7 @@ public class DefaultMailGateway implements MailGateway {
     @Value("${emailSender}")
     private String emailSender;
     @Override
-    public void sendMail(String recipientEmail, String subject) {
+    public void sendMail(String recipientEmail, String subject, String content) {
         Email from = new Email(this.emailSender);
         Email to = new Email(recipientEmail);
         Mail mail = new Mail();
@@ -41,8 +39,9 @@ public class DefaultMailGateway implements MailGateway {
         personalization.addTo(to);
         mail.setFrom(from);
         mail.setSubject(subject);
+        mail.addContent(emailTemplate.getContent(content));
         mail.addPersonalization(personalization);
-        mail.addContent(emailTemplate.getContent());
+        mail.personalization.get(0).addSubstitution("%content%", content);
         Request request = new Request();
         
         try {

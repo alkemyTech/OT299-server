@@ -31,7 +31,7 @@ public class EmailController {
         return Email.builder()
                 .emailRecipient(emailDto.getEmailRecipient())
                 .subject(emailDto.getSubject())
-                .build();
+                .content(emailDto.getContent()).build();
     }
 
     @Getter
@@ -45,6 +45,7 @@ public class EmailController {
 
         private String emailRecipient;
         private String subject;
+        private String content;
     }
 
 }
