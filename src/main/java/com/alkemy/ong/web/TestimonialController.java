@@ -35,7 +35,7 @@ public class TestimonialController {
         return ResponseEntity.ok(pageTestimonials);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
@@ -45,7 +45,7 @@ public class TestimonialController {
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "{error: [Internal Server Error]}")})})
     })
-    public ResponseEntity<Void> delete(@RequestParam(name = "id") Long id){
+    public ResponseEntity<Void> delete(@PathVariable final Long id){
         testimonialService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
