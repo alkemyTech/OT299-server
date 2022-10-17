@@ -1,5 +1,6 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import lombok.*;
@@ -39,6 +40,11 @@ public class UserController {
         return new ResponseEntity(toDTO(service.save(toModel(userDTO))), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<User> findById (@PathVariable Long id){
+
+        return ResponseEntity.ok(service.findById(id));
+    }
     private UserDTO toDTO(User user) {
         return UserDTO.builder()
                 .id(user.getId())

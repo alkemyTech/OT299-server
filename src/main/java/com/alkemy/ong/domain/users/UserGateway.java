@@ -15,4 +15,6 @@ public interface UserGateway {
     User save(User user);
 
     User findByEmail(String email);
+
+    User findById(Long id);
 }

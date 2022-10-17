@@ -47,4 +47,8 @@ public class UserService implements UserDetailsService {
         String role = retrievedUser.getRoleId().toString();
         return List.of(new SimpleGrantedAuthority("ROLE_"+role));
     }
+
+    public User findById(Long id) {
+        return gateway.findById(id);
+    }
 }
