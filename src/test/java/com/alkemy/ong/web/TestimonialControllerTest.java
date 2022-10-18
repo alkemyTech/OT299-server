@@ -13,10 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.validation.constraints.NotBlank;
@@ -24,9 +22,10 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
-//import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -46,25 +45,25 @@ class TestimonialControllerTest {
     private String url = "http://localhost:8080/testimonials";
 
     @MockBean
-    TestimonialRepository testimonialRepository;
+    private TestimonialRepository testimonialRepository;
 
     @Test
     void pageAll() throws Exception {
         OngPage<TestimonialEntity> ongPage = createOngPage();
 
         when(testimonialRepository.findAll(PageRequest.of(0, 10))).thenReturn(new PageImpl<>(ongPage.getBody()));
-        mockMvc.perform(MockMvcRequestBuilders.get(url+"?page=0")
+        mockMvc.perform(get(url+"?page=0")
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(ongPage)))
                 .andExpect(jsonPath("body").isArray())
                 .andExpect(jsonPath("$.body",hasSize(4)))
-                //.andExpect()
                 .andExpect(jsonPath("$.body.[0].id", is(1)))
                 .andExpect(jsonPath("$.body.[1].id", is(2)))
                 .andExpect(jsonPath("$.body.[2].id", is(3)))
                 .andExpect(jsonPath("$.body.[3].id", is(4)))
                 .andExpect(status().isOk());
     }
+
     @Test
     void deleteUnauthorized() throws Exception {
         mockMvc.perform(delete(url+"/1")
@@ -78,6 +77,15 @@ class TestimonialControllerTest {
         mockMvc.perform(delete(url+"/1")
                 .accept(APPLICATION_JSON))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "1")
+    void deleteNotFound() throws Exception{
+        when(testimonialRepository.findById(74L)).thenThrow(new ResourceNotFoundException("Testimonial", "id", 74L));
+
+        mockMvc.perform(delete(url+"/3"))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -116,6 +124,7 @@ class TestimonialControllerTest {
         mockMvc.perform(post(url)
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testimonialDto)))
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("test_name")))
                 .andExpect(jsonPath("$.image", is("test.png")))
@@ -129,7 +138,7 @@ class TestimonialControllerTest {
         TestimonialDto testimonialDto = createTestimonialDto(32L, "test_name","test.png","content_example");
         mockMvc.perform(put(url+"/32")
                 .contentType(APPLICATION_JSON)
-                .content(String.valueOf(testimonialDto)))
+                .content(objectMapper.writeValueAsString(testimonialDto)))
                 .andExpect(status().isNotFound());
     }
 
@@ -144,13 +153,17 @@ class TestimonialControllerTest {
     @WithMockUser(roles = "1")
     void updateSuccess() throws Exception {
         TestimonialEntity testimonial = createTestimonialEntity(1L, "test_name1","test1.png","content_1");
-        TestimonialDto testimonialDto = createTestimonialDto(1L, "test_name1","test1.png","content_1");
+        TestimonialDto testimonialDto = createTestimonialDto(1L, "test_name_update","update.png","content_update");
         when(testimonialRepository.findById(1L)).thenReturn(Optional.of(testimonial));
         when(testimonialRepository.save(testimonial)).thenReturn(testimonial);
         mockMvc.perform(put(url+"/1")
                 .contentType(APPLICATION_JSON)
-                .content(String.valueOf(testimonialDto)))
-                .andExpect(status().isOk());
+                .content(objectMapper.writeValueAsString(testimonialDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("test_name_update")))
+                .andExpect(jsonPath("$.image", is("update.png")))
+                .andExpect(jsonPath("$.content", is("content_update")));
     }
 
     private TestimonialEntity createTestimonialEntity(Long id, String name, String image, String content) {

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "testimonials")
@@ -40,4 +41,18 @@ public class TestimonialEntity {
     private LocalDateTime updatedAt;
 
     private boolean deleted = false;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TestimonialEntity that = (TestimonialEntity) o;
+        return Objects.equals(id,that.id)
+                && Objects.equals(name,that.name)
+                && Objects.equals(image,that.image)
+                && Objects.equals(content,that.content)
+                && Objects.equals(createdAt, that.createdAt)
+                && Objects.equals(updatedAt, that.updatedAt)
+                && Objects.equals(deleted, that.deleted);
+    }
 }
