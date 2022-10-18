@@ -8,6 +8,8 @@ import lombok.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,13 +48,14 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<User> findById (@PathVariable Long id,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-        String email = jwtUtil.getUsernameFromToken(token);
-        User user = service.findByEmail(email);
+    public ResponseEntity<User> findById (@PathVariable Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        User user = service.findByEmail(currentPrincipalName);
         if(user.getId() == id){
             return ResponseEntity.ok(service.findById(id));
         } else{
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+           return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
