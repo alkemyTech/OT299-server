@@ -3,9 +3,12 @@ package com.alkemy.ong.web;
 import com.alkemy.ong.domain.news.New;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+import com.alkemy.ong.web.security.JwtUtil;
 import lombok.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +20,8 @@ import static java.util.stream.Collectors.toList;
 @AllArgsConstructor
 public class UserController {
     private final UserService service;
+
+    private final JwtUtil jwtUtil;
 
     @GetMapping()
     public ResponseEntity<List<UserDTO>> findAll() {
@@ -41,9 +46,15 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<User> findById (@PathVariable Long id){
+    public ResponseEntity<User> findById (@PathVariable Long id,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        String email = jwtUtil.getUsernameFromToken(token);
+        User user = service.findByEmail(email);
+        if(user.getId() == id){
+            return ResponseEntity.ok(service.findById(id));
+        } else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseEntity.ok(service.findById(id));
     }
     private UserDTO toDTO(User user) {
         return UserDTO.builder()
