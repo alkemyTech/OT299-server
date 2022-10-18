@@ -2,21 +2,22 @@ package com.alkemy.ong.web;
 
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
+import com.alkemy.ong.web.security.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -27,7 +28,9 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthenticateController {
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder encoder;
     private final UserService service;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
@@ -38,10 +41,39 @@ public class AuthenticateController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserDTO user = toDTO(service.findByEmail(userAuthDTO.getEmail()));
-        response.put("User", user);
+        UserDetails userDetails = service.loadUserByUsername(user.email);
+        String jwtToken = jwtUtil.generateToken(userDetails);
 
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new UserAuthResponseDTO(jwtToken), HttpStatus.OK);
     }
+
+    @PostMapping("/register")
+    public ResponseEntity register(@Valid @RequestBody User userRegister) {
+        String passwordEncrypted = encoder.encode(userRegister.getPassword());
+        userRegister.setPassword(passwordEncrypted);
+        UserDTO user = toDTO(service.save(userRegister));
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getAuthUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        String email = jwtUtil.getUsernameFromToken(token);
+        UserDTO user = toDTO(service.findByEmail(email));
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+
+    private UserDTO toDTO(User user) {
+        return UserDTO.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .roleId(user.getRoleId())
+                .build();
+    }
+
+    // ------------ DTOs
 
     @Setter
     @Getter
@@ -53,6 +85,13 @@ public class AuthenticateController {
         private String password;
     }
 
+    @Getter
+    @Setter
+    @Builder
+    public static class UserAuthResponseDTO {
+        private String jwt;
+    }
+
     @Setter
     @Getter
     @Builder
@@ -61,14 +100,20 @@ public class AuthenticateController {
         private String firstName;
         private String lastName;
         private String email;
+        private Long roleId;
     }
 
-    private UserDTO toDTO(User user) {
-        return UserDTO.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .build();
+    @Setter
+    @Getter
+    @Builder
+    public static class UserRegisterDTO {
+        @NotNull
+        private String firstName;
+        @NotNull
+        private String lastName;
+        @NotNull
+        private String email;
+        @NotNull
+        private String password;
     }
 }

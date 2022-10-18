@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "categories")
@@ -33,4 +34,5 @@ public class CategoriesEntity {
     private LocalDateTime updatedAt;
     @Column(name = "deleted")
     private boolean deleted = false;
+
 }
