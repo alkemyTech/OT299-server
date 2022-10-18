@@ -1,5 +1,7 @@
 package com.alkemy.ong.web;
 
+import com.alkemy.ong.domain.emails.Email;
+import com.alkemy.ong.domain.emails.MailService;
 import com.alkemy.ong.domain.users.User;
 import com.alkemy.ong.domain.users.UserService;
 import com.alkemy.ong.web.security.JwtUtil;
@@ -27,10 +29,13 @@ import java.util.Map;
 @RequestMapping("/auth")
 @AllArgsConstructor
 public class AuthenticateController {
+    public static final String SUBJECT = "Registration ONG Somos Mas";
+    public static final String CONTENT = "Thank you for registering";
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
     private final UserService service;
     private final JwtUtil jwtUtil;
+    private final MailService mailService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@Valid @RequestBody UserAuthDTO userAuthDTO) throws Exception {
@@ -48,11 +53,22 @@ public class AuthenticateController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody User userRegister) {
-        String passwordEncrypted = encoder.encode(userRegister.getPassword());
-        userRegister.setPassword(passwordEncrypted);
-        UserDTO user = toDTO(service.save(userRegister));
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+
+    public ResponseEntity<?> register(@Valid @RequestBody User userRegister) {
+        if (!(service.findByEmail(userRegister.getEmail()) == null)) {
+            return new ResponseEntity<>(userRegister, HttpStatus.BAD_REQUEST);
+        } else {
+            String passwordEncrypted = encoder.encode(userRegister.getPassword());
+            userRegister.setPassword(passwordEncrypted);
+            UserDTO user = toDTO(service.save(userRegister));
+            Email email = null;
+            email.setEmailRecipient(user.getEmail());
+            email.setSubject(SUBJECT);
+            email.setContent(CONTENT);
+            mailService.sendMail(email);
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
+        }
+
     }
 
     @GetMapping("/me")
@@ -116,4 +132,5 @@ public class AuthenticateController {
         @NotNull
         private String password;
     }
+
 }
