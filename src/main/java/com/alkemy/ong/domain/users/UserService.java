@@ -1,16 +1,21 @@
 package com.alkemy.ong.domain.users;
 
+import com.alkemy.ong.domain.emails.Email;
+import com.alkemy.ong.domain.emails.MailGateway;
+import com.alkemy.ong.web.EmailController;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
     private final UserGateway gateway;
+    private MailGateway mailGateway;
 
     public UserService(UserGateway gateway) {
         this.gateway = gateway;
@@ -39,6 +44,16 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = gateway.findByEmail(email);
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthorities(user));
     }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(User retrievedUser) {
+        String role = retrievedUser.getRoleId().toString();
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
+    }
+
+    public void sendMail(Email email){
+        mailGateway.sendMail(email.getEmailRecipient(), email.getSubject(), email.getContent());
+    }
+
 }

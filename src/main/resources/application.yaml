@@ -28,3 +28,6 @@ logging:
 
 pagination:
   pageSize: 10
+
+jwt:
+  secret:
