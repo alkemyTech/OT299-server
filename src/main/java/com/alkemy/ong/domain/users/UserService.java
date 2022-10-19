@@ -52,6 +52,10 @@ public class UserService implements UserDetailsService {
         return List.of(new SimpleGrantedAuthority("ROLE_"+role));
     }
 
+    public User findById(Long id) {
+        return gateway.findById(id);
+    }
+
     public void sendMail(Email email){
         mailGateway.sendMail(email.getEmailRecipient(), email.getSubject(), email.getContent());
     }
