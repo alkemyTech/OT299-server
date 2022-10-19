@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +29,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
-public class AuthenticateController {
+@SecurityRequirement(name = "bearerAuth")
+public class AuthenticateController{
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
     private final UserService service;
