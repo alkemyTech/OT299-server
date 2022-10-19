@@ -41,6 +41,9 @@ public class CategoriesController {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {@Content(
                             mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                             value = "{errors: [Invalid Input]}")})}),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = {@Content(
+                    mediaType = "application/json", examples = {@ExampleObject(name= "errors",
+                    value = "{errors: [Invalid Input]}")})}),
             @ApiResponse(responseCode = "404", description = "Not Found", content = {@Content(
                     mediaType = "application/json", examples = {@ExampleObject(name= "errors",
                     value = "error: Category not found with: id :")})}),

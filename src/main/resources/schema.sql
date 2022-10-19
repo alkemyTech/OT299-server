@@ -74,14 +74,14 @@ CREATE TABLE IF NOT EXISTS ROLES(
   updated_at    TIMESTAMP   DEFAULT NOW(),
   deleted       BIT         DEFAULT 0,
   PRIMARY KEY (id)
-  );
+);
 
 CREATE TABLE IF NOT EXISTS USERS(
-  id        BIGINT(50)   NOT NULL AUTO_INCREMENT,
+  id  BIGINT(50)   NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(50)  NOT NULL,
   last_name  VARCHAR(50)  NOT NULL,
   email     VARCHAR(50)  NULL,
-  password  VARCHAR(50)  NULL,
+  password  VARCHAR(255)  NULL,
   photo     VARCHAR(255)  NULL,
   role_id   BIGINT(50)   NOT NULL,
   created_at    TIMESTAMP   DEFAULT NOW(),

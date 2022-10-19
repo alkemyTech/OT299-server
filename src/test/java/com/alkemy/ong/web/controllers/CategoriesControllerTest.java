@@ -87,7 +87,7 @@ public class CategoriesControllerTest {
         CategoriesEntity categoriesEntitySaved = createCategoriesEntity(1L, "test_name","test.png","description");
         CategoriesController.CategoriesDto categoriesDto = createCategoriesDto(1L,"test_name","test.png","description");
         when(categoriesRepository.save(categoriesEntity)).thenReturn(categoriesEntitySaved);
-        mockMvc.perform(post(url)
+        mockMvc.perform(post(url+"/1")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(categoriesDto)))
                 .andExpect(status().isCreated())
@@ -127,7 +127,7 @@ public class CategoriesControllerTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("test_name_update")))
                 .andExpect(jsonPath("$.image", is("update.png")))
-                .andExpect(jsonPath("$.content", is("description_update")));
+                .andExpect(jsonPath("$.description", is("description_update")));
     }
 
     @Test
@@ -151,7 +151,7 @@ public class CategoriesControllerTest {
     @Test
     @WithMockUser(roles = "1")
     void deleteSuccess() throws Exception {
-        CategoriesEntity categories = createCategoriesEntity(1L, "test_name1", "test1.png", "description_1");
+        CategoriesEntity categories = createCategoriesEntity(1L, "name01", "test01.png", "description01");
         when(categoriesRepository.findById(1L)).thenReturn(Optional.of(categories));
         doNothing().when(categoriesRepository).deleteById(1L);
 
