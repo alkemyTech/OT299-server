@@ -1,10 +1,6 @@
 package com.alkemy.ong.domain.users;
 
-import com.alkemy.ong.domain.emails.Email;
 import com.alkemy.ong.domain.emails.MailGateway;
-import com.alkemy.ong.domain.emails.MailService;
-import com.alkemy.ong.emails.DefaultMailGateway;
-import com.alkemy.ong.web.EmailController;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
