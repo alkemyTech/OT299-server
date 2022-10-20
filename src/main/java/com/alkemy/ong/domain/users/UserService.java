@@ -1,5 +1,6 @@
 package com.alkemy.ong.domain.users;
 
+import com.alkemy.ong.domain.emails.MailGateway;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,10 @@ import java.util.*;
 public class UserService implements UserDetailsService {
     private final UserGateway gateway;
 
-    public UserService(UserGateway gateway) {
+    private MailGateway mailGateway;
+
+    public UserService(UserGateway gateway, MailGateway mailGateway) {
+        this.mailGateway = mailGateway;
         this.gateway = gateway;
     }
 
@@ -26,7 +30,9 @@ public class UserService implements UserDetailsService {
     }
 
     public User save(User user) {
-        return gateway.save(user);
+        User userSaved = gateway.save(user);
+        mailGateway.sendMail(user.getEmail(), "Bienvenido", "Gracias por registrarte en nuestro sitio");
+        return userSaved;
     }
 
     public User updateById(Long id, User user) {
